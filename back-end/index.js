@@ -27,7 +27,7 @@ async function main() {
             
             // Saida do bot
             if(userInput.toLowerCase() === 'exit'){ // Verifica se a mensagem é 'exit'
-                console.log(colors.bold.green('Bot:') + completionText); // Exibe a resposta  
+                console.log(colors.bold.green('Bot: ') + completionText); // Exibe a resposta  
                 break; // Encerra o loop
             }
 
@@ -39,9 +39,9 @@ async function main() {
         
         } catch (error) {
             if (error.response) {
-                console.error(colors.bold.red('Error in API call:'), error.response.data);
+                console.error(colors.bold.red('Error in API call: '), error.response.data);
             } else {
-                console.error(colors.bold.red('Error:'), error.message);
+                console.error(colors.bold.red('Error: '), error.message);
             }
         }
     }
