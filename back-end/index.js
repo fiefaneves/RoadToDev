@@ -1,4 +1,4 @@
-import openai from './config/open-ai.js'; // Importa o pacote openai
+import openai from './src/config/open-ai.js'; // Importa o pacote openai
 import readlineSync from 'readline-sync'; // Importa o pacote readline-sync
 import colors from 'colors'; // Importa o pacote colors
 
