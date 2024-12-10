@@ -23,7 +23,7 @@ async function main() {
             });
             
             // Exibe a resposta do chatbot no console
-            const completionText = completion.data.choices[0].message.content;
+            const completionText = completion.choices[0].message.content;
             
             // Saida do bot
             if(userInput.toLowerCase() === 'exit'){ // Verifica se a mensagem é 'exit'
@@ -38,7 +38,11 @@ async function main() {
             chatHistory.push(['assistant', completionText]);
         
         } catch (error) {
-                console.error(colors.bold.red('Error in API call:'), error.response?.data || error.message);
+            if (error.response) {
+                console.error(colors.bold.red('Error in API call:'), error.response.data);
+            } else {
+                console.error(colors.bold.red('Error:'), error.message);
+            }
         }
     }
 }
