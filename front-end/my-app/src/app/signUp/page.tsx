@@ -3,8 +3,11 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/Components/ui/button";
+import { useRouter } from "next/router";
 
 const SignUpPage = () => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -24,6 +27,7 @@ const SignUpPage = () => {
     alert("Sign up successful!");
 
     reset();
+    router.push("/roadMap.tsx");
   };
 
   return (
