@@ -23,15 +23,17 @@ const SignUpPage = () => {
   });
 
   const onSubmit = async (data: any) => {
-    console.log("Form data:", data);
+    const queryDescription = `${data.name} quer aprender ${data.technology} na área de ${data.interest} com experiência ${data.experience}`;
+    
+    console.log("Query description:", queryDescription);
 
-    try{
-      const response = await fetch("/generate", {
+    try {
+      const response = await fetch("http://localhost:3005/generate", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", 
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ queryDescription }), 
       });
 
       if (!response.ok) {
@@ -42,11 +44,7 @@ const SignUpPage = () => {
       console.log("Generated roadmap:", result);
 
       alert("Roadmap generated successfully");
-      reset();
-
-      router.push("/roadMap");
-    }
-    catch(error){
+    } catch (error) {
       console.error("Error:", error);
       alert("An error occurred while generating the roadmap");
     }
@@ -73,7 +71,7 @@ const SignUpPage = () => {
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
             />
             {errors.name && (
-              <p className="text-sm text-red-500 mt-1">{errors.name?.message as string}</p>
+              <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
             )}
           </div>
 
@@ -93,7 +91,7 @@ const SignUpPage = () => {
               <option value="design">Design</option>
             </select>
             {errors.interest && (
-              <p className="text-sm text-red-500 mt-1">{errors.interest?.message as string}</p>
+              <p className="text-sm text-red-500 mt-1">{errors.interest.message}</p>
             )}
           </div>
 
@@ -112,7 +110,7 @@ const SignUpPage = () => {
               <option value="advanced">Advanced</option>
             </select>
             {errors.experience && (
-              <p className="text-sm text-red-500 mt-1">{errors.experience?.message as string}</p>
+              <p className="text-sm text-red-500 mt-1">{errors.experience.message}</p>
             )}
           </div>
 
@@ -132,7 +130,7 @@ const SignUpPage = () => {
               <option value="css">CSS</option>
             </select>
             {errors.technology && (
-              <p className="text-sm text-red-500 mt-1">{errors.technology?.message as string}</p>
+              <p className="text-sm text-red-500 mt-1">{errors.technology.message}</p>
             )}
           </div>
 
