@@ -26,7 +26,7 @@ const SignUpPage = () => {
     console.log("Form data:", data);
 
     try{
-      const response = await fetch("/api/generate-roadmap", {
+      const response = await fetch("/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
