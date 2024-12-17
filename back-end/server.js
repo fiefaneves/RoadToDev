@@ -29,6 +29,7 @@ app.listen(port, () => { // Start the server
 app.post('/generate', async (req, res) => { // Create a route
     // Get the answer from the form and send it to the OpenAI API
     const { queryDescription } = req.body;
+    
     try {
         const roadQuery = await generate(queryDescription);
         res.json({response: roadQuery}); // Send the response
@@ -38,5 +39,3 @@ app.post('/generate', async (req, res) => { // Create a route
         res.status(500).send('An error occurred'); // Send an error response
     }
 });
-
-app.listen(port, () => console.log(`Server is running on port ${port}`)); // Start server
