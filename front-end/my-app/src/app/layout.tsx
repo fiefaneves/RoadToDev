@@ -1,4 +1,5 @@
 import '../styles/globals.css';
+import Image from 'next/image';
 
 export const metadata = {
   title: 'RoadToDev',
@@ -16,6 +17,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <nav className="flex space-x-4">
                 <a href="/" className="text-white">Home</a>
                 <a href="/signUp" className="text-white">Sign Up</a>
+                <Image 
+                width={20}
+                height={20}
+                src="/userIcon.svg"
+                alt="User Icon"
+                ></Image>
               </nav>
             </div>
           </header>
