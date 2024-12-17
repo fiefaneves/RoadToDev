@@ -15,7 +15,7 @@ const routes = (app) => {
         try {
             const roadQuery = await generate(queryDescription);
             res.json({response: roadQuery}); // Send the response
-            console.log('Roadmap generated:', roadQuery); // Log the generated roadmap
+            console.log('Roadmap generated successfully'); // Log the generated roadmap
         } catch (error) {
             console.error(error); // Log an error
             res.status(500).send('An error occurred'); // Send an error response
