@@ -22,12 +22,34 @@ const SignUpPage = () => {
     },
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log("Form data:", data);
-    alert("Sign up successful!");
 
-    reset();
-    router.push("/roadMap.tsx");
+    try{
+      const response = await fetch("/api/generate-roadmap", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to generate roadmap");
+      }
+
+      const result = await response.json();
+      console.log("Generated roadmap:", result);
+
+      alert("Roadmap generated successfully");
+      reset();
+
+      router.push("/roadMap");
+    }
+    catch(error){
+      console.error("Error:", error);
+      alert("An error occurred while generating the roadmap");
+    }
   };
 
   return (
