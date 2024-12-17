@@ -1,21 +1,26 @@
-import express from 'express'; // Import express
-import { generate } from '../controllers/generative.js'; // Import controller functions
-const router = express.Router(); // Create express router
+import cors from 'cors'; // Import cors
+import  generate  from '../controllers/generative.js'; // Import controller functions
+import express from 'express'
 
-//router.post('/chatbot', ChatBot);
-//router.post('/generate', generate);
+const routes = (app) => {
 
-router.post('/generate', async (req, res) => { // Create a route
-    // Get the answer from the form and send it to the OpenAI API
-    const { queryDescription } = req.body; 
-    try {
-        const roadQuery = await generate(queryDescription);
-        res.json({response: roadQuery}); // Send the response
-        console.log('Roadmap generated:', roadQuery); // Log the generated roadmap
-    } catch (error) {
-        console.error(error); // Log an error
-        res.status(500).send('An error occurred'); // Send an error response
-    }
-});
+    app.use(express.json());
+    app.use(cors()); // Enable cors 
+    app.use(express.urlencoded({ extended: false }));
 
-module.exports = router; // Export router
+    app.post('/generate', async (req, res) => { // Create a route
+        // Get the answer from the form and send it to the OpenAI API
+        const { queryDescription } = req.body;
+        
+        try {
+            const roadQuery = await generate(queryDescription);
+            res.json({response: roadQuery}); // Send the response
+            console.log('Roadmap generated:', roadQuery); // Log the generated roadmap
+        } catch (error) {
+            console.error(error); // Log an error
+            res.status(500).send('An error occurred'); // Send an error response
+        }
+    });
+}
+
+export default routes;
