@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div className="text-xl font-bold text-white">Logo</div>
               <nav className="flex space-x-4">
                 <a href="/" className="text-white">Home</a>
-                <a href="/signup" className="text-white">Sign Up</a>
+                <a href="/signUp" className="text-white">Sign Up</a>
               </nav>
             </div>
           </header>
