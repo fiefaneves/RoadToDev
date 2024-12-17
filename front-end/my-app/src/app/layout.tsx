@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 
 export const metadata = {
-  title: 'Home Page',
+  title: 'RoadToDev',
   description: 'Welcome to Road To Dev',
 };
 

@@ -8,12 +8,22 @@ const SignUpPage = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues:{
+        name: "",
+        interest: "",
+        experience: "",
+        technology: "",
+    },
+  });
 
   const onSubmit = (data: any) => {
     console.log("Form data:", data);
     alert("Sign up successful!");
+
+    reset();
   };
 
   return (
