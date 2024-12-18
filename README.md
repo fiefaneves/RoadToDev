@@ -1,7 +1,7 @@
 # **Roadmap Generator**
 
-This project ia a byproduct of our course through "Desenvolviimento de Software", where we were supposed to create an real life application using
- some form of AI.RoadToDev is a simple way of understanding what you will need to lear to achieve certain goal in the developers scenary.
+This project is a byproduct of our course through "Desenvolvimento de Software", where we were supposed to create a real life application using
+ some form of AI.RoadToDev is a simple way of understanding what you will need to learn to achieve a certain goal in the developers scenary.
  Based on your answer to the sign up form, wich indicates your level os expertise and and areas of interest,the openai api will, (while in this MVP version) 
  create a text form road map indicating the areas the user needs to focus, and later on, the application will give a more interactive and reactive response
  regarding the road map it self.A web-based application powered by AI to help developers generate personalized learning roadmaps based on their 
@@ -40,9 +40,13 @@ This project ia a byproduct of our course through "Desenvolviimento de Software"
 
 Add a live link here once hosted (e.g., Vercel or Netlify).  
 
-**Live Demo:** [Roadmap Generator](https://example.com)  
-![alt text](capturas-do-sistema/image-2.png)
+**Live Demo:** [Roadmap Generator](https://example.com)
 ![alt text](capturas-do-sistema/image.png)
+
+
+![alt text](capturas-do-sistema/image-2.png)
+
+print do texto do road
 Include a gif or screenshot of the application showcasing the roadmap creation process.  
 
 ---
@@ -57,9 +61,10 @@ Include a gif or screenshot of the application showcasing the roadmap creation p
 
 ### **Back-End**
 - Node.js
-- NestJS  
-- MongoDB (Database)  
-- Prisma (ORM)  
+- NestJS
+- Express  
+- //MongoDB (Database)  
+- //Prisma (ORM)  
 
 ### **AI/External APIs**
 - OpenAI API (for recommendations and roadmap generation)  
@@ -78,7 +83,7 @@ Include a gif or screenshot of the application showcasing the roadmap creation p
 Ensure you have the following installed:
 - Node.js (version 18.x or later)  
 - npm or yarn  
-- MongoDB (local instance or MongoDB Atlas)  
+- //MongoDB (local instance or MongoDB Atlas)  
 
 ### **Installation**
 
@@ -89,7 +94,7 @@ Ensure you have the following installed:
 2. Install dependencies for the front-end:
     ```bash
     cd frontend
-    npm installnpm install next react react-dom
+    npm install next react react-dom
 
 3. Install dependencies for the back-end:
     ```bash
@@ -99,9 +104,9 @@ Ensure you have the following installed:
     - Create .env files in both frontend and backend directories.
     - Example variables for the backend:
     ```bash
-    DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/mydatabase
+    //DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/mydatabase
     OPENAI_API_KEY=your_openai_api_key
-5. Run MongoDB locally or connect to MongoDB Atlas.
+//5. Run MongoDB locally or connect to MongoDB Atlas.
 
 ### **Usage**
 
@@ -126,6 +131,26 @@ Ensure you have the following installed:
     ├── utils/            # Helper functions
     └── state/            # Zustand for global state management
 
+
+    frontend/
+    │── .next/                  #next modules
+    │── node_modules/           #nodejs modules
+    │── public/                 
+    │── src/                    
+        │──app/
+        │  │── signUP/
+        │  │   └──page/        #forms
+        │  │── homepage/       #home page info
+        │  └── layout/         #layout configuration
+        │── Components/
+        │   └── button/         #sign up button layout
+        │── lib/
+        │   └── utils/
+        └── styles/
+            └─ globals/         #global css for application styling
+        
+
+                            
 ### **Back-End**
     backend/
     ├── src/
