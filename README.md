@@ -43,9 +43,7 @@ This project is a byproduct of our course through "Desenvolvimento de Software",
 ![alt text](capturas-do-sistema/image-2.png)
 
 
-
-print do texto do road
-Include a gif or screenshot of the application showcasing the roadmap creation process.  
+![alt text](capturas-do-sistema/Image-3.png)
 
 ---
 
@@ -148,29 +146,6 @@ Ensure you have the following installed:
     │── package                     
     └── server                      #creates a server and defines the port it is running
 
-## **API Endpoints**
-### **POST /api/generate-roadmap**
-
-- Description: Generates a personalized roadmap based on user responses.
-- Request Body:
-    ```bash
-    {
-        "html": "beginner",
-        "css": "intermediate",
-        "javascript": "advanced"
-    }
-- Response: 
-    ```bash
-    {
-        "nodes": [
-            { "id": "HTML Basics", "level": "beginner" },
-            { "id": "CSS Layouts", "level": "intermediate" }
-        ],
-        "links": [
-            { "source": "HTML Basics", "target": "CSS Layouts" }
-        ]
-    }
-
 ## **Contributing**
 Contributions are welcome!
 
@@ -187,10 +162,16 @@ Contributions are welcome!
 5. Submit your pull request.
 
 ## **Future Improvements**
-- Export roadmaps to PDF or PNG format.
+- User Registration
+- Interactive Road Maps
+- Road map visualization
+- Progress Tracking
+- Road map editing
+- Allow users to save and share their Road maps.
+- Recommendations Based on Market Trends
 - Add more dynamic AI suggestions using GPT models.
-- Allow users to save and share their roadmaps.
-- Support multiple languages.
+- Integration with Practical Projects
+- Notifications and Motivation
 
 ## **License**
 This project is licensed under the MIT License. See the LICENSE file for details.
