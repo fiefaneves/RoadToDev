@@ -14,10 +14,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <RoadMapProvider>
           <div className="min-h-screen flex flex-col bg-[#DEDEDE]">
-            <header className="bg-blue-500 shadow-md">
-              <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-                <div className="text-xl font-bold text-white">Logo</div>
-                <nav className="flex space-x-4">
+            <header className="bg-blue-500 shadow-md w-[100%]">	
+              <div className="w-[full] px-4 py-4 flex justify-between items-center">
+                <div>
+                <Image
+                  width={30}
+                  height={30}
+                  src="/RoadToDev_icon.svg"
+                  alt="RoadToDev Icon"
+                ></Image>
+                  </div>
+                <nav className="flex space-x-4 ml-auto">
                   <Link href="/" className="text-white">Home</Link>
                   <Link href="/signUp" className="text-white">Sign Up</Link>
                   <Image
