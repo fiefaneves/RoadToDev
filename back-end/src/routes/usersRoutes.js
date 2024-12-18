@@ -4,8 +4,8 @@ import express from 'express'
 
 const routes = (app) => {
 
-    app.use(express.json());
     app.use(cors()); // Enable cors 
+    app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
 
     app.post('/generate', async (req, res) => { // Create a route

@@ -4,8 +4,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/Components/ui/button";
 import { useRouter } from "next/navigation";
+import { useRoadMap } from "../RoadMapContext";
 
 const SignUpPage = () => {
+  const [loading, setLoading] = React.useState(false);
+  const { setRoadmap } = useRoadMap();
   const router = useRouter();
 
   const {
@@ -14,41 +17,61 @@ const SignUpPage = () => {
     reset,
     formState: { errors },
   } = useForm({
-    defaultValues:{
-        name: "",
-        interest: "",
-        experience: "",
-        technology: "",
+    defaultValues: {
+      name: "",
+      interest: "",
+      experience: "",
+      technology: "",
     },
   });
 
   const onSubmit = async (data: any) => {
-    console.log("Form data:", data);
-
-    try{
-      const response = await fetch("/generate", {
+    const queryDescription = `${data.name} quer aprender ${data.technology} na área de ${data.interest} com experiência ${data.experience}, quero que você gere um texto com 8 tópicos (detalhando-os)   e separe-os com um 'enter'`;
+    
+    console.log("Query description:", queryDescription);
+    setLoading(true);
+  
+    try {
+      const response = await fetch("http://localhost:3005/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ queryDescription }),
       });
-
+  
+      console.log("Status da resposta:", response.status);
       if (!response.ok) {
         throw new Error("Failed to generate roadmap");
       }
-
+  
       const result = await response.json();
-      console.log("Generated roadmap:", result);
+      console.log("Resultado da API:", result);
+  
+      if (typeof result !== 'object' || result === null) {
+        alert("Estrutura de resposta inválida: resposta não é um objeto");
+        return;
+      }
+  
+      if (result && result.hasOwnProperty("response")) {
+        const roadmapDescription = result.response;
+        const formattedRoadmap = roadmapDescription
+          .split("\n")
+          .map((paragraph : string, index : number) => <p key={index} className="mb-4">{paragraph}</p>)
 
-      alert("Roadmap generated successfully");
-      reset();
-
-      router.push("/roadMap");
-    }
-    catch(error){
-      console.error("Error:", error);
-      alert("An error occurred while generating the roadmap");
+        setRoadmap(roadmapDescription);
+        console.log("Roadmap atualizado:", roadmapDescription);
+        reset();
+        router.push("/roadMap");
+      } else {
+        console.log("Estrutura da resposta:", result); 
+        alert("Falha ao gerar roadmap - Campo `response` não encontrado");
+      }
+    } catch (error) {
+      console.error("Erro:", error);
+      alert("Ocorreu um erro ao gerar o roadmap");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -73,7 +96,7 @@ const SignUpPage = () => {
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
             />
             {errors.name && (
-              <p className="text-sm text-red-500 mt-1">{errors.name?.message as string}</p>
+              <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
             )}
           </div>
 
@@ -93,7 +116,7 @@ const SignUpPage = () => {
               <option value="design">Design</option>
             </select>
             {errors.interest && (
-              <p className="text-sm text-red-500 mt-1">{errors.interest?.message as string}</p>
+              <p className="text-sm text-red-500 mt-1">{errors.interest.message}</p>
             )}
           </div>
 
@@ -112,7 +135,7 @@ const SignUpPage = () => {
               <option value="advanced">Advanced</option>
             </select>
             {errors.experience && (
-              <p className="text-sm text-red-500 mt-1">{errors.experience?.message as string}</p>
+              <p className="text-sm text-red-500 mt-1">{errors.experience.message}</p>
             )}
           </div>
 
@@ -132,7 +155,7 @@ const SignUpPage = () => {
               <option value="css">CSS</option>
             </select>
             {errors.technology && (
-              <p className="text-sm text-red-500 mt-1">{errors.technology?.message as string}</p>
+              <p className="text-sm text-red-500 mt-1">{errors.technology.message}</p>
             )}
           </div>
 
