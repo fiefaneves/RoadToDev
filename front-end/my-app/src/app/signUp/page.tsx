@@ -4,8 +4,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/Components/ui/button";
 import { useRouter } from "next/navigation";
+import { useRoadMap } from "../RoadMapContext";
 
 const SignUpPage = () => {
+  const [loading, setLoading] = React.useState(false);
+  const { setRoadmap } = useRoadMap();
   const router = useRouter();
 
   const {
@@ -14,11 +17,11 @@ const SignUpPage = () => {
     reset,
     formState: { errors },
   } = useForm({
-    defaultValues:{
-        name: "",
-        interest: "",
-        experience: "",
-        technology: "",
+    defaultValues: {
+      name: "",
+      interest: "",
+      experience: "",
+      technology: "",
     },
   });
 
@@ -26,27 +29,45 @@ const SignUpPage = () => {
     const queryDescription = `${data.name} quer aprender ${data.technology} na área de ${data.interest} com experiência ${data.experience}`;
     
     console.log("Query description:", queryDescription);
-
+    setLoading(true);
+  
     try {
       const response = await fetch("http://localhost:3005/generate", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", 
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ queryDescription }), 
+        body: JSON.stringify({ queryDescription }),
       });
-
+  
+      console.log("Status da resposta:", response.status);
       if (!response.ok) {
         throw new Error("Failed to generate roadmap");
       }
-
+  
       const result = await response.json();
-      console.log("Generated roadmap:", result);
-
-      alert("Roadmap generated successfully");
+      console.log("Resultado da API:", result);
+  
+      if (typeof result !== 'object' || result === null) {
+        alert("Estrutura de resposta inválida: resposta não é um objeto");
+        return;
+      }
+  
+      if (result && result.hasOwnProperty("response")) {
+        const roadmapDescription = result.response;
+        setRoadmap(roadmapDescription);
+        console.log("Roadmap atualizado:", roadmapDescription);
+        reset();
+        router.push("/roadMap");
+      } else {
+        console.log("Estrutura da resposta:", result); 
+        alert("Falha ao gerar roadmap - Campo `response` não encontrado");
+      }
     } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred while generating the roadmap");
+      console.error("Erro:", error);
+      alert("Ocorreu um erro ao gerar o roadmap");
+    } finally {
+      setLoading(false);
     }
   };
 
