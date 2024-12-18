@@ -31,20 +31,18 @@ This project is a byproduct of our course through "Desenvolvimento de Software",
 - Interactive form to asses developer skills.  
 - AI-powered roadmap generation tailored to user preferences.  
 - Text representation of the roadmap with dynamic node-link diagrams.  
-//- Responsive and modern UI/UX.  
-//- Integration with external learning platforms (planned).  
+- Responsive and modern UI/UX.
 
 ---
 
 ## **Demo**
-
-Add a live link here once hosted (e.g., Vercel or Netlify).  
-
 **Live Demo:** [Roadmap Generator](https://example.com)
 ![alt text](capturas-do-sistema/image.png)
 
 
 ![alt text](capturas-do-sistema/image-2.png)
+
+
 
 print do texto do road
 Include a gif or screenshot of the application showcasing the roadmap creation process.  
@@ -57,22 +55,17 @@ Include a gif or screenshot of the application showcasing the roadmap creation p
 - Next.js (React Framework)
 - TypeScript
 - TailwindCSS  
-- D3.js (for roadmap visualization)
 
 ### **Back-End**
 - Node.js
 - NestJS
 - Express  
-- //MongoDB (Database)  
-- //Prisma (ORM)  
+- GPT-3.5-turbo
+- dotenv
+- cors
 
 ### **AI/External APIs**
-- OpenAI API (for recommendations and roadmap generation)  
-
-### **DevOps**
-- Vercel (front-end hosting)  
-- Render (back-end hosting)  
-- GitHub Actions (CI/CD)  
+- OpenAI API - chatgpt-3.5-turbo (for recommendations and roadmap generation)
 
 ---
 
@@ -81,42 +74,41 @@ Include a gif or screenshot of the application showcasing the roadmap creation p
 ### **Prerequisites**
 
 Ensure you have the following installed:
-- Node.js (version 18.x or later)  
+- Node.js 
 - npm or yarn  
-- //MongoDB (local instance or MongoDB Atlas)  
 
 ### **Installation**
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/roadmap-generator.git
-    cd roadmap-generator
+    git clone https://github.com/fiefaneves/RoadToDev.git
+    cd RoadToDev
 2. Install dependencies for the front-end:
     ```bash
-    cd frontend
+    cd front-end/my-app
     npm install next react react-dom
+    npm install --save-dev typescript @types/react @types/node
 
 3. Install dependencies for the back-end:
     ```bash
-   cd ../backend
-   npm install
+   cd ../back-end
+   npm install cors openai dotenv express
+
 4. Set up environment variables:
     - Create .env files in both frontend and backend directories.
     - Example variables for the backend:
     ```bash
-    //DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/mydatabase
     OPENAI_API_KEY=your_openai_api_key
-//5. Run MongoDB locally or connect to MongoDB Atlas.
 
 ### **Usage**
 
 1. Start the back-end server:
     ```bash
-    cd backend
-    npm run start:dev
+    cd back-end
+    npm run dev
 2. Start the front-end development server:
     ```bash
-    cd ../frontend
+    cd ../front-end/my-app
     npm run dev
 3. Open the app in your browser:
     http://localhost:3000
@@ -128,11 +120,11 @@ Ensure you have the following installed:
     │── .next/                  #next modules
     │── node_modules/           #nodejs modules
     │── public/                 
-    │── src/                    
+    └── src/                    
         │──app/
         │  │── signUP/
         │  │   └──page/        #forms
-        │  │── homepage/       #home page info
+        │  │── page/           #home page info
         │  └── layout/         #layout configuration
         │── Components/
         │   └── button/         #sign up button layout
@@ -140,31 +132,21 @@ Ensure you have the following installed:
         │   └── utils/
         └── styles/
             └─ globals/         #global css for application styling
-        
-
-                            
+                   
 ### **Back-End**
+   
     backend/
-    ├── src/
-    │   ├── controllers/  # API route controllers
-    │   ├── services/     # Business logic
-    │   ├── schemas/      # MongoDB schemas
-    │   ├── dto/          # Data transfer objects
-    │   └── main.ts       # Entry point
-    └── test/             # Unit and integration tests
-
-    backend/
-    │── node_modules/           #nodejs modules
+    │── node_modules/               #nodejs modules
     │── src/                    
-        │── config/
-        │   └──open-ai/         #open ai configuration 
-        │── controllers/
-        │     └── generative/   #description of generate function, wich takes the user input and outputs the roadmap in the text form
-        │── routes/
-        │   └──usersRoutes/     #uses generate function and creates a route between the forms input and the AI to  
-
-
-
+    │     │── config/
+    │     │   └──open-ai/           #open ai configuration 
+    │     │── controllers/
+    │     │   └── generative/       #description of generate function, wich takes the user input and outputs the roadmap in the texform
+    │     └── routes/
+    │         └──usersRoutes/       #call to generate function and creates a route between the form inputs and the AI  
+    │── package-lock                
+    │── package                     
+    └── server                      #creates a server and defines the port it is running
 
 ## **API Endpoints**
 ### **POST /api/generate-roadmap**
