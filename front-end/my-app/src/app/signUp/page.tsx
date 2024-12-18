@@ -26,7 +26,7 @@ const SignUpPage = () => {
   });
 
   const onSubmit = async (data: any) => {
-    const queryDescription = `${data.name} quer aprender ${data.technology} na área de ${data.interest} com experiência ${data.experience}`;
+    const queryDescription = `${data.name} quer aprender ${data.technology} na área de ${data.interest} com experiência ${data.experience}, quero que você gere um texto com 8 tópicos (detalhando-os)   e separe-os com um 'enter'`;
     
     console.log("Query description:", queryDescription);
     setLoading(true);
@@ -55,6 +55,10 @@ const SignUpPage = () => {
   
       if (result && result.hasOwnProperty("response")) {
         const roadmapDescription = result.response;
+        const formattedRoadmap = roadmapDescription
+          .split("\n")
+          .map((paragraph : string, index : number) => <p key={index} className="mb-4">{paragraph}</p>)
+
         setRoadmap(roadmapDescription);
         console.log("Roadmap atualizado:", roadmapDescription);
         reset();
