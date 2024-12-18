@@ -52,7 +52,9 @@ This project is a byproduct of our course through "Desenvolvimento de Software",
 ### **Front-End**
 - Next.js (React Framework)
 - TypeScript
-- TailwindCSS  
+- TailwindCSS
+- Shadcn/UI
+  
 
 ### **Back-End**
 - Node.js
@@ -73,7 +75,7 @@ This project is a byproduct of our course through "Desenvolvimento de Software",
 
 Ensure you have the following installed:
 - Node.js 
-- npm or yarn  
+- npm  
 
 ### **Installation**
 
