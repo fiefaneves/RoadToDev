@@ -123,14 +123,6 @@ Ensure you have the following installed:
 
 ## **Project Structure**
 ### **Front-End**
-    frontend/
-    ├── components/       # Reusable React components
-    ├── pages/            # Next.js routes
-    ├── public/           # Static assets
-    ├── styles/           # Global styles and Tailwind configuration
-    ├── utils/            # Helper functions
-    └── state/            # Zustand for global state management
-
 
     frontend/
     │── .next/                  #next modules
@@ -160,6 +152,19 @@ Ensure you have the following installed:
     │   ├── dto/          # Data transfer objects
     │   └── main.ts       # Entry point
     └── test/             # Unit and integration tests
+
+    backend/
+    │── node_modules/           #nodejs modules
+    │── src/                    
+        │── config/
+        │   └──open-ai/         #open ai configuration 
+        │── controllers/
+        │     └── generative/   #description of generate function, wich takes the user input and outputs the roadmap in the text form
+        │── routes/
+        │   └──usersRoutes/     #uses generate function and creates a route between the forms input and the AI to  
+
+
+
 
 ## **API Endpoints**
 ### **POST /api/generate-roadmap**
