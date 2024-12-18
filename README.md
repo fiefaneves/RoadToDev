@@ -124,11 +124,11 @@ Ensure you have the following installed:
         │  │── page/           #home page info
         │  └── layout/         #layout configuration
         │── Components/
-        │   └── button/         #sign up button layout
+        │   └── button/        #sign up button layout
         │── lib/
         │   └── utils/
         └── styles/
-            └─ globals/         #global css for application styling
+            └─ globals/        #global css for application styling
                    
 ### **Back-End**
    
