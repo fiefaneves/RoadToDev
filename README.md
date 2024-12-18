@@ -2,9 +2,9 @@
 
 This project is a byproduct of our course through "Desenvolvimento de Software", where we were supposed to create a real life application using
  some form of AI.RoadToDev is a simple way of understanding what you will need to learn to achieve a certain goal in the developers scenary.
- Based on your answer to the sign up form, wich indicates your level os expertise and and areas of interest,the openai api will, (while in this MVP version) 
+ Based on your answer to the sign up form, wich indicates your level os expertise and and areas of interest, the openai api will, (while in this MVP version) 
  create a text form road map indicating the areas the user needs to focus, and later on, the application will give a more interactive and reactive response
- regarding the road map it self.A web-based application powered by AI to help developers generate personalized learning roadmaps based on their 
+ regarding the road map it self. A web-based application powered by AI to help developers generate personalized learning roadmaps based on their 
  skills and preferences. This project demonstrates a full-stack implementation with a focus on modern technologies and best practices.
 
 ---
@@ -19,10 +19,9 @@ This project is a byproduct of our course through "Desenvolvimento de Software",
    - [Installation](#installation)  
 5. [Usage](#usage)  
 6. [Project Structure](#project-structure)  
-7. [API Endpoints](#api-endpoints)  
-8. [Contributing](#contributing)  
-9. [Future Improvements](#future-improvements)  
-10. [License](#license)  
+7. [Contributing](#contributing)  
+8. [Future Improvements](#future-improvements)  
+9. [License](#license)  
 
 ---
 
@@ -55,10 +54,8 @@ This project is a byproduct of our course through "Desenvolvimento de Software",
 - TailwindCSS
 - Shadcn/UI
   
-
 ### **Back-End**
 - Node.js
-- NestJS
 - Express  
 - GPT-3.5-turbo
 - dotenv
