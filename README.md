@@ -1,5 +1,6 @@
 # **Roadmap Generator**
 
+This project ia a byproduct of our course through "Desenvolviimento de Software", where we were supposed to create an real life application using some form of AI.RoadToDev is a simple way of understanding what you will need to lear to achieve certain goal in the developers scenary.Based on your answer to the sign up form, wich indicates your level os expertise and and areas of interest,the openai api will, (while in this MVP version) create a text form road map indicating the areas the user needs to focus, and later on, the application will give a more interactive and reactive response regarding the road map it self.   
 A web-based application powered by AI to help developers generate personalized learning roadmaps based on their skills and preferences. This project demonstrates a full-stack implementation with a focus on modern technologies and best practices.
 
 ---
@@ -83,7 +84,8 @@ Ensure you have the following installed:
 2. Install dependencies for the front-end:
     ```bash
     cd frontend
-    npm install
+    npm installnpm install next react react-dom
+
 3. Install dependencies for the back-end:
     ```bash
    cd ../backend
@@ -165,7 +167,7 @@ Contributions are welcome!
 4. Push to the branch:
     ```bash
     git push origin feature/new-feature
-5. Submit yout pull request.
+5. Submit your pull request.
 
 ## **Future Improvements**
 - Export roadmaps to PDF or PNG format.
