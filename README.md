@@ -1,7 +1,11 @@
 # **Roadmap Generator**
 
-This project ia a byproduct of our course through "Desenvolviimento de Software", where we were supposed to create an real life application using some form of AI.RoadToDev is a simple way of understanding what you will need to lear to achieve certain goal in the developers scenary.Based on your answer to the sign up form, wich indicates your level os expertise and and areas of interest,the openai api will, (while in this MVP version) create a text form road map indicating the areas the user needs to focus, and later on, the application will give a more interactive and reactive response regarding the road map it self.   
-A web-based application powered by AI to help developers generate personalized learning roadmaps based on their skills and preferences. This project demonstrates a full-stack implementation with a focus on modern technologies and best practices.
+This project ia a byproduct of our course through "Desenvolviimento de Software", where we were supposed to create an real life application using
+ some form of AI.RoadToDev is a simple way of understanding what you will need to lear to achieve certain goal in the developers scenary.
+ Based on your answer to the sign up form, wich indicates your level os expertise and and areas of interest,the openai api will, (while in this MVP version) 
+ create a text form road map indicating the areas the user needs to focus, and later on, the application will give a more interactive and reactive response
+ regarding the road map it self.A web-based application powered by AI to help developers generate personalized learning roadmaps based on their 
+ skills and preferences. This project demonstrates a full-stack implementation with a focus on modern technologies and best practices.
 
 ---
 
@@ -24,11 +28,11 @@ A web-based application powered by AI to help developers generate personalized l
 
 ## **Features**
 
-- Interactive form to assess developer skills.  
+- Interactive form to asses developer skills.  
 - AI-powered roadmap generation tailored to user preferences.  
-- Visual representation of the roadmap with dynamic node-link diagrams.  
-- Responsive and modern UI/UX.  
-- Integration with external learning platforms (planned).  
+- Text representation of the roadmap with dynamic node-link diagrams.  
+//- Responsive and modern UI/UX.  
+//- Integration with external learning platforms (planned).  
 
 ---
 
@@ -37,7 +41,8 @@ A web-based application powered by AI to help developers generate personalized l
 Add a live link here once hosted (e.g., Vercel or Netlify).  
 
 **Live Demo:** [Roadmap Generator](https://example.com)  
-
+![alt text](capturas-do-sistema/image-2.png)
+![alt text](capturas-do-sistema/image.png)
 Include a gif or screenshot of the application showcasing the roadmap creation process.  
 
 ---
