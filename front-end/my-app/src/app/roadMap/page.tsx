@@ -22,7 +22,7 @@ const RoadMapPage = () => {
           {isLoading ? (
             <p className="text-gray-500 text-center px-4 py-6">Gerando roadmap, por favor aguarde...</p>
           ) : (
-            <p className="text-gray-700 text-center px-4 py-6">
+            <p className="text-gray-700 text-left px-4 py-6">
               {roadmap
                ? roadmap
                       .split("\n")
