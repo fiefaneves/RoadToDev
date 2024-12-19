@@ -87,7 +87,6 @@ Ensure you have the following installed:
 
 3. Install dependencies for the back-end:
     ```bash
-   open a new terminal 
    cd ../back-end
    npm install cors openai dotenv express
 
