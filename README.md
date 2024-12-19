@@ -103,7 +103,7 @@ Ensure you have the following installed:
     cd back-end
     npm run dev
 2. Start the front-end development server:
-    open a new terminal
+    - open a new terminal
     ```bash
     cd front-end/my-app
     npm run dev
