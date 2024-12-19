@@ -36,14 +36,13 @@ This project is a byproduct of our course through "Desenvolvimento de Software",
 
 ## **Demo**
 **Live Demo:** [Roadmap Generator](https://example.com)
-![alt text](capturas-do-sistema/image.png)
+![alt text](capturas-do-sistema/cap1.png)
 
+![alt text](capturas-do-sistema/cap2.png)
 
-![alt text](capturas-do-sistema/image-2.png)
+![alt text](capturas-do-sistema/cap3.png)
 
-
-![alt text](capturas-do-sistema/Image-3.png)
-
+![alt text](capturas-do-sistema/cap4.png)
 ---
 
 ## **Technologies Used**
@@ -92,7 +91,7 @@ Ensure you have the following installed:
    npm install cors openai dotenv express
 
 4. Set up environment variables:
-    - Create .env files in both frontend and backend directories.
+    - Create .env files in the backend directory.
     - Example variables for the backend:
     ```bash
     OPENAI_API_KEY=your_openai_api_key
