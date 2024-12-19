@@ -92,7 +92,7 @@ Ensure you have the following installed:
 
 4. Set up environment variables:
     - Create .env files in the back-end directory.
-    - - Instruction to the Professor: Copy and paste the Key in the "CHAVE-API-GPT" file anexed in the classroom.
+    - Instruction to the Professor: Copy and paste the Key in the "CHAVE-API-GPT" file anexed in the classroom.
     - Example variables for the back-end:
     
     ```bash
