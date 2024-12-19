@@ -27,7 +27,7 @@ This project is a byproduct of our course through "Desenvolvimento de Software",
 
 ## **Features**
 
-- Interactive form to asses developer skills.  
+- Interactive form to evaluate developer skills.  
 - AI-powered roadmap generation tailored to user preferences.  
 - Text representation of the roadmap with dynamic node-link diagrams.  
 - Responsive and modern UI/UX.
