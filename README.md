@@ -93,6 +93,7 @@ Ensure you have the following installed:
 4. Set up environment variables:
     - Create .env files in the back-end directory.
     - Example variables for the back-end:
+    - Instruction to the Professor: Copy and paste the Key in the "CHAVE-API-GPT" file anexed in the classroom, 
     ```bash
     OPENAI_API_KEY=your_openai_api_key
 
