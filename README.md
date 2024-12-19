@@ -1,6 +1,11 @@
 # **Roadmap Generator**
 
-A web-based application powered by AI to help developers generate personalized learning roadmaps based on their skills and preferences. This project demonstrates a full-stack implementation with a focus on modern technologies and best practices.
+This project is a byproduct of our course through "Desenvolvimento de Software", where we were supposed to create a real life application using
+ some form of AI.RoadToDev is a simple way of understanding what you will need to learn to achieve a certain goal in the developers scenary.
+ Based on your answer to the sign up form, wich indicates your level os expertise and and areas of interest, the openai api will, (while in this MVP version) 
+ create a text form road map indicating the areas the user needs to focus, and later on, the application will give a more interactive and reactive response
+ regarding the road map it self. A web-based application powered by AI to help developers generate personalized learning roadmaps based on their 
+ skills and preferences. This project demonstrates a full-stack implementation with a focus on modern technologies and best practices.
 
 ---
 
@@ -14,31 +19,30 @@ A web-based application powered by AI to help developers generate personalized l
    - [Installation](#installation)  
 5. [Usage](#usage)  
 6. [Project Structure](#project-structure)  
-7. [API Endpoints](#api-endpoints)  
-8. [Contributing](#contributing)  
-9. [Future Improvements](#future-improvements)  
-10. [License](#license)  
+7. [Contributing](#contributing)  
+8. [Future Improvements](#future-improvements)  
+9. [License](#license)  
 
 ---
 
 ## **Features**
 
-- Interactive form to assess developer skills.  
+- Interactive form to evaluate developer skills.  
 - AI-powered roadmap generation tailored to user preferences.  
-- Visual representation of the roadmap with dynamic node-link diagrams.  
-- Responsive and modern UI/UX.  
-- Integration with external learning platforms (planned).  
+- Text representation of the roadmap with dynamic node-link diagrams.  
+- Responsive and modern UI/UX.
 
 ---
 
 ## **Demo**
+**Live Demo:** [Roadmap Generator](https://example.com)
+![alt text](capturas-do-sistema/cap1.png)
 
-Add a live link here once hosted (e.g., Vercel or Netlify).  
+![alt text](capturas-do-sistema/cap2.png)
 
-**Live Demo:** [Roadmap Generator](https://example.com)  
+![alt text](capturas-do-sistema/cap3.png)
 
-Include a gif or screenshot of the application showcasing the roadmap creation process.  
-
+![alt text](capturas-do-sistema/cap4.png)
 ---
 
 ## **Technologies Used**
@@ -46,22 +50,18 @@ Include a gif or screenshot of the application showcasing the roadmap creation p
 ### **Front-End**
 - Next.js (React Framework)
 - TypeScript
-- TailwindCSS  
-- D3.js (for roadmap visualization)
-
+- TailwindCSS
+- Shadcn/UI
+  
 ### **Back-End**
 - Node.js
-- NestJS  
-- MongoDB (Database)  
-- Prisma (ORM)  
+- Express  
+- GPT-3.5-turbo
+- dotenv
+- cors
 
 ### **AI/External APIs**
-- OpenAI API (for recommendations and roadmap generation)  
-
-### **DevOps**
-- Vercel (front-end hosting)  
-- Render (back-end hosting)  
-- GitHub Actions (CI/CD)  
+- OpenAI API - chatgpt-3.5-turbo (for recommendations and roadmap generation)
 
 ---
 
@@ -70,87 +70,80 @@ Include a gif or screenshot of the application showcasing the roadmap creation p
 ### **Prerequisites**
 
 Ensure you have the following installed:
-- Node.js (version 18.x or later)  
-- npm or yarn  
-- MongoDB (local instance or MongoDB Atlas)  
+- Node.js 
+- npm  
 
 ### **Installation**
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/roadmap-generator.git
-    cd roadmap-generator
+    git clone https://github.com/fiefaneves/RoadToDev.git
+    cd RoadToDev
 2. Install dependencies for the front-end:
     ```bash
-    cd frontend
-    npm install
+    cd front-end/my-app
+    npm install next react react-dom
+    npm install --save-dev typescript @types/react @types/node
+
 3. Install dependencies for the back-end:
     ```bash
-   cd ../backend
-   npm install
+   cd ../../back-end
+   npm install cors openai dotenv express
+
 4. Set up environment variables:
-    - Create .env files in both frontend and backend directories.
-    - Example variables for the backend:
+    - Create .env files in the back-end directory.
+    - Example variables for the back-end:
     ```bash
-    DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/mydatabase
     OPENAI_API_KEY=your_openai_api_key
-5. Run MongoDB locally or connect to MongoDB Atlas.
 
 ### **Usage**
 
 1. Start the back-end server:
     ```bash
-    cd backend
-    npm run start:dev
+    cd back-end
+    npm run dev
 2. Start the front-end development server:
+    - open a new terminal
     ```bash
-    cd ../frontend
+    cd front-end/my-app
     npm run dev
 3. Open the app in your browser:
     http://localhost:3000
 
 ## **Project Structure**
 ### **Front-End**
+
     frontend/
-    ├── components/       # Reusable React components
-    ├── pages/            # Next.js routes
-    ├── public/           # Static assets
-    ├── styles/           # Global styles and Tailwind configuration
-    ├── utils/            # Helper functions
-    └── state/            # Zustand for global state management
-
+    │── .next/                  #next modules
+    │── node_modules/           #nodejs modules
+    │── public/                 
+    └── src/                    
+        │──app/
+        │  │── signUP/
+        │  │   └──page/        #forms
+        │  │── page/           #home page info
+        │  └── layout/         #layout configuration
+        │── Components/
+        │   └── button/        #sign up button layout
+        │── lib/
+        │   └── utils/
+        └── styles/
+            └─ globals/        #global css for application styling
+                   
 ### **Back-End**
+   
     backend/
-    ├── src/
-    │   ├── controllers/  # API route controllers
-    │   ├── services/     # Business logic
-    │   ├── schemas/      # MongoDB schemas
-    │   ├── dto/          # Data transfer objects
-    │   └── main.ts       # Entry point
-    └── test/             # Unit and integration tests
-
-## **API Endpoints**
-### **POST /api/generate-roadmap**
-
-- Description: Generates a personalized roadmap based on user responses.
-- Request Body:
-    ```bash
-    {
-        "html": "beginner",
-        "css": "intermediate",
-        "javascript": "advanced"
-    }
-- Response: 
-    ```bash
-    {
-        "nodes": [
-            { "id": "HTML Basics", "level": "beginner" },
-            { "id": "CSS Layouts", "level": "intermediate" }
-        ],
-        "links": [
-            { "source": "HTML Basics", "target": "CSS Layouts" }
-        ]
-    }
+    │── node_modules/               #nodejs modules
+    │── src/                    
+    │     │── config/
+    │     │   └──open-ai/           #open ai configuration 
+    │     │── controllers/
+    │     │   └── generative/       #description of generate function, wich takes the user input and outputs the roadmap in the texform
+    │     └── routes/
+    │         └──usersRoutes/       #call to generate function and creates a route between the form inputs and the AI  
+    │── package-lock                
+    │── package                     
+    └── server                      #creates a server and defines the port it is running
 
 ## **Contributing**
 Contributions are welcome!
@@ -165,13 +158,19 @@ Contributions are welcome!
 4. Push to the branch:
     ```bash
     git push origin feature/new-feature
-5. Submit yout pull request.
+5. Submit your pull request.
 
 ## **Future Improvements**
-- Export roadmaps to PDF or PNG format.
+- User Registration
+- Interactive Road Maps
+- Road map visualization
+- Progress Tracking
+- Road map editing
+- Allow users to save and share their Road maps.
+- Recommendations Based on Market Trends
 - Add more dynamic AI suggestions using GPT models.
-- Allow users to save and share their roadmaps.
-- Support multiple languages.
+- Integration with Practical Projects
+- Notifications and Motivation
 
 ## **License**
 This project is licensed under the MIT License. See the LICENSE file for details.
