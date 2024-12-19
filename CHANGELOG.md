@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-- Interactive form to asses developer skills.  
+- Interactive form to evaluate developer skills.  
 - AI-powered roadmap generation tailored to user preferences.  
 - Text representation of the roadmap with dynamic node-link diagrams.
 - Responsive and modern UI/UX.
