@@ -87,12 +87,12 @@ Ensure you have the following installed:
 
 3. Install dependencies for the back-end:
     ```bash
-   cd ../back-end
+   cd ../../back-end
    npm install cors openai dotenv express
 
 4. Set up environment variables:
-    - Create .env files in the backend directory.
-    - Example variables for the backend:
+    - Create .env files in the back-end directory.
+    - Example variables for the back-end:
     ```bash
     OPENAI_API_KEY=your_openai_api_key
 
@@ -103,8 +103,9 @@ Ensure you have the following installed:
     cd back-end
     npm run dev
 2. Start the front-end development server:
+    open a new terminal
     ```bash
-    cd ../front-end/my-app
+    cd front-end/my-app
     npm run dev
 3. Open the app in your browser:
     http://localhost:3000
