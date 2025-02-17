@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import Image from 'next/image';
 import { RoadMapProvider } from './RoadMapContext';
 import Link from 'next/link';
+import React from 'react';
 
 export const metadata = {
   title: 'RoadToDev',

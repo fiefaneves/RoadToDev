@@ -2,9 +2,9 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "@/Components/ui/button";
+import { Button } from "../../Components/ui/button";
 import { useRouter } from "next/navigation";
-import { useRoadMap } from "../RoadMapContext";
+import { useRoadMap } from "../../app/RoadMapContext";
 
 const SignUpPage = () => {
   const [loading, setLoading] = React.useState(false);
