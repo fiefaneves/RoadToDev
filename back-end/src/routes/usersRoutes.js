@@ -1,6 +1,7 @@
 import cors from 'cors'; // Import cors
 import  generate  from '../controllers/generative.js'; // Import controller functions
 import express from 'express'
+import user from '../models/usersModel.js';
 
 const routes = (app) => {
 
@@ -14,6 +15,9 @@ const routes = (app) => {
         
         try {
             const roadQuery = await generate(queryDescription);
+            user.create({
+                name: "julia", interesse: "front", experiencia: "$$$", tecnologia: "---p", roadmap:roadQuery
+            });
             res.json({response: roadQuery}); // Send the response
             console.log('Roadmap generated successfully'); // Log the generated roadmap
         } catch (error) {
