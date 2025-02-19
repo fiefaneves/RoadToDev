@@ -1,50 +1,70 @@
 import openai from '../config/open-ai.js'; // Importa o pacote openai
 import readlineSync from 'readline-sync'; // Importa o pacote readline-sync
 import colors from 'colors'; // Importa o pacote colors
+import generate from './generative.js';
+import user from "../models/usersModel.js"
 
-async function ChatBot() {
-    console.log(colors.bold.green('Welcome to the ChatBot Program')); // Exibe uma mensagem de boas-vindas
-    console.log(colors.bold.green('You can start chatting with the bot')); 
-
-    const chatHistory = []; // Inicializa um array para armazenar o histórico de conversas
-
-    while(true){
-        const userInput = readlineSync.question(colors.yellow('You: ')); // Lê a mensagem do usuário
-        try {
-            // Mapeia as mensagens do histórico                                                                
-            const messages = chatHistory.map(([role, content]) => ({role, content})); 
-            // Adiciona a mensagem do usuário ao histórico
-            messages.push({role: 'user', content: userInput}); 
-
-            // Realiza uma chamada à API para criar uma conversa
-            const completion = await openai.chat.completions.create({
-                model: 'gpt-3.5-turbo',
-                messages: messages,
-            });
-            
-            // Exibe a resposta do chatbot no console
-            const completionText = completion.choices[0].message.content;
-            
-            // Saida do bot
-            if(userInput.toLowerCase() === 'exit'){ // Verifica se a mensagem é 'exit'
-                console.log(colors.bold.green('Bot: ') + completionText); // Exibe a resposta  
-                break; // Encerra o loop
-            }
-
-            console.log(colors.bold.green('Bot:') + completionText); // Exibe a resposta  
-
-            // Atualiza o histórico de conversas e resposta do chatbot
-            chatHistory.push(['user', userInput]);
-            chatHistory.push(['assistant', completionText]);
+class UsersController {
+     static async criarRoadMap(req, res){
+        // Get the answer from the form and send it to the OpenAI API
+        const { queryDescription } = req.body;
         
+        try {
+            const roadQuery = await generate(queryDescription);
+            res.json({response: roadQuery}); // Send the response
+            console.log('Roadmap generated successfully'); // Log the generated roadmap
         } catch (error) {
-            if (error.response) {
-                console.error(colors.bold.red('Error in API call: '), error.response.data);
-            } else {
-                console.error(colors.bold.red('Error: '), error.message);
-            }
+            console.error(error); // Log an error
+            res.status(500).send('An error occurred'); // Send an error response
+        }
+     }
+
+     static async criarUsuario(req, res){
+        // Get the answer from the form and send it to the OpenAI API
+        const { queryDescription , ...userInfo} = req.body;
+        console.log(userInfo)
+        try {
+            const roadQuery = await generate(queryDescription);
+            const novoUser = await user.create({...userInfo, roadmap: roadQuery})
+            console.log(novoUser)
+            res.json({ message: "Usuario criado com sucesso", Usuario: novoUser}); // Send the response
+            console.log('Usuario criado com sucesso'); // Log the generated roadmap
+        } catch (error) {
+            console.error(error); // Log an error
+            res.status(500).send('An error occurred'); // Send an error response
+        }
+     }
+
+     static async listarUsuarios(req, res) {
+        try{
+            const listaUsers = await user.find({});
+            res.status(200).json(listaUsers);
+        }catch(erro){
+            console.error(erro)
+            res.status(500).json({message: "Erro na requisição"})
+        }
+        }
+
+     static async encontraUsuario(req, res) {
+        try{
+            const usuarioEncontrado = await user.findById(req.params.id);
+            res.status(200).json(usuarioEncontrado);
+        }catch(erro){
+            console.error(erro)
+            res.status(500).json({message: "Erro na requisição"})
+        }
+        }
+    static async encontraRoadmap(req, res){
+        const usuarioId = req.params.id;
+        try{
+            const usuarioProcurado = await user.findById(usuarioId);
+            const roadmap = usuarioProcurado.roadmap;
+            res.status(200).json({ roadmap: roadmap});
+        }catch(erro){
+            console.error(erro)
+            res.status(500).json({message: "Erro na requisição"})
         }
     }
-}
+};
 
-ChatBot(); // Executa a função principal
+export default UsersController;
