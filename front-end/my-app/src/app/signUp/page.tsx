@@ -116,8 +116,7 @@ const SignUpPage = () => {
               <option value="ux/ui design">UX/UI Design</option>
               <option value="data analyst">Data analyst</option>
               <option value="cyber security">Cyber security</option>
-              <option value="product kk">Poduct manager</option>
-              {/*//testas esse nome*/}
+              <option value="product manager">Poduct manager</option>
 
 
             </select>
