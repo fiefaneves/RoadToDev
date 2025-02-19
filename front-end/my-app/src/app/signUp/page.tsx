@@ -113,7 +113,13 @@ const SignUpPage = () => {
               <option value="frontend">Frontend</option>
               <option value="backend">Backend</option>
               <option value="fullstack">Fullstack</option>
-              <option value="design">Design</option>
+              <option value="ux/ui design">UX/UI Design</option>
+              <option value="data analyst">Data analyst</option>
+              <option value="cyber security">Cyber security</option>
+              <option value="product kk">Poduct manager</option>
+              {/*//testas esse nome*/}
+
+
             </select>
             {errors.interest && (
               <p className="text-sm text-red-500 mt-1">{errors.interest.message}</p>
@@ -153,6 +159,11 @@ const SignUpPage = () => {
               <option value="node">Node.js</option>
               <option value="typescript">TypeScript</option>
               <option value="css">CSS</option>
+              <option value="sql">SQL</option>
+              <option value="engenharia de prompt">Prompt engineering</option>
+              <option value="git e github ">Git e github</option>
+
+
             </select>
             {errors.technology && (
               <p className="text-sm text-red-500 mt-1">{errors.technology.message}</p>
