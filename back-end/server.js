@@ -20,12 +20,7 @@ conexao.once("open",()=> {
 
 const app = express(); // Create express app
 
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended : true }));
-
 routes(app);
-
-
 
 app.listen(port, () => { // Start the server
     console.log(`Server is running on port ${port}`); // Log a message

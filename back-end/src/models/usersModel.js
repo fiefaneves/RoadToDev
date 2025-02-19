@@ -1,22 +1,13 @@
 import mongoose from "mongoose"
 
-const {Schema} = mongoose;//chama
-const userSchema=new Schema({
-    id: {type: ObjectId},
-    name:{type: String,
-        required:true
-    },
-    interesse:{type: String,
-        required: true},
-    experiencia:{type:String,
-        required: true
-    },
-    tecnologia:{type: String,
-        required: true
-    },
-    roadmap:{ type: String,
-        required: true
-    }
+const {Schema} = mongoose;
+const userSchema = new Schema({
+    id: { type: mongoose.Schema.Types.ObjectId },
+    name:{type: mongoose.Schema.Types.String, required:true},
+    interesse:{ type: mongoose.Schema.Types.String },
+    experiencia:{ type: mongoose.Schema.Types.String },
+    tecnologia:{ type: mongoose.Schema.Types.String },
+    roadmap:{ type: mongoose.Schema.Types.String }
 }, 
 );
 
