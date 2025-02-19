@@ -3,11 +3,11 @@ import mongoose from "mongoose"
 const {Schema} = mongoose;
 const userSchema = new Schema({
     id: { type: mongoose.Schema.Types.ObjectId },
-    name:{type: mongoose.Schema.Types.String, required:true},
-    interesse:{ type: mongoose.Schema.Types.String },
-    experiencia:{ type: mongoose.Schema.Types.String },
-    tecnologia:{ type: mongoose.Schema.Types.String },
-    roadmap:{ type: mongoose.Schema.Types.String }
+    name:{type: String, required:true},
+    interesse:{ type: String },
+    experiencia:{ type: String },
+    tecnologia:{ type: String },
+    roadmap:{ type: String }
 }, 
 );
 

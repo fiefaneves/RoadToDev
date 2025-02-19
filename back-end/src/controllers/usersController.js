@@ -11,9 +11,6 @@ class UsersController {
         
         try {
             const roadQuery = await generate(queryDescription);
-            user.create({
-                name: "julia", interesse: "front", experiencia: "$$$", tecnologia: "---p", roadmap:roadQuery
-            });
             res.json({response: roadQuery}); // Send the response
             console.log('Roadmap generated successfully'); // Log the generated roadmap
         } catch (error) {
@@ -21,6 +18,53 @@ class UsersController {
             res.status(500).send('An error occurred'); // Send an error response
         }
      }
+
+     static async criarUsuario(req, res){
+        // Get the answer from the form and send it to the OpenAI API
+        const { queryDescription , ...userInfo} = req.body;
+        console.log(userInfo)
+        try {
+            const roadQuery = await generate(queryDescription);
+            const novoUser = await user.create({...userInfo, roadmap: roadQuery})
+            console.log(novoUser)
+            res.json({ message: "Usuario criado com sucesso", Usuario: novoUser}); // Send the response
+            console.log('Usuario criado com sucesso'); // Log the generated roadmap
+        } catch (error) {
+            console.error(error); // Log an error
+            res.status(500).send('An error occurred'); // Send an error response
+        }
+     }
+
+     static async listarUsuarios(req, res) {
+        try{
+            const listaUsers = await user.find({});
+            res.status(200).json(listaUsers);
+        }catch(erro){
+            console.error(erro)
+            res.status(500).json({message: "Erro na requisição"})
+        }
+        }
+
+     static async encontraUsuario(req, res) {
+        try{
+            const usuarioEncontrado = await user.findById(req.params.id);
+            res.status(200).json(usuarioEncontrado);
+        }catch(erro){
+            console.error(erro)
+            res.status(500).json({message: "Erro na requisição"})
+        }
+        }
+    static async encontraRoadmap(req, res){
+        const usuarioId = req.params.id;
+        try{
+            const usuarioProcurado = await user.findById(usuarioId);
+            const roadmap = usuarioProcurado.roadmap;
+            res.status(200).json({ roadmap: roadmap});
+        }catch(erro){
+            console.error(erro)
+            res.status(500).json({message: "Erro na requisição"})
+        }
+    }
 };
 
 export default UsersController;
