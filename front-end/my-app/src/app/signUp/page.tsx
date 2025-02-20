@@ -2,9 +2,9 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "@/Components/ui/button";
+import { Button } from "../../Components/ui/button";
 import { useRouter } from "next/navigation";
-import { useRoadMap } from "../RoadMapContext";
+import { useRoadMap } from "../../app/RoadMapContext";
 
 const SignUpPage = () => {
   const [loading, setLoading] = React.useState(false);
@@ -25,7 +25,14 @@ const SignUpPage = () => {
     },
   });
 
-  const onSubmit = async (data: any) => {
+  interface FormData {
+    name: string;
+    interest: string;
+    experience: string;
+    technology: string;
+  }
+
+  const onSubmit = async (data: FormData) => {
     const queryDescription = `${data.name} quer aprender ${data.technology} na área de ${data.interest} com experiência ${data.experience}, quero que você gere um texto com 8 tópicos (detalhando-os)   e separe-os com um 'enter'`;
     
     console.log("Query description:", queryDescription);
@@ -55,10 +62,6 @@ const SignUpPage = () => {
   
       if (result && result.hasOwnProperty("response")) {
         const roadmapDescription = result.response;
-        const formattedRoadmap = roadmapDescription
-          .split("\n")
-          .map((paragraph : string, index : number) => <p key={index} className="mb-4">{paragraph}</p>)
-
         setRoadmap(roadmapDescription);
         console.log("Roadmap atualizado:", roadmapDescription);
         reset();
@@ -171,7 +174,7 @@ const SignUpPage = () => {
 
           <div>
             <Button type="submit" className="w-full bg-black text-white">
-              Sign up
+              {loading ? "Loading..." : "Sign up"}
             </Button>
           </div>
         </form>
