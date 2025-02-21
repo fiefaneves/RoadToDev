@@ -8,21 +8,21 @@ export const axiosInstance = axios.create({
 export class UserSignUpService{
 
     // API calls for user creation
-    createUser(user){
+    createUser(user: { name: string; email: string; password: string }){
         return axiosInstance.post("/user", user);
     }
-    createRoadMap(id){
+    createRoadMap(id: string){
         return axiosInstance.post(`/generate`, {id});
     }
 
     // API calls for user retrieval
-    findRoadMap(id){
+    findRoadMap(id: string){
         return axiosInstance.get(`/user/${id}/roadmap`);
     }
-    listOne(id){
+    getOne(id: string){
         return axiosInstance.get(`/user/${id}`);
     }
-    listAll(){
+    getAll(){
         return axiosInstance.get("/users");
     }
 
