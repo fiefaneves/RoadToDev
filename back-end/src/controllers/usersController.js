@@ -65,6 +65,20 @@ class UsersController {
             res.status(500).json({message: "Erro na requisição"})
         }
     }
+
+    static async login(req, res){
+        const {email, senha} = req.body;
+        try{
+            const usuario = await user.findOne({ email, password });
+            if (!usuario) {
+                return res.status(401).json({ message: "Invalid email or password" });
+            }
+            res.status(200).json({ message: "Login successful", data: usuario });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "An error occurred" });
+        }
+    }
 };
 
 export default UsersController;
