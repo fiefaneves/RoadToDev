@@ -1,19 +1,43 @@
 "use client";
 
 import { useRoadMap } from "../RoadMapContext";
-import React from "react";
+import React, {useEffect} from "react";
+import { useRouter } from "next/navigation";
+import { UserSignUpService } from "@/service/userService";
 
 const RoadMapPage = () => {
-    const { roadmap } = useRoadMap();
+    const { roadmap, setRoadmap } = useRoadMap();
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
-    React.useEffect(() => {
-      if (!roadmap) {
+    const router = useRouter();
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    
+    useEffect(() => {
+      const userService = new UserSignUpService();
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      if (!user) {
+        router.push("/login");
+        return;
+      };
+      const fetchRoadmap = async () => {
         setIsLoading(true);
-      } else {
-        setIsLoading(false);
-      }
-    }, [roadmap]);
+        try {
+          const response = await userService.findRoadMap(user.id);
+          if (response.status === 200) {
+            setRoadmap(response.data.roadmap);
+          } else {
+            alert("Failed to fetch roadmap");
+          }
+        } catch (error) {
+          console.error(error);
+          alert("An error occurred while fetching the roadmap");
+        } finally {
+          setIsLoading(false);
+        }  
+      };
+
+      fetchRoadmap();
+    }, [router, user, setRoadmap]);
+
 
     return (
       <div className="min-h-screen flex flex-col items-center justify-center py-8">

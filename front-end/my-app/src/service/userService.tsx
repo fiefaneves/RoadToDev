@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:8080"
+    baseURL: "http://localhost:3005"
 })
 
 export class UserSignUpService{
@@ -13,6 +13,9 @@ export class UserSignUpService{
     }
     createRoadMap(id: string){
         return axiosInstance.post(`/generate`, {id});
+    }
+    login(credentials: { email: string; password: string }){
+        return axiosInstance.post("/login", credentials);
     }
 
     // API calls for user retrieval

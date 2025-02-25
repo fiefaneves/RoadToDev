@@ -4,12 +4,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../../Components/ui/button";
 import { useRouter } from "next/navigation";
-import { UserSignUpService } from "../../service/userService";
 
 const LoginPage = () => {
     const [loading, setLoading] = React.useState(false);
     const router = useRouter();
-    const userService = new UserSignUpService();
 
     const {
         register,
@@ -30,13 +28,32 @@ const LoginPage = () => {
     const onSubmit = async (data: FormData) => {
         setLoading(true);
         try {
-            const response = await userService.getOne(data.email);
-            if (response.status === 200) {
-                localStorage.setItem("user", JSON.stringify(response.data));
+            const response = await fetch("http://localhost:3005/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: data.email,
+                    password: data.password
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to login");
+            }
+
+            const result = await response.json();
+
+            if (result.status === 200) {
+                localStorage.setItem("user", JSON.stringify(result.data));
                 router.push("/roadmap");
+            } else{
+                alert("Invalid email or password");
             }
         } catch (error) {
             console.error(error);
+            alert("An error occurred during login");
         } finally {
             setLoading(false);
         }
