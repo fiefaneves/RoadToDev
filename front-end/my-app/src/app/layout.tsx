@@ -26,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 ></Image>
                   </div>
                 <nav className="flex space-x-4 ml-auto">
+                  <Link href="/login" className="text-white">Login</Link>
                   <Link href="/" className="text-white">Home</Link>
                   <Link href="/signUp" className="text-white">Sign Up</Link>
                   <Image

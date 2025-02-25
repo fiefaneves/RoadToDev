@@ -10,6 +10,7 @@ const routes = (app) => {
 
     app.post('/generate', UsersController.criarRoadMap);
     app.post("/user", UsersController.criarUsuario);
+    app.post("/login", UsersController.login);
 
     app.get("/user/:id/roadmap", UsersController.encontraRoadmap);
     app.get("/user/:id", UsersController.encontraUsuario);
