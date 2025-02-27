@@ -3,7 +3,7 @@
 // import colors from 'colors'; // Importa o pacote colors
 import generate from './generative.js';
 import user from "../models/usersModel.js";
-import bycrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 class UsersController {
@@ -40,17 +40,23 @@ class UsersController {
     static async criarUsuario(req, res){
         try {
             const { name, username, email, number, password} = req.body;
+
+           /*
+           ---------------------------------------------------------------------
+           < CRIAR FUNÇÃO PARA CHECAR FORMATAÇÃO DE NÚMERO DE TELEFONE E SENHA >
+           ---------------------------------------------------------------------
+           */
         
             // Check if the email already exists
-            const existingEmail = await User.findOne({ email });
+            const existingEmail = await user.findOne({ email });
             if (existingEmail) return res.status(400).json({ error: "Email já cadastrado!" });
         
             // Check if the user already exists
-            const existingUser = await User.findOne({username});
+            const existingUser = await user.findOne({username});
             if(existingUser) return res.status(400).json({message: "Usuário já existe!"});
         
             // Check if the number already exists
-            const existingNumber = await User.findOne({ number });
+            const existingNumber = await user.findOne({ number });
             if (existingNumber) return res.status(400).json({ error: "Número já cadastrado!" });
             
             // Hash the password
@@ -58,7 +64,7 @@ class UsersController {
             const hashedPassword = await bcrypt.hash(password, saltRounds);
         
             // Create a new user
-            const newUser = new User({
+            const newUser = new user({
               name,
               username,
               email,
@@ -72,7 +78,8 @@ class UsersController {
             // Return a success message
             res.status(201).json({ message: "Usuário criado com sucesso!" });
         } catch (error) {
-            res.status(500).json({ error: "Erro ao registrar usuário!" });
+            // res.status(500).json({ error: "Erro ao registrar usuário!" });
+            res.status(500).json({ error: error.message });
         }
     }
 
@@ -110,7 +117,7 @@ class UsersController {
 
     static async login(req, res){
         const comparePassword = async (password, hashedPassword) => {
-            return await bycrypt.compare(password, hashedPassword);
+            return await bcrypt.compare(password, hashedPassword);
         }
 
         const generateToken = (userId) => {
@@ -122,16 +129,24 @@ class UsersController {
             const usuario = await user.findOne({ email });
             if (!usuario) return res.status(401).json({ message: "Email não encontrado. Faça seu cadastro!" });
             
-            const isMatch = await comparePassword(senha, usuario.password);
+            const isMatch = await bcrypt.compare(senha, usuario.password);
             if (!isMatch) return res.status(401).json({ message: "Senha incorreta!" });
 
             const token = generateToken(user._id);
             res.status(200).json({ message: "Login feito com sucesso!", data: usuario.data, token });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ message: "Erro na autenticação do usuário." });
+            // res.status(500).json({ message: "Erro na autenticação do usuário." });
+            res.status(500).json({ message: error.message });
         }
     }
+
+    /*
+    ---------------------------------------
+    < CRIAR MÉTODO PARA 'ESQUECI A SENHA' >
+    ---------------------------------------
+    */
+
 };
 
 export default UsersController;
