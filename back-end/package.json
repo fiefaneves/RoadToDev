@@ -12,13 +12,15 @@
   "author": "Fernanda Neves",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "mongodb": "^6.13.0",
-    "mongoose": "^8.10.1",
-    "openai": "^4.85.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.13.1",
+    "mongoose": "^8.11.0",
+    "openai": "^4.85.4",
     "readline-sync": "^1.4.10"
   }
 }
