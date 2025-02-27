@@ -5,6 +5,9 @@ import generate from './generative.js';
 import user from "../models/usersModel.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
+import crypto from 'crypto';
+
 
 class UsersController {
     static async criarRoadMap(req, res){
@@ -141,11 +144,87 @@ class UsersController {
         }
     }
 
-    /*
-    ---------------------------------------
-    < CRIAR MÉTODO PARA 'ESQUECI A SENHA' >
-    ---------------------------------------
-    */
+    static async forgotPassword(req, res){
+        const { email } = req.body;
+        try {
+            const usuario = await user.findOne({ email });
+            if (!usuario) return res.status(400).json({ message: "Email não encontrado!" });
+        
+            // Gera um token temporário para resetar a senha
+            const resetToken = crypto.randomBytes(20).toString("hex");
+            usuario.resetPasswordToken = resetToken;
+            usuario.resetPasswordExpires = Date.now() + 3600000; // 1 hora de validade
+            await usuario.save();
+
+            // Configurações para envio de email
+            const transporter = nodemailer.createTransport({
+                service: "gmail",
+                auth: {
+                    user: process.env.EMAIL_USER, // email de envio
+                    pass: 'zfol lxny eoau airc', // senha do email de envio
+                },
+            });
+
+            // Enviar email
+            const mailOptions = {
+                to: usuario.email,
+                from: process.env.EMAIL_USER,
+                subject: 'Redefinição de Senha',
+                text: `Você solicitou a redefinição de senha. Acesse o link abaixo para criar uma nova senha:
+                http://localhost:3005/mudar-senha/${resetToken}
+                Esse link expira em 1 hora.`,
+            };
+
+            await transporter.sendMail(mailOptions);
+            res.json({ message: "E-mail de recuperação enviado!" });
+
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: "Erro ao processar solicitação!", error: error.message });
+        }
+    }
+
+    static async showResetPasswordPage(req, res) {
+        const { token } = req.params;
+    
+        // Verifique se o token é válido e não expirou
+        const usuario = await user.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now() },
+        });
+    
+        if (!usuario) return res.status(400).json({ message: "Token inválido ou expirado!" });
+    
+        // Retorne a página ou envie um formulário para o frontend
+        res.json({ message: "Token válido, por favor insira sua nova senha." });
+    }
+    
+
+    static async resetPassword(req, res){
+        const { token } = req.params;
+        const { newPassword } = req.body;
+
+        try {
+            const usuario = await user.findOne({
+                resetPasswordToken: token,
+                resetPasswordExpires: { $gt: Date.now() },
+            });
+
+            if (!usuario) return res.status(400).json({ message: "Token inválido ou expirado!" });
+
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+            usuario.password = hashedPassword;
+            usuario.resetPasswordToken = undefined;
+            usuario.resetPasswordExpires = undefined;
+            await usuario.save();
+
+            res.json({ message: "Senha redefinida com sucesso" });
+        } catch (error) {
+            res.status(500).json({ message: "Erro ao redefinir senha", error: error.message });
+        }
+    }
 
 };
 
