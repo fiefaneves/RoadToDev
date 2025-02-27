@@ -2,9 +2,9 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "../../Components/ui/button";
+import { Button } from "@/Components/ui/button";
 import { useRouter } from "next/navigation";
-import { useRoadMap } from "../../app/RoadMapContext";
+import { useRoadMap } from "../RoadMapContext";
 
 const SignUpPage = () => {
   const [loading, setLoading] = React.useState(false);
@@ -25,14 +25,7 @@ const SignUpPage = () => {
     },
   });
 
-  interface FormData {
-    name: string;
-    interest: string;
-    experience: string;
-    technology: string;
-  }
-
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: any) => {
     const queryDescription = `${data.name} quer aprender ${data.technology} na área de ${data.interest} com experiência ${data.experience}, quero que você gere um texto com 8 tópicos (detalhando-os)   e separe-os com um 'enter'`;
     
     console.log("Query description:", queryDescription);
@@ -62,6 +55,10 @@ const SignUpPage = () => {
   
       if (result && result.hasOwnProperty("response")) {
         const roadmapDescription = result.response;
+        const formattedRoadmap = roadmapDescription
+          .split("\n")
+          .map((paragraph : string, index : number) => <p key={index} className="mb-4">{paragraph}</p>)
+
         setRoadmap(roadmapDescription);
         console.log("Roadmap atualizado:", roadmapDescription);
         reset();
@@ -116,12 +113,7 @@ const SignUpPage = () => {
               <option value="frontend">Frontend</option>
               <option value="backend">Backend</option>
               <option value="fullstack">Fullstack</option>
-              <option value="ux/ui design">UX/UI Design</option>
-              <option value="data analyst">Data analyst</option>
-              <option value="cyber security">Cyber security</option>
-              <option value="product manager">Poduct manager</option>
-
-
+              <option value="design">Design</option>
             </select>
             {errors.interest && (
               <p className="text-sm text-red-500 mt-1">{errors.interest.message}</p>
@@ -161,11 +153,6 @@ const SignUpPage = () => {
               <option value="node">Node.js</option>
               <option value="typescript">TypeScript</option>
               <option value="css">CSS</option>
-              <option value="sql">SQL</option>
-              <option value="engenharia de prompt">Prompt engineering</option>
-              <option value="git e github ">Git e github</option>
-
-
             </select>
             {errors.technology && (
               <p className="text-sm text-red-500 mt-1">{errors.technology.message}</p>
@@ -174,7 +161,7 @@ const SignUpPage = () => {
 
           <div>
             <Button type="submit" className="w-full bg-black text-white">
-              {loading ? "Loading..." : "Sign up"}
+              Sign up
             </Button>
           </div>
         </form>

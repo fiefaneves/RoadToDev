@@ -59,8 +59,6 @@ This project is a byproduct of our course through "Desenvolvimento de Software",
 - GPT-3.5-turbo
 - dotenv
 - cors
-- mongoDB
-- mongoose
 
 ### **AI/External APIs**
 - OpenAI API - chatgpt-3.5-turbo (for recommendations and roadmap generation)
@@ -90,7 +88,7 @@ Ensure you have the following installed:
 3. Install dependencies for the back-end:
     ```bash
    cd ../../back-end
-   npm install cors openai dotenv express mongodb mongoose
+   npm install cors openai dotenv express
 
 4. Set up environment variables:
     - Create .env file in the back-end directory.

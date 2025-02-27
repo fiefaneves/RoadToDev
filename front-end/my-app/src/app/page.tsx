@@ -4,11 +4,14 @@ import Image from 'next/image';
 const HomePage = () => {
   return (
     <div className="px-4">
+      {/* Header */}
       <div className="flex justify-center items-center w-full h-full mt-16">
         <h1 className="text-neutral-700 text-[53px] text-center">Road To Dev</h1>
       </div>
 
+      {/* Content Section */}
       <div className="flex flex-col md:flex-row md:justify-between items-center mt-10">
+        {/* Text Content */}
         <div className="md:w-[70vw] w-full">
           <p className="text-neutral-700 md:ml-[58px] md:mt-10 text-justify">
           RoadToDev: Facilitando o Caminho na Programação
@@ -19,7 +22,9 @@ Com o RoadToDev, iniciantes recebem uma base sólida e motivação para dar os p
 Junte-se a nós nessa jornada e transforme o aprendizado de programação em uma experiência organizada e personalizada!
           </p>
         </div>
-        <div className="pr-20 mt-4 mb-4 mr-6 sm:mr-0 md:mr-10 lg:mr-0">
+
+        {/* Image */}
+        <div className="mt-6 md:mt-0">
           <Image
             src="roadmap_img.svg"
             alt="Description of image"

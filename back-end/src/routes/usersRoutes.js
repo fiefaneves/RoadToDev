@@ -1,20 +1,26 @@
 import cors from 'cors'; // Import cors
+import  generate  from '../controllers/generative.js'; // Import controller functions
 import express from 'express'
-import UsersController from '../controllers/usersController.js';
 
 const routes = (app) => {
 
-    app.use(express.json());
     app.use(cors()); // Enable cors 
+    app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
 
-    app.post('/generate', UsersController.criarRoadMap);
-    app.post("/user", UsersController.criarUsuario);
-    app.post("/login", UsersController.login);
-
-    app.get("/user/:id/roadmap", UsersController.encontraRoadmap);
-    app.get("/user/:id", UsersController.encontraUsuario);
-    app.get("/users", UsersController.listarUsuarios);
+    app.post('/generate', async (req, res) => { // Create a route
+        // Get the answer from the form and send it to the OpenAI API
+        const { queryDescription } = req.body;
+        
+        try {
+            const roadQuery = await generate(queryDescription);
+            res.json({response: roadQuery}); // Send the response
+            console.log('Roadmap generated successfully'); // Log the generated roadmap
+        } catch (error) {
+            console.error(error); // Log an error
+            res.status(500).send('An error occurred'); // Send an error response
+        }
+    });
 }
 
 export default routes;
