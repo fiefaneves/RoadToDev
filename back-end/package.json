@@ -16,7 +16,9 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "openai": "^4.77.0",
+    "mongodb": "^6.13.0",
+    "mongoose": "^8.10.1",
+    "openai": "^4.85.2",
     "readline-sync": "^1.4.10"
   }
 }
