@@ -6,6 +6,6 @@ const linksSchema = new Schema({
 }, 
 );
 
-const links= mongoose.model("Links", linksSchema);
+const links= mongoose.model("links", linksSchema);
 
 export default links;
