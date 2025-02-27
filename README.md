@@ -63,6 +63,7 @@ This project is a byproduct of our course through "Desenvolvimento de Software",
 - mongoose
 - bcrypt
 - jsonwebtoken
+- nodemailer
 
 ### **AI/External APIs**
 - OpenAI API - chatgpt-3.5-turbo (for recommendations and roadmap generation)
@@ -102,6 +103,7 @@ Ensure you have the following installed:
     ```bash
     OPENAI_API_KEY=your_openai_api_key
     MONGO_DB_KEY=your_mongo_db_key
+    JWT_SECRET=meu_segredo_super_secreto
 
 ### **Usage**
 
