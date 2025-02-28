@@ -24,35 +24,35 @@ class UsersController {
         }
     }
 
-    // static async criarUsuario(req, res){
-    //     // Get the answer from the form and send it to the OpenAI API
-    //     const { queryDescription , ...userInfo} = req.body;
-    //     console.log(userInfo)
-    //     try {
-    //         const roadQuery = await generate(queryDescription);
-    //         const novoUser = await user.create({...userInfo, roadmap: roadQuery})
-    //         console.log(novoUser)
-    //         res.json({ message: "Usuario criado com sucesso", Usuario: novoUser}); // Send the response
-    //         console.log('Usuario criado com sucesso'); // Log the generated roadmap
-    //     } catch (error) {
-    //         console.error(error); // Log an error
-    //         res.status(500).send('An error occurred'); // Send an error response
-    //     }
-    // }
-
     static async criarUsuario(req, res){
         try {
             const { name, username, email, number, password} = req.body;
 
-           /*
-           ---------------------------------------------------------------------
-           < CRIAR FUNÇÃO PARA CHECAR FORMATAÇÃO DE NÚMERO DE TELEFONE E SENHA >
-           ---------------------------------------------------------------------
-           */
-        
+            const validateNumber = (number) => {
+                const numberRegex = /^\(?\d{2}\)?[\s-]?\d{5}-?\d{4}$/;
+                return numberRegex.test(number);
+            }
+            if (!validateNumber(number)) return res.status(400).json({ error: "Número de telefone inválido!" });
+
+            const validatePassword = (password) => {
+                const minLength = 8;
+                const hasUpperCase = /[A-Z]/.test(password);
+                const hasLowerCase = /[a-z]/.test(password);
+                const hasNumber = /\d/.test(password);
+                const hasSpecialChar = /[\W_]/.test(password);
+                if (length(password) < minLength) return "A senha deve ter no mínimo 8 caracteres!";
+                if (!hasUpperCase) return "A senha deve ter no mínimo uma letra maiúscula!";
+                if (!hasLowerCase) return "A senha deve ter no mínimo uma letra minúscula!";
+                if (!hasNumber) return "A senha deve ter no mínimo um número!";
+                if (!hasSpecialChar) return "A senha deve ter no mínimo um caractere especial!";
+                return true;
+            }
+            const passwordError = validatePassword(password);
+            if (passwordError !== true) return res.status(400).json({ error: passwordError });
+            
             // Check if the email already exists
             const existingEmail = await user.findOne({ email });
-            if (existingEmail) return res.status(400).json({ error: "Email já cadastrado!" });
+            if (existingEmail) return res.status(400).json({ error: "E-mail já cadastrado!" });
         
             // Check if the user already exists
             const existingUser = await user.findOne({username});
@@ -81,8 +81,7 @@ class UsersController {
             // Return a success message
             res.status(201).json({ message: "Usuário criado com sucesso!" });
         } catch (error) {
-            // res.status(500).json({ error: "Erro ao registrar usuário!" });
-            res.status(500).json({ error: error.message });
+            res.status(500).json({ message: "Erro ao registrar usuário!", error: error.message });
         }
     }
 
@@ -119,10 +118,6 @@ class UsersController {
     }
 
     static async login(req, res){
-        const comparePassword = async (password, hashedPassword) => {
-            return await bcrypt.compare(password, hashedPassword);
-        }
-
         const generateToken = (userId) => {
             return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "1h" });
         }
@@ -139,8 +134,7 @@ class UsersController {
             res.status(200).json({ message: "Login feito com sucesso!", data: usuario.data, token });
         } catch (error) {
             console.error(error);
-            // res.status(500).json({ message: "Erro na autenticação do usuário." });
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ message: "Erro na autenticação do usuário.", error: error.message });
         }
     }
 
