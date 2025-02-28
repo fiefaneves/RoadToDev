@@ -3,6 +3,7 @@ import readlineSync from 'readline-sync'; // Importa o pacote readline-sync
 import colors from 'colors'; // Importa o pacote colors
 import generate from './generative.js';
 import user from "../models/usersModel.js";
+import roadMap from '../models/roadMapModel.js';
 
 const UsersController = {
     async criarRoadMap(req, res) {
@@ -22,7 +23,6 @@ const UsersController = {
     async criarUsuario(req, res) {
         // Get the answer from the form and send it to the OpenAI API
         const { queryDescription, ...userInfo } = req.body;
-        console.log(userInfo);
         try {
             const roadQuery = await generate(queryDescription);
             const novoUser = await user.create({ ...userInfo, roadmap: roadQuery });
