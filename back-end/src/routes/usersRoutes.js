@@ -11,6 +11,8 @@ const routes = (app) => {
     app.post('/generate', UsersController.criarRoadMap);
     app.post("/user", UsersController.criarUsuario);
     app.post("/login", UsersController.login);
+    app.post("/esqueci-senha", UsersController.forgotPassword);
+    app.post("/mudar-senha/:resetToken", UsersController.resetPassword);
 
     app.get("/user/:id/roadmap", UsersController.encontraRoadmap);
     app.get("/user/:id", UsersController.encontraUsuario);
