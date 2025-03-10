@@ -124,36 +124,65 @@ Ensure you have the following installed:
 ### **Front-End**
 
     frontend/
-    │── .next/                  #next modules
-    │── node_modules/           #nodejs modules
+    │── .next/                              #next modules
+    │── node_modules/                       #nodejs modules
     │── public/                 
     └── src/                    
-        │──app/
+        │── app/
+        │  │── api/
+        │  │  └── generate/
+        │  │── create_account/
+        │  │   └── page/                    #create account screen
+        │  │── intermediateScreen/
+        │  │    └── page/
+        │  │── login/
+        │  │   └──page/
+        │  │── roadMap/
+        │  │   └──page/
         │  │── signUP/
-        │  │   └──page/        #forms
-        │  │── page/           #home page info
-        │  └── layout/         #layout configuration
+        │  │   └──page/                     #forms
+        │  │── test/
+        │  │   └── button.test/
+        │  │   └── fetchRoadmap.test/
+        │  │   └── formatDate.test/
+        │  │── layout/
+        │  │── page/                        #home page info
+        │  │── RoadMapContext/ 
+        │  └── layout/                      #layout configuration
         │── Components/
-        │   └── button/        #sign up button layout
+        │   │── ui/                         #components from shadcn ui
+        │   └── sidebar/
         │── lib/
         │   └── utils/
-        └── styles/
-            └─ globals/        #global css for application styling
+        │── service/
+        │   └── userService/  
+        │── styles/
+        │    └─ globals/                     #global css for application styling
+        └── utils/
+        
                    
 ### **Back-End**
    
     backend/
-    │── node_modules/               #nodejs modules
+    │──data/                                #json with themes, and resources
+    │── node_modules/                       #nodejs modules
     │── src/                    
     │     │── config/
-    │     │   └──open-ai/           #open ai configuration 
+    │     │   │── dbConnection/             #Mongodb configuration
+    │     │   └── open-ai/                  #open ai configuration 
     │     │── controllers/
-    │     │   └── generative/       #description of generate function, wich takes the user input and outputs the roadmap in the texform
+    │     │   │── generative/               #description of generate function, wich takes the user input and outputs the roadmap in the textform
+    │     │   │── linksController/          #describes functions needed to read and filter the user's interests and links 
+    │     │   └── usersController/          #describes functions needed to create and deal with the users login, passwords and roadmaps
+    │     │
+    │     │── models/
+    │     │   │── roadMapModel/             #RoadMap schema
+    │     │   └── usersModel/               #Users schema
     │     └── routes/
-    │         └──usersRoutes/       #call to generate function and creates a route between the form inputs and the AI  
+    │         └── usersRoutes/               #call to generate function and creates a route between the form inputs and the AI  
     │── package-lock                
     │── package                     
-    └── server                      #creates a server and defines the port it is running
+    └── server                              #creates a server and defines the port it is running
 
 ## **Contributing**
 Contributions are welcome!
