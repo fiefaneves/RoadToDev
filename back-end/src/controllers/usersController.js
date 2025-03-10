@@ -1,30 +1,42 @@
 // import openai from '../config/open-ai.js'; // Importa o pacote openai
-// import readlineSync from 'readline-sync'; // Importa o pacote readline-sync
-// import colors from 'colors'; // Importa o pacote colors
 import generate from './generative.js';
 import user from "../models/usersModel.js";
+import roadMap from '../models/roadMapModel.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 
 
-class UsersController {
-    static async criarRoadMap(req, res){
+const UsersController {
+    async criarRoadMap(req, res){
         // Get the answer from the form and send it to the OpenAI API
-        const { queryDescription } = req.body;
-        
+        const { queryDescription, userId } = req.body;
+
         try {
-            const roadQuery = await generate(queryDescription);
-            res.json({response: roadQuery}); // Send the response
-            console.log('Roadmap generated successfully'); // Log the generated roadmap
+            const roadQuery = await generate(queryDescription); //Generate the roadmap
+            const topics = roadQuery.split("\n\n"); //Turn the answer in an array of topics
+            const arrayTopics = [];
+            for(let i = 0; i < topics.length; i++){ //Fill the array that goes into the DB
+                arrayTopics.push({ topic: topics[i], completed: false })
+            }
+            const userRoadmap = await user.findById(userId);//Find the user of the roadmap
+            if(userRoadmap){
+                const newRoadMap = await roadMap.create({ user: userId, topics: arrayTopics })//Create the roadmap
+                userRoadmap.roadmaps.push(newRoadMap._id);//Add the roadmap to the user in DB
+                await userRoadmap.save();//Save the changes 
+                res.json({ response: roadQuery, topics: arrayTopics }); // Send the response
+                console.log('Roadmap generated successfully'); // Log the generated roadmap
+            }else{
+                throw "Usuario não existe";
+            }
         } catch (error) {
             console.error(error); // Log an error
             res.status(500).send('An error occurred'); // Send an error response
         }
-    }
+    },
 
-    static async criarUsuario(req, res){
+    async criarUsuario(req, res){
         try {
             const { name, username, email, number, password} = req.body;
 
@@ -83,9 +95,9 @@ class UsersController {
         } catch (error) {
             res.status(500).json({ message: "Erro ao registrar usuário!", error: error.message });
         }
-    }
+    },
 
-    static async listarUsuarios(req, res) {
+    async listarUsuarios(req, res) {
         try{
             const listaUsers = await user.find({});
             res.status(200).json(listaUsers);
@@ -95,7 +107,7 @@ class UsersController {
         }
     }
 
-    static async encontraUsuario(req, res) {
+    async encontraUsuario(req, res) {
         try{
             const usuarioEncontrado = await user.findById(req.params.id);
             res.status(200).json(usuarioEncontrado);
@@ -105,19 +117,19 @@ class UsersController {
         }
     }
 
-    static async encontraRoadmap(req, res){
+    async encontraRoadmap(req, res){
         const usuarioId = req.params.id;
-        try{
+        try {
             const usuarioProcurado = await user.findById(usuarioId);
             const roadmap = usuarioProcurado.roadmap;
-            res.status(200).json({ roadmap: roadmap});
-        }catch(erro){
-            console.error(erro)
-            res.status(500).json({message: "Erro na requisição"})
+            res.status(200).json({ roadmap: roadmap });
+        } catch (erro) {
+            console.error(erro);
+            res.status(500).json({ message: "Erro na requisição" });
         }
-    }
+    },
 
-    static async login(req, res){
+    async login(req, res){
         const generateToken = (userId) => {
             return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "1h" });
         }
@@ -138,7 +150,7 @@ class UsersController {
         }
     }
 
-    static async forgotPassword(req, res){
+    async forgotPassword(req, res){
         const { email } = req.body;
         try {
             const usuario = await user.findOne({ email });
@@ -172,14 +184,13 @@ class UsersController {
             await transporter.sendMail(mailOptions);
             res.json({ message: "E-mail de recuperação enviado!" });
 
-
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: "Erro ao processar solicitação!", error: error.message });
         }
     }
 
-    static async showResetPasswordPage(req, res) {
+    async showResetPasswordPage(req, res) {
         const { token } = req.params;
     
         // Verifique se o token é válido e não expirou
@@ -194,8 +205,7 @@ class UsersController {
         res.json({ message: "Token válido, por favor insira sua nova senha." });
     }
     
-
-    static async resetPassword(req, res){
+    async resetPassword(req, res){
         const { token } = req.params;
         const { newPassword } = req.body;
 
