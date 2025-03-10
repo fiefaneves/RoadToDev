@@ -7,7 +7,7 @@ const userSchema = new Schema({
     interesse:{ type: String },
     experiencia:{ type: String },
     tecnologia:{ type: String },
-    roadmap: { type: mongoose.Schema.Types.ObjectId, ref: "RoadMaps" }
+    roadmaps: [ { type: mongoose.Schema.Types.ObjectId, ref: "RoadMaps"  } ]
 }, 
 );
 

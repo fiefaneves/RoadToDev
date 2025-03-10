@@ -9,8 +9,8 @@ const topicSchema = new Schema({
 );
 
 const roadMapSchema = new Schema({
-    id: { type: mongoose.Schema.Types.ObjectId },
     topics: [ topicSchema ],
+    progress: { type: Number, default: 0 },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "Users" }
 }, 
 );

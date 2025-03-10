@@ -1,6 +1,4 @@
 import openai from '../config/open-ai.js'; // Importa o pacote openai
-import readlineSync from 'readline-sync'; // Importa o pacote readline-sync
-import colors from 'colors'; // Importa o pacote colors
 import generate from './generative.js';
 import user from "../models/usersModel.js";
 import roadMap from '../models/roadMapModel.js';
@@ -8,12 +6,25 @@ import roadMap from '../models/roadMapModel.js';
 const UsersController = {
     async criarRoadMap(req, res) {
         // Get the answer from the form and send it to the OpenAI API
-        const { queryDescription } = req.body;
+        const { queryDescription, userId } = req.body;
 
         try {
-            const roadQuery = await generate(queryDescription);
-            res.json({ response: roadQuery }); // Send the response
-            console.log('Roadmap generated successfully'); // Log the generated roadmap
+            const roadQuery = await generate(queryDescription); //Generate the roadmap
+            const topics = roadQuery.split("\n\n"); //Turn the answer in an array of topics
+            const arrayTopics = [];
+            for(let i = 0; i < topics.length; i++){ //Fill the array that goes into the DB
+                arrayTopics.push({ topics: topics[i], completed: false })
+            }
+            const userRoadmap = await user.findById(userId);//Find the user of the roadmap
+            if(userRoadmap){
+                const newRoadMap = await roadMap.create({ user: userId, topics: arrayTopics })//Create the roadmap
+                userRoadmap.roadmaps.push(newRoadMap._id);//Add the roadmap to the user in DB
+                await userRoadmap.save();//Save the changes 
+                res.json({ response: roadQuery, topics: arrayTopics }); // Send the response
+                console.log('Roadmap generated successfully'); // Log the generated roadmap
+            }else{
+                throw "Usuario não existe";
+            }
         } catch (error) {
             console.error(error); // Log an error
             res.status(500).send('An error occurred'); // Send an error response
