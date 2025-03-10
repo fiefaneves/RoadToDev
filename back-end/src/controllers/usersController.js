@@ -13,7 +13,7 @@ const UsersController = {
             const topics = roadQuery.split("\n\n"); //Turn the answer in an array of topics
             const arrayTopics = [];
             for(let i = 0; i < topics.length; i++){ //Fill the array that goes into the DB
-                arrayTopics.push({ topics: topics[i], completed: false })
+                arrayTopics.push({ topic: topics[i], completed: false })
             }
             const userRoadmap = await user.findById(userId);//Find the user of the roadmap
             if(userRoadmap){
