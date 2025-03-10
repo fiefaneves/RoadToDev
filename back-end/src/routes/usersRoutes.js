@@ -1,7 +1,7 @@
 import cors from 'cors'; // Import cors
 import express from 'express'
 import UsersController from '../controllers/usersController.js';
-import linksRoadMap from '../controllers/linksControllers.js';
+import linksRoadMap from '../controllers/linksController.js';
 
 const routes = (app) => {
 

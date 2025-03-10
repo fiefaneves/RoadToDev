@@ -25,8 +25,6 @@ async function filtrarLinksPorTema(tema) {//tema x do front, disponicel na paArt
     }
 }
 
-//export { carregarLinks, filtrarLinksPorTema };
-
 
 // Função para exibir links filtrados por tema
 async function exibirLinksPorTema(tema) {
