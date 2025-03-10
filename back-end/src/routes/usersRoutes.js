@@ -1,6 +1,7 @@
 import cors from 'cors'; // Import cors
 import express from 'express'
 import UsersController from '../controllers/usersController.js';
+import linksRoadMap from '../controllers/linksControllers.js';
 
 const routes = (app) => {
 
@@ -17,6 +18,8 @@ const routes = (app) => {
     app.get("/user/:id/roadmap", UsersController.encontraRoadmap);
     app.get("/user/:id", UsersController.encontraUsuario);
     app.get("/users", UsersController.listarUsuarios);
+    app.get('/links/:tema', linksRoadMap);
+
 }
 
 export default routes;
