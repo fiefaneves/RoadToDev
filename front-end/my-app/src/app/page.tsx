@@ -1,25 +1,19 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
-const HomePage = () => {
+const PageLogin = () => {
   return (
-    <div className="px-4">
-      <div className="flex justify-center items-center w-full h-full mt-16">
-        <h1 className="text-neutral-700 text-[53px] text-center">Road To Dev</h1>
-      </div>
-
-      <div className="flex flex-col md:flex-row md:justify-between items-center mt-10">
-        <div className="md:w-[70vw] w-full">
-          <p className="text-neutral-700 md:ml-[58px] md:mt-10 text-justify">
-          RoadToDev: Facilitando o Caminho na Programação
-A programação é um universo amplo e desafiador, com tópicos que muitas vezes possuem uma hierarquia implícita difícil de identificar. Pensando nisso, criamos o RoadToDev, uma ferramenta inovadora que orienta desenvolvedores em suas jornadas de aprendizado. Nosso software utiliza inteligência artificial para analisar informações do usuário e criar um roadmap personalizado, adaptado ao nível de experiência e aos interesses de cada indivíduo.
-
-Com o RoadToDev, iniciantes recebem uma base sólida e motivação para dar os primeiros passos, intermediários encontram ferramentas para aprofundar seus conhecimentos, e avançados têm acesso a conteúdos especializados e opções de liderança técnica. Além disso, oferecemos recursos de estudo, integração com projetos práticos e insights sobre tendências de mercado, garantindo que cada usuário alcance seus objetivos com clareza e eficiência.
-
-Junte-se a nós nessa jornada e transforme o aprendizado de programação em uma experiência organizada e personalizada!
-          </p>
+    <div className="h-screen w-full flex overflow-hidden">
+      {/* Left Side with Image */}
+      <div className="w-full md:w-1/2 bg-blue-500 flex flex-col items-center justify-center">
+        {/* Title */}
+        <div className="flex justify-center items-center w-full mt-[-50px]">
+          <h1 className="text-neutral-700 text-[53px] text-center">Road To Dev</h1>
         </div>
-        <div className="pr-20 mt-4 mb-4 mr-6 sm:mr-0 md:mr-10 lg:mr-0">
+
+        {/* Image */}
+        <div className="mt-6 md:mt-0">
           <Image
             src="roadmap_img.svg"
             alt="Description of image"
@@ -29,8 +23,31 @@ Junte-se a nós nessa jornada e transforme o aprendizado de programação em uma
           />
         </div>
       </div>
+
+      {/* Right Side with Form */}
+      <div className="w-full md:w-1/2 flex items-center justify-center">
+        <div className="w-96 shadow-lg p-8 bg-white rounded-lg">
+          <h2 className="text-center text-xl font-bold mb-4">LOGIN</h2>
+          <div className="mb-4">
+            {/* Input fields */}
+            <input placeholder="Email" type="email" className="w-full p-2 border rounded mb-3" />
+            <input placeholder="Password" type="password" className="w-full p-2 border rounded mb-3" />
+            <div className="flex justify-between items-center text-sm">
+              <label className="flex items-center">
+                <input type="checkbox" className="mr-2" /> Remember me
+              </label>
+              <a href="#" className="text-blue-500">Esqueceu a Senha?</a>
+            </div>
+          </div>
+          {/* Button */}
+          <button className="w-full bg-blue-500 hover:bg-blue-600 text-white p-2 rounded mb-4">Entrar</button>
+          <div className="text-center text-sm">
+            Não tem uma conta? <Link href="/create_account" className="text-blue-500">Inscrever-se</Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default HomePage;
+export default PageLogin;
