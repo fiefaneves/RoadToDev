@@ -8,7 +8,7 @@ import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 
 
-const UsersController {
+const UsersController = {
     async criarRoadMap(req, res){
         // Get the answer from the form and send it to the OpenAI API
         const { queryDescription, userId } = req.body;
@@ -105,7 +105,7 @@ const UsersController {
             console.error(erro)
             res.status(500).json({message: "Erro na requisição"})
         }
-    }
+    },
 
     async encontraUsuario(req, res) {
         try{
@@ -115,7 +115,7 @@ const UsersController {
             console.error(erro)
             res.status(500).json({message: "Erro na requisição"})
         }
-    }
+    },
 
     async encontraRoadmap(req, res){
         const usuarioId = req.params.id;
@@ -148,7 +148,7 @@ const UsersController {
             console.error(error);
             res.status(500).json({ message: "Erro na autenticação do usuário.", error: error.message });
         }
-    }
+    },
 
     async forgotPassword(req, res){
         const { email } = req.body;
@@ -188,7 +188,7 @@ const UsersController {
             console.error(error);
             res.status(500).json({ message: "Erro ao processar solicitação!", error: error.message });
         }
-    }
+    },
 
     async showResetPasswordPage(req, res) {
         const { token } = req.params;
@@ -203,7 +203,7 @@ const UsersController {
     
         // Retorne a página ou envie um formulário para o frontend
         res.json({ message: "Token válido, por favor insira sua nova senha." });
-    }
+    },
     
     async resetPassword(req, res){
         const { token } = req.params;
