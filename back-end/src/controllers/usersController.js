@@ -269,6 +269,30 @@ const UsersController = {
         }catch(error){
             res.status(500).json({ message: "erro ao retornar progresso", erro: error.message })
         }
+    },
+
+    async deleteRoadMap(req, res){
+        const roadMapId = req.params.id;
+
+        try{
+            const deletedRoad = await roadMap.findById(roadMapId);
+            if(!deletedRoad){
+                return res.status(400).json({message: "Roadmap não encontrado"})
+            }
+            const userIdRoadMap = deletedRoad.user; 
+            const userRoadMap = await user.findById(userIdRoadMap);
+            if(!userRoadMap){
+                return res.status(400).json({message: "Usuario não encontrado"})
+            }
+
+            await roadMap.findByIdAndDelete(roadMapId);
+
+            userRoadMap.roadmaps = userRoadMap.roadmaps.filter( id => { return id.toString() !== roadMapId.toString() })
+            await userRoadMap.save()
+            res.status(200).json({ message: "Roadmap deletado com sucesso "})
+        }catch(error){
+            res.status(500).json({message: "Problema ao deletar roadmap", erro: error.message })
+        }
     }
 
 };
