@@ -21,15 +21,15 @@ const UsersController = {
                 arrayTopics.push({ topic: topics[i], completed: false })
             }
             const userRoadmap = await user.findById(userId);//Find the user of the roadmap
-            if(userRoadmap){
-                const newRoadMap = await roadMap.create({ user: userId, topics: arrayTopics })//Create the roadmap
-                userRoadmap.roadmaps.push(newRoadMap._id);//Add the roadmap to the user in DB
-                await userRoadmap.save();//Save the changes 
-                res.json({ response: roadQuery, topics: arrayTopics }); // Send the response
-                console.log('Roadmap generated successfully'); // Log the generated roadmap
-            }else{
-                throw "Usuario não existe";
+            if(!userRoadmap){
+                throw new Error("Usuario não existe");
             }
+            const newRoadMap = await roadMap.create({ user: userId, topics: arrayTopics })//Create the roadmap
+            userRoadmap.roadmaps.push(newRoadMap._id);//Add the roadmap to the user in DB
+            await userRoadmap.save();//Save the changes 
+            res.json({ response: roadQuery, topics: arrayTopics }); // Send the response
+            console.log('Roadmap generated successfully'); // Log the generated roadmap
+            
         } catch (error) {
             console.error(error); // Log an error
             res.status(500).send('An error occurred'); // Send an error response
@@ -227,6 +227,47 @@ const UsersController = {
             res.json({ message: "Senha redefinida com sucesso" });
         } catch (error) {
             res.status(500).json({ message: "Erro ao redefinir senha", error: error.message });
+        }
+    },
+
+    async atualizarProgresso(req, res) {
+        const roadMapId = req.params.roadMapId;
+        const topics = req.body.topics;
+
+        try{
+            let aux = 0;
+            for(let i = 0; i < topics.length; i++){
+                if(topics[i].completed === true){
+                    aux++;
+                }
+            }
+            const progress = 100 * (aux / topics.length);
+            const updateInfo = { progress: progress, topics: topics }
+            console.log(updateInfo);
+            console.log(roadMapId);
+            const roadMapReturn = await roadMap.findByIdAndUpdate(roadMapId, updateInfo);
+            console.log(roadMapReturn);
+            if (!roadMapReturn) {
+                return res.status(404).json({ message: "RoadMap não encontrado" });
+            }
+            res.status(200).json({message: "Progresso atualizado"})
+        }catch(erro){
+            res.status(500).json({message: "Falha na atualização do progresso", erro: erro.message })
+        }
+
+    },
+
+    async encontraProgressoRoadmap(req, res){
+        const roadMapId = req.params.id;
+
+        try{
+            const roadMapReturn = await roadMap.findById(roadMapId);
+            if(!roadMapReturn){
+                return res.status(400).json({message: "Roadmap não encotrado"})
+            }
+            res.status(200).json({ progress: roadMapReturn.progress });
+        }catch(error){
+            res.status(500).json({ message: "erro ao retornar progresso", erro: error.message })
         }
     }
 
