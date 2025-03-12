@@ -15,11 +15,16 @@ const routes = (app) => {
     app.post("/esqueci-senha", UsersController.forgotPassword);
     app.post("/mudar-senha/:resetToken", UsersController.resetPassword);
 
+    
+    app.get("/user/roadmap/:id/progresso", UsersController.encontraProgressoRoadmap);
     app.get("/user/:id/roadmap", UsersController.encontraRoadmap);
     app.get("/user/:id", UsersController.encontraUsuario);
     app.get("/users", UsersController.listarUsuarios);
     app.get('/links/:tema', linksRoadMap);
+    
+    app.put("/user/roadmap/:roadMapId/atualizar-progresso", UsersController.atualizarProgresso);
 
+    app.delete("/user/roadmap/:id", UsersController.deleteRoadMap);
 }
 
 export default routes;
