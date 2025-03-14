@@ -41,18 +41,19 @@ const UsersController = {
             const { name, username, email, number, password} = req.body;
 
             const validateNumber = (number) => {
-                const numberRegex = /^\(?\d{2}\)?[\s-]?\d{5}-?\d{4}$/;
+                const numberRegex = /^(?:\+?55\s?)?(?:\(?\d{2,3}\)?[\s-]?)?\d{4,5}[\s-]?\d{4}$/;
                 return numberRegex.test(number);
+            };        
+            if (!validateNumber(number)) {
+                return res.status(400).json({ error: "Número de telefone inválido!" });
             }
-            if (!validateNumber(number)) return res.status(400).json({ error: "Número de telefone inválido!" });
-
             const validatePassword = (password) => {
                 const minLength = 8;
                 const hasUpperCase = /[A-Z]/.test(password);
                 const hasLowerCase = /[a-z]/.test(password);
                 const hasNumber = /\d/.test(password);
                 const hasSpecialChar = /[\W_]/.test(password);
-                if (length(password) < minLength) return "A senha deve ter no mínimo 8 caracteres!";
+                if (password.length < minLength) return "A senha deve ter no mínimo 8 caracteres!";
                 if (!hasUpperCase) return "A senha deve ter no mínimo uma letra maiúscula!";
                 if (!hasLowerCase) return "A senha deve ter no mínimo uma letra minúscula!";
                 if (!hasNumber) return "A senha deve ter no mínimo um número!";
