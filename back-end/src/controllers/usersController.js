@@ -135,16 +135,16 @@ const UsersController = {
             return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: "1h" });
         }
 
-        const {email, senha} = req.body;
+        const {email, password} = req.body;
         try{
-            const usuario = await user.findOne({ email });
+            const usuario = await user.findOne({ email }).select('+password');
             if (!usuario) return res.status(401).json({ message: "Email não encontrado. Faça seu cadastro!" });
             
-            const isMatch = await bcrypt.compare(senha, usuario.password);
+            const isMatch = await bcrypt.compare(password, usuario.password);
             if (!isMatch) return res.status(401).json({ message: "Senha incorreta!" });
 
-            const token = generateToken(user._id);
-            res.status(200).json({ message: "Login feito com sucesso!", data: usuario.data, token });
+            const token = generateToken(usuario._id);
+            res.status(200).json({ message: "Login feito com sucesso!", data: usuario, token });
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: "Erro na autenticação do usuário.", error: error.message });
