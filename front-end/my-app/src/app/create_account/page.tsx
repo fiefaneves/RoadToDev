@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import useCreateAccount from "@/hooks/useCreateAccount";
 
 const CreateAccount = () => {
   const [formData, setFormData] = useState({
@@ -11,12 +11,11 @@ const CreateAccount = () => {
     username: "",
     email: "",
     password: "",
-    phone: "",
+    number: "",
   });
   const [password, setPassword] = useState("");
   const [showRules, setShowRules] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const {createAccount, loading} = useCreateAccount();
 
   const rules = [
     { regex: /.{8,}/, label: "Pelo menos 8 caracteres" },
@@ -35,27 +34,7 @@ const CreateAccount = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-
-    try {
-      const response = await fetch("http://localhost:3005/user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Erro ao criar conta");
-      }
-
-      alert("Conta criada com sucesso!");
-      router.push("/");
-    } catch (error) {
-      console.error("Erro ao criar conta:", error);
-      alert("Falha ao criar conta. Tente novamente.");
-    } finally {
-      setLoading(false);
-    }
+    createAccount(formData);
   };
 
   return (
@@ -97,7 +76,7 @@ const CreateAccount = () => {
               </ul>
             </div>
           )}
-          <input name="phone" placeholder="Telefone" type="tel" className="w-full p-2 border rounded mb-3" onChange={handleChange} required />
+          <input name="number" placeholder="Telefone" type="tel" className="w-full p-2 border rounded mb-3" onChange={handleChange} required />
 
           <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white p-2 rounded mb-4">
             {loading ? "Criando..." : "Criar"}
