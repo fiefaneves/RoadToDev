@@ -137,6 +137,8 @@ const UsersController = {
 
         const {email, senha} = req.body;
         try{
+            if (!email || !senha) return res.status(400).json({ message: "Preencha todos os campos!" });
+
             const usuario = await user.findOne({ email });
             if (!usuario) return res.status(401).json({ message: "Email não encontrado. Faça seu cadastro!" });
             
@@ -146,7 +148,7 @@ const UsersController = {
             const token = generateToken(user._id);
             res.status(200).json({ message: "Login feito com sucesso!", data: usuario.data, token });
         } catch (error) {
-            console.error(error);
+            console.error("Erro no login:", error);
             res.status(500).json({ message: "Erro na autenticação do usuário.", error: error.message });
         }
     },
