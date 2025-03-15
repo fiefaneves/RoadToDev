@@ -1,8 +1,27 @@
-import React from 'react';
+"use client"
+
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import useLogin from '@/hooks/useLogin';
 
 const PageLogin = () => {
+  const [loginFormData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
+  const { login, loading } = useLogin();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    login(loginFormData);
+  }
+
   return (
     <div className="h-screen w-full flex overflow-hidden">
       {/* Left Side with Image */}
@@ -26,12 +45,26 @@ const PageLogin = () => {
 
       {/* Right Side with Form */}
       <div className="w-full md:w-1/2 flex items-center justify-center">
-        <div className="w-96 shadow-lg p-8 bg-white rounded-lg">
+      <form className="w-96 shadow-lg p-8 bg-white rounded-lg" onSubmit={handleSubmit}>
           <h2 className="text-center text-xl font-bold mb-4">LOGIN</h2>
           <div className="mb-4">
             {/* Input fields */}
-            <input placeholder="Email" type="email" className="w-full p-2 border rounded mb-3" />
-            <input placeholder="Password" type="password" className="w-full p-2 border rounded mb-3" />
+            <input
+              name="email"
+              placeholder="Email"
+              type="email"
+              className="w-full p-2 border rounded mb-3"
+              onChange={handleChange}
+              required
+            />
+            <input
+              name="password"
+              placeholder="Password"
+              type="password"
+              className="w-full p-2 border rounded mb-3"
+              onChange={handleChange}
+              required
+            />
             <div className="flex justify-between items-center text-sm">
               <label className="flex items-center">
                 <input type="checkbox" className="mr-2" /> Remember me
@@ -40,11 +73,13 @@ const PageLogin = () => {
             </div>
           </div>
           {/* Button */}
-          <button className="w-full bg-blue-500 hover:bg-blue-600 text-white p-2 rounded mb-4">Entrar</button>
+          <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white p-2 rounded mb-4">
+            {loading ? "Entrando..." : "Entrar"}
+          </button>
           <div className="text-center text-sm">
             Não tem uma conta? <Link href="/create_account" className="text-blue-500">Inscrever-se</Link>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
