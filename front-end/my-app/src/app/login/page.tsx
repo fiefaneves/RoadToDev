@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "../../Components/ui/button";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const LoginPage = () => {
     const [loading, setLoading] = React.useState(false);
@@ -65,12 +66,8 @@ const LoginPage = () => {
       <div className="flex w-[850px] h-[500px] bg-white rounded-lg shadow-lg overflow-hidden">  
         {/* Esquerda - Ilustração */}
         <div className="w-1/2 bg-gradient-to-br from-blue-400 to-blue-500 flex flex-col items-center justify-center p-6 rounded-l-lg">
-          <h1 className="text-3xl text-white font-bold mb-6 text-center">Road To Dev</h1>
-          <img
-            src="roadmap_img.svg"
-            alt="Illustration"
-            className="rounded-lg w-56"
-          />
+          <h1 className="text-4xl text-white font-bold mb-6 text-center">Road To Dev</h1>
+          <Image src="roadmap_img.svg" alt="Illustration" width={256} height={256} className="rounded-lg" />
         </div>
 
         {/* Direita - Formulário */}
