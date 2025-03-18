@@ -168,7 +168,7 @@ const UsersController = {
                 service: "gmail",
                 auth: {
                     user: process.env.EMAIL_USER, // email de envio
-                    pass: 'zfol lxny eoau airc', // senha do email de envio
+                    pass: process.env.EMAIL_PASS, // senha do email de envio
                 },
             });
 
@@ -178,7 +178,7 @@ const UsersController = {
                 from: process.env.EMAIL_USER,
                 subject: 'Redefinição de Senha',
                 text: `Você solicitou a redefinição de senha. Acesse o link abaixo para criar uma nova senha:
-                http://localhost:3005/mudar-senha/${resetToken}
+                http://localhost:3000/mudar-senha/${resetToken}
                 Esse link expira em 1 hora.`,
             };
 
@@ -190,25 +190,9 @@ const UsersController = {
             res.status(500).json({ message: "Erro ao processar solicitação!", error: error.message });
         }
     },
-
-    async showResetPasswordPage(req, res) {
-        const { token } = req.params;
-    
-        // Verifique se o token é válido e não expirou
-        const usuario = await user.findOne({
-            resetPasswordToken: token,
-            resetPasswordExpires: { $gt: Date.now() },
-        });
-    
-        if (!usuario) return res.status(400).json({ message: "Token inválido ou expirado!" });
-    
-        // Retorne a página ou envie um formulário para o frontend
-        res.json({ message: "Token válido, por favor insira sua nova senha." });
-    },
     
     async resetPassword(req, res){
-        const { token } = req.params;
-        const { newPassword } = req.body;
+        const { token, newPassword } = req.body;
 
         try {
             const usuario = await user.findOne({

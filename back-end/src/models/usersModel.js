@@ -12,7 +12,9 @@ const userSchema = new Schema({
     number:{type: String, required:true, unique:true},
     password:{type: String, required:true},
     date:{type: Date, default: Date.now},
-    roadmaps: [ { type: mongoose.Schema.Types.ObjectId, ref: "RoadMaps"  } ]
+    roadmaps: [ { type: mongoose.Schema.Types.ObjectId, ref: "RoadMaps"  } ],
+    resetPasswordToken: { type: String },
+    resetPasswordExpires: { type: Date },
 }, 
 );
 
