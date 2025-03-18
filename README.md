@@ -103,8 +103,9 @@ Ensure you have the following installed:
     ```bash
     OPENAI_API_KEY=your_openai_api_key
     MONGO_DB_KEY=your_mongo_db_key
-    JWT_SECRET=meu_segredo_super_secreto
-    EMAIL_USER='EMAIL_DA_APLICAÇÃO'
+    JWT_SECRET=your_super_secret
+    EMAIL_USER='roadtodev24@gmail.com'
+    EMAIL_PASS='xrxf lcfp qaar dzjr'    
 
 ### **Usage**
 
