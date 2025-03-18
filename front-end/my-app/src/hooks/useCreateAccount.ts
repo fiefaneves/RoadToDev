@@ -6,7 +6,7 @@ interface FormData {
   username: string;
   email: string;
   password: string;
-  phone: string;
+  number: string;
 }
 
 const useCreateAccount = () => {
