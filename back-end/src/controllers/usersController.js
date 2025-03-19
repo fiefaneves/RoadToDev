@@ -110,6 +110,13 @@ const UsersController = {
 
     async encontraUsuario(req, res) {
         try{
+            const requestedUserId = req.params.id;
+            const authUserId = req.user.id;
+
+            if (requestedUserId !== authUserId.toString()) {
+                return res.status(403).json({ message: "Acesso não autorizado" });
+            }
+
             const usuarioEncontrado = await user.findById(req.params.id);
             res.status(200).json(usuarioEncontrado);
         } catch(erro){

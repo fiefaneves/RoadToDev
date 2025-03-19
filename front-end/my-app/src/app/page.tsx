@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from 'react';
 import Image from 'next/image';
@@ -19,7 +19,7 @@ const PageLogin = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    login(loginFormData);
+    await login(loginFormData);
   }
 
   return (
@@ -45,7 +45,7 @@ const PageLogin = () => {
 
       {/* Right Side with Form */}
       <div className="w-full md:w-1/2 flex items-center justify-center">
-      <form className="w-96 shadow-lg p-8 bg-white rounded-lg" onSubmit={handleSubmit}>
+        <form className="w-96 shadow-lg p-8 bg-white rounded-lg" onSubmit={handleSubmit}>
           <h2 className="text-center text-xl font-bold mb-4">LOGIN</h2>
           <div className="mb-4">
             {/* Input fields */}
