@@ -17,7 +17,7 @@ const useCreateAccount = () => {
     setLoading(true);
 
     try {
-      console.log("Enviando dados para o servidor:", formData);
+      console.log("Enviando dados para o servidor:");
       const response = await fetch("http://localhost:3005/user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
