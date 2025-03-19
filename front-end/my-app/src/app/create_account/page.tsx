@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import useCreateAccount from "@/hooks/useCreateAccount";
+import { useForm } from "react-hook-form";
 
 const CreateAccount = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,17 @@ const CreateAccount = () => {
   const [password, setPassword] = useState("");
   const [showRules, setShowRules] = useState(false);
   const {createAccount, loading} = useCreateAccount();
+  const {register} = useForm({
+    defaultValues: {
+        name: "",
+        username: "",
+        email: "",
+        password: "",
+        number: "",
+    }
+  });
+
+  const [error, setError] = useState("");
 
   const rules = [
     { regex: /.{8,}/, label: "Pelo menos 8 caracteres" },
@@ -161,7 +173,16 @@ const CreateAccount = () => {
                 type="tel"
                 placeholder="Telefone"
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-700"
-                onChange={handleChange}
+                onChange={(e) => {
+                  //limita o telefone em 11 números
+                  const sanitizedValue = e.target.value.replace(/\D/g, "").slice(0, 11);
+    
+                  handleChange({
+                    ...e,
+                    target: { ...e.target, value: sanitizedValue },
+                  });
+                }}
+                maxLength={11} 
                 required
               />
             </div>
