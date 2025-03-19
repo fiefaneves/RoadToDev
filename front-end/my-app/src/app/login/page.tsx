@@ -48,11 +48,13 @@ const LoginPage = () => {
             const result = await response.json();
 
             if (result.status === 200) {
+                alert(result.userId)
                 localStorage.setItem("user", JSON.stringify(result.data));
+                localStorage.setItem("userId", JSON.stringify(result.userId));
                 router.push("/roadmap");
             } else{
                 alert("Invalid email or password");
-            }
+            }   
         } catch (error) {
             console.error(error);
             alert("An error occurred during login");

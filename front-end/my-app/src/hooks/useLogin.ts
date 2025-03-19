@@ -32,6 +32,7 @@ const useLogin = () => {
       const result = await response.json();
       localStorage.setItem("token", result.token);
       localStorage.setItem("user", JSON.stringify(result.data));
+      localStorage.setItem("userId", result.userId);
       router.push(`/intermediateScreen/${result.data._id}`);
     } catch (error) {
       console.error("Erro ao fazer login:", error);

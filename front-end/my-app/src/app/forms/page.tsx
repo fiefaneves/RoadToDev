@@ -39,15 +39,18 @@ const SignUpPage = () => {
     setLoading(true);
   
     try {
+      const userId = localStorage.getItem("userId");
       const response = await fetch("http://localhost:3005/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+
         },
-        body: JSON.stringify({ queryDescription }),
+        body: JSON.stringify({ queryDescription, userId}),
       });
   
       console.log("Status da resposta:", response.status);
+      console.log(userId);
       if (!response.ok) {
         throw new Error("Failed to generate roadmap");
       }
@@ -55,27 +58,21 @@ const SignUpPage = () => {
       const result = await response.json();
       console.log("Resultado da API:", result);
   
-      if (typeof result !== 'object' || result === null) {
-        alert("Estrutura de resposta inválida: resposta não é um objeto");
-        return;
+      if (response.status === 201) {
+        localStorage.setItem("roadMapId", result.roadMapId)
+        router.push("/roadMap");
+      } else{
+        throw new Error(result.error);
       }
   
-      if (result && result.hasOwnProperty("response")) {
-        const roadmapDescription = result.response;
-        setRoadmap(roadmapDescription);
-        console.log("Roadmap atualizado:", roadmapDescription);
-        reset();
-        router.push("/roadMap");
-      } else {
-        console.log("Estrutura da resposta:", result); 
-        alert("Falha ao gerar roadmap - Campo `response` não encontrado");
-      }
+      
     } catch (error) {
       console.error("Erro:", error);
       alert("Ocorreu um erro ao gerar o roadmap");
     } finally {
       setLoading(false);
     }
+
   };
   const handleFetchLinks = async (interest: string) => {
     try {
@@ -92,9 +89,9 @@ const SignUpPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="md:w-[20vw] bg-white mx-auto mt-20 p-6 rounded-lg shadow-lg mb-2">
-        <h1 className="flex justify-center text-black text-[50px]">Sign up</h1>
+        <h1 className="flex justify-center text-black text-[50px]">RoadMap</h1>
         <p className="flex justify-center text-black text-[11px] mb-8">
-          Sign up for a better experience
+          Generate Your RoadMap
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -186,7 +183,7 @@ const SignUpPage = () => {
 
           <div>
             <Button type="submit" className="w-full bg-black text-white">
-              {loading ? "Loading..." : "Sign up"}
+              {loading ? "Loading..." : "Generate"}
             </Button>
           </div>
         </form>
