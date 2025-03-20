@@ -27,26 +27,22 @@ async function filtrarLinksPorTema(tema) {//tema x do front, disponicel na paArt
 
 
 // Função para exibir links filtrados por tema
-async function exibirLinksPorTema(tema) {
+export async function exibirLinksPorTema(tema) {
     const linksFiltrados = await filtrarLinksPorTema(tema);
 
     if (linksFiltrados.length > 0) {
         const item = linksFiltrados[0];// so vai retornar um objeto, entáo náo prescisa de um for each
         console.log(`Links encontrados sobre "${tema}":`);
-        item.recursos.forEach(recurso => {
-            console.log(`  Descrição: ${recurso.descricao}`);
-            console.log(` • Link: ${recurso.link}`);
-        });
+        
+        return item.recursos.map(recurso => ({
+            descricao: recurso.descricao,
+            link: recurso.link
+        })); // Retorna os links e descrições    
     } 
     else {
         console.log(`Nenhum link encontrado para o tema "${tema}".`);
+        return [];
     }
 }
 
-async function linksRoadMap(req, res){//define uma rota get que tem tema como parametro, async [e o manioulador dessa rota 
-    const tema = req.params.tema;//extrai o valor de tema da url da solicitacao
-    await exibirLinksPorTema(tema);
-    res.send('Links exibidos no console.');
-}
 
-export default  linksRoadMap;

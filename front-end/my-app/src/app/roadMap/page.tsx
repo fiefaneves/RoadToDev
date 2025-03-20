@@ -16,7 +16,8 @@ const RoadMapPage = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [roadmapData, setRoadmapData] = useState({ 
     topics: [], 
-    progress: 0 
+    progress: 0 ,
+    links: [] // Adicione um estado para armazenar os links e descrições
   });
   const router = useRouter();
 
@@ -142,7 +143,7 @@ const RoadMapPage = () => {
             </div>
           ) : (
             <>
-              {roadmapData.topics.map((topic, index) => ( 
+              {roadmapData.topics.map((topic, index) => (
                 <div 
                   key={index}
                   className="flex items-start gap-4 p-4 rounded-lg border hover:border-gray-300 transition-all"
@@ -152,13 +153,28 @@ const RoadMapPage = () => {
                     onCheckedChange={() => handleCheckboxChange(index)}
                     className="mt-1.5"
                   />
-                  <p className={`flex-1 text-gray-700 text-lg ${
+                  <div className={`flex-1 text-gray-700 text-lg ${
                     topic.completed ? 'line-through opacity-50' : ''
                   }`}>
-                    {topic.topic}
-                  </p>
+                    {topic.topic.split('. ').map((subTopic, subIndex) => (
+                      <p key={subIndex}>{subTopic}</p>
+                    ))}
+                  </div>
                 </div>
               ))}
+
+              {/* Seção para renderizar os links e descrições */}
+              <div className="mt-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Links e Descrições</h2>
+                {roadmapData.links.map((linkItem, index) => (
+                  <div key={index} className="mb-4">
+                    <p className="text-lg font-semibold text-gray-800">{linkItem.descricao}</p>
+                    <a href={linkItem.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                      {linkItem.link}
+                    </a>
+                  </div>
+                ))}
+              </div>
             </>
           )}
         </Card>

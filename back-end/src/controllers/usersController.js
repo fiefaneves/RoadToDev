@@ -6,12 +6,14 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
+import { exibirLinksPorTema } from './linksController.js'; // Importe a função exibirLinksPorTema
+
 
 
 const UsersController = {
     async criarRoadMap(req, res){
         // Get the answer from the form and send it to the OpenAI API
-        const { queryDescription, userId } = req.body;
+        const { queryDescription, userId, tema } = req.body;
         
         try {
             const roadQuery = await generate(queryDescription); //Generate the roadmap
@@ -24,7 +26,12 @@ const UsersController = {
             if(!userRoadmap){
                 throw new Error("Usuario não existe");
             }
-            const newRoadMap = await roadMap.create({ user: userId, topics: arrayTopics })//Create the roadmap
+
+            //gere os links com base no tema
+            const links = await exibirLinksPorTema(tema); // Chame a função para obter os links
+            console.log("Links gerados:", links); // Adicione este log para verificar os links
+
+            const newRoadMap = await roadMap.create({ user: userId, topics: arrayTopics, links })//Create the roadmap
             userRoadmap.roadmaps.push(newRoadMap._id);//Add the roadmap to the user in DB
             await userRoadmap.save();//Save the changes 
             res.status(201).json({ response: roadQuery, topics: arrayTopics, roadMapId: newRoadMap._id }); // Send the response

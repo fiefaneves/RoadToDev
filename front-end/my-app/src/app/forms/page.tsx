@@ -46,7 +46,7 @@ const SignUpPage = () => {
           "Content-Type": "application/json",
 
         },
-        body: JSON.stringify({ queryDescription, userId}),
+        body: JSON.stringify({ queryDescription, userId, tema:data.interest}),
       });
   
       console.log("Status da resposta:", response.status);
@@ -74,17 +74,7 @@ const SignUpPage = () => {
     }
 
   };
-  const handleFetchLinks = async (interest: string) => {
-    try {
-      const response = await fetch(`/links/${interest}`, {
-        method: 'GET',
-      });
-      const result = await response.text();
-      console.log(result);
-    } catch (error) {
-      console.error('Erro ao buscar links:', error);
-    }
-  };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -119,7 +109,6 @@ const SignUpPage = () => {
               id="interest"
               {...register("interest", { required: "Please select an area of interest" })}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              onChange={(e) => handleFetchLinks(e.target.value)}
             >
               <option value="">Select</option>
               <option value="frontend">Frontend</option>
