@@ -193,10 +193,28 @@ const UsersController = {
             const mailOptions = {
                 to: usuario.email,
                 from: process.env.EMAIL_USER,
-                subject: 'Redefinição de Senha',
-                text: `Você solicitou a redefinição de senha. Acesse o link abaixo para criar uma nova senha:
-                http://localhost:3005/mudar-senha/${resetToken}
-                Esse link expira em 1 hora.`,
+                subject: 'Redefinição de Senha - Road To Dev',
+                html: `
+                    <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+                    <h2 style="color: #2563eb;">Olá, ${usuario.name || 'usuário'}!</h2>
+                    <p>Recebemos uma solicitação para redefinir a senha da sua conta no <strong>Road To Dev</strong>.</p>
+                    <p>Para criar uma nova senha, clique no link abaixo:</p>
+                    <p>
+                        <a href="http://localhost:3000/mudar-senha/${resetToken}" 
+                        style="display: inline-block; padding: 10px 20px; background-color: #2563eb; color: #fff; text-decoration: none; border-radius: 5px;">
+                        Redefinir Senha
+                        </a>
+                    </p>
+                    <p>Se você não solicitou a redefinição de senha, ignore este e-mail. Sua senha permanecerá a mesma.</p>
+                    <p><strong>Este link expira em 1 hora.</strong></p>
+                    <p>Atenciosamente,</p>
+                    <p><strong>Equipe Road To Dev.</strong></p>
+                    <p style="font-size: 0.9em; color: #666;">
+                        Se tiver alguma dúvida, entre em contato conosco pelo e-mail: 
+                        <a href="mailto:roadtodev24@gmail.com" style="color: #2563eb;">roadtodev24@gmail.com</a>.
+                    </p>
+                    </div>
+                `,
             };
 
             await transporter.sendMail(mailOptions);
@@ -207,25 +225,9 @@ const UsersController = {
             res.status(500).json({ message: "Erro ao processar solicitação!", error: error.message });
         }
     },
-
-    async showResetPasswordPage(req, res) {
-        const { token } = req.params;
-    
-        // Verifique se o token é válido e não expirou
-        const usuario = await user.findOne({
-            resetPasswordToken: token,
-            resetPasswordExpires: { $gt: Date.now() },
-        });
-    
-        if (!usuario) return res.status(400).json({ message: "Token inválido ou expirado!" });
-    
-        // Retorne a página ou envie um formulário para o frontend
-        res.json({ message: "Token válido, por favor insira sua nova senha." });
-    },
     
     async resetPassword(req, res){
-        const { token } = req.params;
-        const { newPassword } = req.body;
+        const { token, newPassword } = req.body;
 
         try {
             const usuario = await user.findOne({
