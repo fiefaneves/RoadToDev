@@ -11,7 +11,9 @@ const topicSchema = new Schema({
 const roadMapSchema = new Schema({
     topics: [ topicSchema ],
     progress: { type: Number, default: 0 },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "Users" }
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
+    links: [{descricao: { type: String, required: true },
+        link: { type: String, required: true }}]
 }, 
 );
 

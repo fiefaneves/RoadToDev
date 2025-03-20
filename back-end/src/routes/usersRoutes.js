@@ -1,7 +1,6 @@
 import cors from 'cors'; // Import cors
 import express from 'express'
 import UsersController from '../controllers/usersController.js';
-import linksRoadMap from '../controllers/linksController.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 
 const routes = (app) => {
@@ -21,7 +20,6 @@ const routes = (app) => {
     app.get("/user/:id/roadmap", authMiddleware, UsersController.encontraRoadmap);
     app.get("/user/:id", authMiddleware, UsersController.encontraUsuario);
     app.get("/users", authMiddleware, UsersController.listarUsuarios);
-    app.get('/links/:tema', linksRoadMap);
     
     app.put("/user/roadmap/:roadMapId/atualizar-progresso", authMiddleware, UsersController.atualizarProgresso);
   
