@@ -13,7 +13,7 @@ const routes = (app) => {
     app.post("/user", UsersController.criarUsuario);
     app.post("/login", UsersController.login);
     app.post("/esqueci-senha", UsersController.forgotPassword);
-    app.post("/mudar-senha/:resetToken", UsersController.resetPassword);
+    app.post("/mudar-senha", UsersController.resetPassword);
 
     
     app.get("/user/roadmap/:id/progresso", authMiddleware, UsersController.encontraProgressoRoadmap);
