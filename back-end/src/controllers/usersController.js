@@ -12,7 +12,7 @@ const UsersController = {
     async criarRoadMap(req, res){
         // Get the answer from the form and send it to the OpenAI API
         const { queryDescription, userId } = req.body;
-
+        
         try {
             const roadQuery = await generate(queryDescription); //Generate the roadmap
             const topics = roadQuery.split("\n\n"); //Turn the answer in an array of topics
@@ -27,12 +27,12 @@ const UsersController = {
             const newRoadMap = await roadMap.create({ user: userId, topics: arrayTopics })//Create the roadmap
             userRoadmap.roadmaps.push(newRoadMap._id);//Add the roadmap to the user in DB
             await userRoadmap.save();//Save the changes 
-            res.json({ response: roadQuery, topics: arrayTopics }); // Send the response
+            res.status(201).json({ response: roadQuery, topics: arrayTopics, roadMapId: newRoadMap._id }); // Send the response
             console.log('Roadmap generated successfully'); // Log the generated roadmap
             
         } catch (error) {
             console.error(error); // Log an error
-            res.status(500).send('An error occurred'); // Send an error response
+            res.status(500).json({ message: "An error ocurred", error: error.message }); // Send an error response
         }
     },
 
@@ -126,11 +126,10 @@ const UsersController = {
     },
 
     async encontraRoadmap(req, res){
-        const usuarioId = req.params.id;
+        const roadMapId = req.params.id;
         try {
-            const usuarioProcurado = await user.findById(usuarioId);
-            const roadmap = usuarioProcurado.roadmap;
-            res.status(200).json({ roadmap: roadmap });
+            const roadMapProcurado = await roadMap.findById(roadMapId);
+            res.status(200).json({ roadmap: roadMapProcurado });
         } catch (erro) {
             console.error(erro);
             res.status(500).json({ message: "Erro na requisição" });
@@ -155,7 +154,7 @@ const UsersController = {
             if (!isMatch) return res.status(401).json({ message: "Senha incorreta!" });
 
             const token = generateToken(usuario._id);
-            res.status(200).json({ message: "Login feito com sucesso!", data: usuario, token });
+            res.status(200).json({ message: "Login feito com sucesso!", data: usuario, userId: usuario._id, token });
         } catch (error) {
             console.error("Erro no login:", error);
             res.status(500).json({ message: "Erro na autenticação do usuário.", error: error.message });
