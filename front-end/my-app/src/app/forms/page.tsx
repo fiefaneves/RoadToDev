@@ -4,17 +4,14 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../../Components/ui/button";
 import { useRouter } from "next/navigation";
-import { useRoadMap } from "../../app/RoadMapContext";
 
 const SignUpPage = () => {
   const [loading, setLoading] = React.useState(false);
-  const { setRoadmap } = useRoadMap();
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -44,9 +41,8 @@ const SignUpPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-
         },
-        body: JSON.stringify({ queryDescription, userId, tema:data.interest}),
+        body: JSON.stringify({ queryDescription, userId, tema: data.interest }),
       });
   
       console.log("Status da resposta:", response.status);
@@ -59,22 +55,18 @@ const SignUpPage = () => {
       console.log("Resultado da API:", result);
   
       if (response.status === 201) {
-        localStorage.setItem("roadMapId", result.roadMapId)
-        router.push("/roadMap");
-      } else{
+        localStorage.setItem("roadMapId", result.roadMapId);
+        router.push(`/roadMap/${result.roadMapId}`);
+      } else {
         throw new Error(result.error);
       }
-  
-      
     } catch (error) {
       console.error("Erro:", error);
       alert("Ocorreu um erro ao gerar o roadmap");
     } finally {
       setLoading(false);
     }
-
   };
-  
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -118,8 +110,6 @@ const SignUpPage = () => {
               <option value="data analyst">Data analyst</option>
               <option value="cyber security">Cyber security</option>
               <option value="project manager">Project manager</option>
-
-
             </select>
             {errors.interest && (
               <p className="text-sm text-red-500 mt-1">{errors.interest.message}</p>
@@ -162,8 +152,6 @@ const SignUpPage = () => {
               <option value="sql">SQL</option>
               <option value="engenharia de prompt">Prompt engineering</option>
               <option value="git e github ">Git e github</option>
-
-
             </select>
             {errors.technology && (
               <p className="text-sm text-red-500 mt-1">{errors.technology.message}</p>

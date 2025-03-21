@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import Sidebar from "@/Components/sidebar";
 import { FiChevronRight } from "react-icons/fi";
 import useFetchUserData from '@/hooks/useFetchUserData';
-import Link from 'next/link'
+import Link from 'next/link';
 
 export default function ProfileScreen() {
   const { userId } = useParams();
@@ -39,7 +39,7 @@ export default function ProfileScreen() {
         isMobile={isMobile}
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
-        roadmaps={userData?.roadmaps || []}
+        userId={userId as string}
       />
 
       <div className={`flex-1 p-4 md:p-8 relative ${isMobile ? 'w-full' : ''}`}>
