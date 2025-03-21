@@ -70,22 +70,19 @@ const RoadMapPage = () => {
   }, [roadMapId, setRoadmap]);
 
   const handleCheckboxChange = async (index: number) => {
-    setRoadmapData(prev => {
-      const updatedTopics = [...prev.topics]; // Cria uma cópia dos tópicos
-      updatedTopics[index].completed = !updatedTopics[index].completed; // Alterna o estado "completed"
+    const updatedTopics = roadmapData.topics.map((topic, i) => 
+      i === index ? { ...topic, completed: !topic.completed } : topic
+    );
 
-      // Calcula o novo progresso
-      const completedCount = updatedTopics.filter(topic => topic.completed).length;
-      const newProgress = Math.round((completedCount / updatedTopics.length) * 100);
+    const completedCount = updatedTopics.filter(topic => topic.completed).length;
+    const newProgress = (completedCount / updatedTopics.length) * 100;
 
-      return {
-        ...prev, // Mantém as outras propriedades do estado
-        topics: updatedTopics, // Atualiza os tópicos
-        progress: newProgress // Atualiza o progresso
-      };
-    });
+    setRoadmapData(prev => ({
+      ...prev,
+      topics: updatedTopics,
+      progress: newProgress
+    }));
 
-    // Salvar o progresso no banco de dados
     try {
       const response = await fetch(`http://localhost:3005/user/roadmap/${roadMapId}/atualizar-progresso`, {
         method: "PUT",
@@ -93,18 +90,30 @@ const RoadMapPage = () => {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${localStorage.getItem("token")}`
         },
-        body: JSON.stringify({ topics: roadmapData.topics })
+        body: JSON.stringify({ topics: updatedTopics }) 
       });
 
-      if (!response.ok) {
-        throw new Error("Erro ao atualizar progresso");
-      }
+      if (!response.ok) throw new Error("Erro ao atualizar progresso");
 
-      console.log("Progresso atualizado com sucesso");
+      const sidebarProgressEvent = new CustomEvent('updateSidebarProgress', {
+        detail: { roadMapId, newProgress }
+      });
+      window.dispatchEvent(sidebarProgressEvent);
+      
     } catch (error) {
       console.error("Erro ao atualizar progresso:", error);
-      alert("Erro ao atualizar progresso");
+      setRoadmapData(prev => ({
+        ...prev,
+        topics: prev.topics.map((topic, i) => 
+          i === index ? { ...topic, completed: !topic.completed } : topic
+        ),
+        progress: prev.progress
+      }));
     }
+  };
+
+  const formatProgress = (progress) => {
+    return progress % 1 === 0 ? progress.toFixed(0) : progress.toFixed(1);
   };
 
   return (
@@ -139,7 +148,7 @@ const RoadMapPage = () => {
                 style={{ backgroundColor: '#f0f0f0', transition: 'all 0.3s' }}
               />
               <span className="text-gray-600 font-medium min-w-[100px]">
-                Progresso: {roadmapData.progress}%
+                Progresso: {formatProgress(roadmapData.progress)}%
               </span>
             </div>
           </header>

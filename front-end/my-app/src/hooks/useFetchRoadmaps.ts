@@ -37,7 +37,7 @@ const useFetchRoadmaps = (userId: string) => {
     }
   }, [userId]);
 
-  return { roadmaps, loading, error };
+  return { roadmaps, loading, error, setRoadmaps };
 };
 
 export default useFetchRoadmaps;

@@ -4,6 +4,7 @@ import { Progress } from "./ui/progress";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import useFetchRoadmaps from '@/hooks/useFetchRoadmaps';
+import { useEffect } from 'react';
 
 interface SidebarProps {
   isMobile: boolean;
@@ -19,11 +20,28 @@ export default function Sidebar({
   userId 
 }: SidebarProps) {
   const router = useRouter();
-  const { roadmaps, loading, error } = useFetchRoadmaps(userId);
+  const { roadmaps, loading, error, setRoadmaps } = useFetchRoadmaps(userId);
 
   const handleRoadmapClick = (roadmapId: string) => {
     router.push(`/roadMap/${roadmapId}`);
   };
+
+  useEffect(() => {
+    const handleUpdateSidebarProgress = (event: CustomEvent) => {
+      const { roadMapId, newProgress } = event.detail;
+      setRoadmaps(prevRoadmaps => 
+        prevRoadmaps.map(roadmap => 
+          roadmap._id === roadMapId ? { ...roadmap, progress: newProgress } : roadmap
+        )
+      );
+    };
+
+    window.addEventListener('updateSidebarProgress', handleUpdateSidebarProgress);
+
+    return () => {
+      window.removeEventListener('updateSidebarProgress', handleUpdateSidebarProgress);
+    };
+  }, [setRoadmaps]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
