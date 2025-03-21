@@ -7,6 +7,7 @@ import { Checkbox } from "@/Components/ui/checkbox";
 import { Card } from "@/Components/ui/card";
 import { Progress } from "@/Components/ui/progress";
 import Sidebar from "@/Components/sidebar";
+import { FiChevronRight } from "react-icons/fi";
 
 const RoadMapPage = () => {
   const { setRoadmap } = useRoadMap();
@@ -116,7 +117,16 @@ const RoadMapPage = () => {
           userId={userId}
         />
       )}
-      <div className="flex-1 p-4 md:p-8">
+      <div className={`flex-1 p-4 md:p-8 relative ${isMobile ? 'w-full' : ''}`}>
+        {isMobile && !isSidebarOpen && (
+          <button
+            onClick={() => setIsSidebarOpen(true)}
+            className="fixed left-4 top-20 z-30 p-2 bg-white rounded-lg shadow-md"
+          >
+            <FiChevronRight className="w-5 h-5 text-gray-600" />
+          </button>
+        )}
+
         <Card className="mx-auto max-w-3xl p-6 space-y-6">
           <header className="border-b pb-4 space-y-2">
             <h1 className="text-3xl font-bold text-gray-900">
