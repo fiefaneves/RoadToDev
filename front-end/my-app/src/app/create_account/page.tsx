@@ -172,7 +172,7 @@ const CreateAccount = () => {
               {loading ? "Criando..." : "Criar Conta"}
             </button>
             <p className="text-center text-sm mt-4">
-              Já tem uma conta? <Link href="/login" className="text-blue-500 font-bold hover:underline">Login</Link>
+              Já tem uma conta? <Link href="/" className="text-blue-500 font-bold hover:underline">Login</Link>
             </p>
           </form>
         </div>
