@@ -6,18 +6,20 @@ import { useParams } from "next/navigation";
 import { Checkbox } from "@/Components/ui/checkbox";
 import { Card } from "@/Components/ui/card";
 import { Progress } from "@/Components/ui/progress";
+import Sidebar from "@/Components/sidebar";
 
 const RoadMapPage = () => {
   const { setRoadmap } = useRoadMap();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [setIsSidebarOpen] = useState(true);
-  const [ , setIsMobile] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const [roadmapData, setRoadmapData] = useState({ 
     topics: [], 
     progress: 0,
     links: [] 
   });
   const { roadMapId } = useParams();
+  const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
 
   useEffect(() => {
     const checkMobile = () => {
@@ -29,7 +31,7 @@ const RoadMapPage = () => {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, [setIsMobile, setIsSidebarOpen]);
+  }, []);
 
   useEffect(() => {
     const fetchRoadmap = async () => {
@@ -66,7 +68,7 @@ const RoadMapPage = () => {
       fetchRoadmap();
   }, [roadMapId, setRoadmap]);
 
-  const handleCheckboxChange = (index: number) => {
+  const handleCheckboxChange = async (index: number) => {
     setRoadmapData(prev => {
       const updatedTopics = [...prev.topics]; // Cria uma cópia dos tópicos
       updatedTopics[index].completed = !updatedTopics[index].completed; // Alterna o estado "completed"
@@ -81,10 +83,39 @@ const RoadMapPage = () => {
         progress: newProgress // Atualiza o progresso
       };
     });
+
+    // Salvar o progresso no banco de dados
+    try {
+      const response = await fetch(`http://localhost:3005/user/roadmap/${roadMapId}/atualizar-progresso`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({ topics: roadmapData.topics })
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao atualizar progresso");
+      }
+
+      console.log("Progresso atualizado com sucesso");
+    } catch (error) {
+      console.error("Erro ao atualizar progresso:", error);
+      alert("Erro ao atualizar progresso");
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex relative overflow-x-hidden">
+      {userId && (
+        <Sidebar
+          isMobile={isMobile}
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+          userId={userId}
+        />
+      )}
       <div className="flex-1 p-4 md:p-8">
         <Card className="mx-auto max-w-3xl p-6 space-y-6">
           <header className="border-b pb-4 space-y-2">
