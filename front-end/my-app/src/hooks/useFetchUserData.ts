@@ -1,5 +1,20 @@
 import { useState, useEffect } from "react";
 
+interface Roadmap {
+  _id: string;
+  title: string;
+  progress: number;
+}
+
+interface UserData{
+  _id: string;
+  name: string;
+  email: string;
+  progress: number;
+  interests: string;
+  roadmaps: Roadmap[];
+}
+
 const useFetchUserData = (userId: string) => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);

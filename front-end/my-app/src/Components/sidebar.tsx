@@ -2,20 +2,32 @@
 
 import { Progress } from "./ui/progress";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import useFetchRoadmaps from '@/hooks/useFetchRoadmaps';
 
 interface SidebarProps {
   isMobile: boolean;
   isSidebarOpen: boolean;
   setIsSidebarOpen: (open: boolean) => void;
-  roadmaps: Array<{ title: string; progress: number }>;
+  userId: string;
 }
 
 export default function Sidebar({ 
   isMobile, 
   isSidebarOpen, 
   setIsSidebarOpen,
-  roadmaps 
+  userId 
 }: SidebarProps) {
+  const router = useRouter();
+  const { roadmaps, loading, error } = useFetchRoadmaps(userId);
+
+  const handleRoadmapClick = (roadmapId: string) => {
+    router.push(`/roadMap/${roadmapId}`);
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <>
       {isMobile && isSidebarOpen && (
@@ -53,16 +65,20 @@ export default function Sidebar({
             </h2>
             
             {roadmaps.map((roadmap, index) => (
-              <div key={index} className="space-y-2 min-w-fit">
+              <button 
+                key={roadmap._id}
+                className="space-y-2 min-w-fit w-full text-left"
+                onClick={() => handleRoadmapClick(roadmap._id)}
+              >
                 <div className="flex justify-between text-sm whitespace-nowrap">
-                  <span className="truncate text-gray-600">{roadmap.title}</span>
+                  <span className="truncate text-gray-600">Roadmap {roadmaps.length - index}</span>
                   <span className="ml-2 text-gray-600 font-medium">{roadmap.progress}%</span>
                 </div>
                 <Progress 
                   value={roadmap.progress} 
                   className="h-2 bg-gray-200"
                 />
-              </div>
+              </button>
             ))}
           </div>
         </div>
