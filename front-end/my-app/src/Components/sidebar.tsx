@@ -64,7 +64,7 @@ export default function Sidebar({
               Roadmap Progress
             </h2>
             
-            {roadmaps.map((roadmap, index) => (
+            {roadmaps.slice().reverse().map((roadmap, index) => (
               <button 
                 key={roadmap._id}
                 className="space-y-2 min-w-fit w-full text-left"
