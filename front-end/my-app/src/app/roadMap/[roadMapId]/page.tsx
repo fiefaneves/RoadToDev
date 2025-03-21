@@ -1,25 +1,23 @@
 'use client';
 
-import { useRoadMap } from "../RoadMapContext";
+import { useRoadMap } from "../../RoadMapContext";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { Checkbox } from "@/Components/ui/checkbox";
 import { Card } from "@/Components/ui/card";
-// import Sidebar from "@/Components/sidebar"; // Comentado: Importação da sidebar
 import { Progress } from "@/Components/ui/progress";
-import { ChevronRight } from "lucide-react";
 
 const RoadMapPage = () => {
   const { setRoadmap } = useRoadMap();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
+  const [setIsSidebarOpen] = useState(true);
+  const [ , setIsMobile] = useState(false);
   const [roadmapData, setRoadmapData] = useState({ 
     topics: [], 
-    progress: 0 ,
-    links: [] // Adicione um estado para armazenar os links e descrições
+    progress: 0,
+    links: [] 
   });
-  const router = useRouter();
+  const { roadMapId } = useParams();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -31,17 +29,16 @@ const RoadMapPage = () => {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  }, [setIsMobile, setIsSidebarOpen]);
 
   useEffect(() => {
     const fetchRoadmap = async () => {
         try {
-          const roadmapId = localStorage.getItem("roadMapId"); 
-          if (!roadmapId) {
+          if (!roadMapId) {
             throw new Error("Roadmap ID não encontrado");
           }
     
-          const response = await fetch(`http://localhost:3005/user/${roadmapId}/roadmap`, {
+          const response = await fetch(`http://localhost:3005/user/${roadMapId}/roadmap`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json", 
@@ -63,12 +60,11 @@ const RoadMapPage = () => {
         } catch (error) {
           console.error("Erro ao carregar roadmap:", error);
           alert(error.message);
-          //router.push("/login"); 
         }
       };
     
       fetchRoadmap();
-  }, [router, setRoadmap]);
+  }, [roadMapId, setRoadmap]);
 
   const handleCheckboxChange = (index: number) => {
     setRoadmapData(prev => {
@@ -89,33 +85,7 @@ const RoadMapPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex relative overflow-x-hidden">
-      {/* Comentado: Overlay da sidebar em dispositivos móveis */}
-      {/* {isMobile && isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-40"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )} */}
-
-      {/* Comentado: Renderização da sidebar */}
-      {/* <Sidebar
-        isMobile={isMobile}
-        isSidebarOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
-        progress={roadmapData.progress} // Passa o progresso para o Sidebar
-      /> */}
-
       <div className="flex-1 p-4 md:p-8">
-        {/* Comentado: Botão para abrir a sidebar em dispositivos móveis */}
-        {/* {isMobile && !isSidebarOpen && (
-          <button
-            onClick={() => setIsSidebarOpen(true)}
-            className="mb-4 p-2 bg-white rounded-lg shadow-md hover:bg-gray-50 transition-colors"
-          >
-            <ChevronRight className="w-5 h-5 text-gray-600" />
-          </button>
-        )} */}
-
         <Card className="mx-auto max-w-3xl p-6 space-y-6">
           <header className="border-b pb-4 space-y-2">
             <h1 className="text-3xl font-bold text-gray-900">
@@ -153,9 +123,7 @@ const RoadMapPage = () => {
                     onCheckedChange={() => handleCheckboxChange(index)}
                     className="mt-1.5"
                   />
-                  <div className={`flex-1 text-gray-700 text-lg ${
-                    topic.completed ? 'line-through opacity-50' : ''
-                  }`}>
+                  <div className={`flex-1 text-gray-700 text-lg ${topic.completed ? 'line-through opacity-50' : ''}`}>
                     {topic.topic.split('. ').map((subTopic, subIndex) => (
                       <p key={subIndex}>{subTopic}</p>
                     ))}
@@ -163,7 +131,6 @@ const RoadMapPage = () => {
                 </div>
               ))}
 
-              {/* Seção para renderizar os links e descrições */}
               <div className="mt-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Links e Descrições</h2>
                 {roadmapData.links.map((linkItem, index) => (
