@@ -29,17 +29,22 @@ const PageLogin = () => {
   };
 
   return (
-    <div className="flex h-screen w-screen bg-gray-100 items-center justify-center">
-      <div className="flex w-[900px] h-[500px] bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="flex h-screen w-auto bg-gray-100 items-center justify-center overflow-x-hidden">
+      <div className="flex max-w-[90%] w-full md:w-[900px] h-[500px] bg-white rounded-lg shadow-lg overflow-hidden mx-4">
         {/* Esquerda - Ilustração */}
-        <div className="w-1/2 bg-blue-500 flex flex-col items-center justify-center p-6">
-          <h1 className="text-4xl text-white font-bold mb-6 text-center">Road To Dev</h1>
-          <Image src="/roadmap_img.svg" alt="Illustration" width={256} height={256} className="rounded-lg" />
+        <div className="hidden md:flex md:w-1/2 bg-blue-500 flex-col items-center justify-center p-4">
+          <h1 className="text-3xl md:text-4xl text-white font-bold mb-4 text-center">Road To Dev</h1>
+          <Image 
+            src="/roadmap_img.svg" 
+            alt="Illustration" 
+            width={256} 
+            height={256} 
+            className="rounded-lg max-w-full h-auto"
+          />
         </div>
 
         {/* Direita - Formulário */}
-        <div className="w-1/2 p-8 flex flex-col justify-center items-center bg-white shadow-md rounded-r-lg">
-          <h2 className="text-2xl font-semibold text-blue-600 text-center mb-6">Faça seu login!</h2>
+        <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-center items-center bg-white">          <h2 className="text-2xl font-semibold text-blue-600 text-center mb-6">Faça seu login!</h2>
           <form onSubmit={handleSubmit} className="w-full">
             <div className="mb-4">
               <input
