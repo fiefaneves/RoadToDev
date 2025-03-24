@@ -185,7 +185,7 @@ const UsersController = {
                 service: "gmail",
                 auth: {
                     user: process.env.EMAIL_USER, // email de envio
-                    pass: 'zfol lxny eoau airc', // senha do email de envio
+                    pass: process.env.EMAIL_PASS, // senha do email de envio
                 },
             });
 
