@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Button } from "@/Components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import useResetPassword from "@/hooks/useResetPassword";
@@ -39,6 +40,7 @@ const ResetPassword = ({ params }: { params: { token: string } }) => {
     }
 
     setError(null);
+    setSuccessMessage(null);
 
     try {
       await resetPassword(params.token, newPassword);
@@ -56,11 +58,11 @@ const ResetPassword = ({ params }: { params: { token: string } }) => {
   };
 
   return (
-    <div className="flex h-screen w-screen bg-gray-100 items-center justify-center">
-      <div className="flex w-[850px] h-[500px] bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="font-sans flex h-screen w-screen bg-gray-100 items-center justify-center p-4">
+      <div className="flex w-full max-w-[850px] h-[500px] bg-white rounded-lg shadow-lg overflow-hidden flex-col md:flex-row">
         {/* Esquerda - Formulário */}
-        <div className="w-1/2 p-8 flex flex-col justify-center items-center bg-white shadow-md rounded-r-lg">
-          <h2 className="text-2xl font-semibold text-blue-600 text-center mb-6">Redefinir Senha</h2>
+        <div className="w-full md:w-1/2 p-8 flex flex-col justify-center items-center bg-white shadow-md rounded-r-lg">
+          <h2 className="text-2xl font-semibold text-blue-800 text-center mb-6">Redefinir Senha</h2>
           <p className="text-center text-gray-600 mb-4">
             Insira sua nova senha abaixo.
           </p>
@@ -104,7 +106,7 @@ const ResetPassword = ({ params }: { params: { token: string } }) => {
                 </div>
               )}
             </div>
-            <div className="mb-4">
+            <div className="mb-4 relative"> {/* Adicionado relative aqui */}
               <input
                 type="password"
                 placeholder="Confirmar Nova Senha"
@@ -123,9 +125,10 @@ const ResetPassword = ({ params }: { params: { token: string } }) => {
                 </span>
               )}
             </div>
-            <button
+            <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-500 py-3 rounded-md font-semibold text-lg text-white shadow-lg transition-all hover:scale-[1.02] hover:from-blue-700 hover:to-blue-600 active:scale-95"
+              className="w-full bg-gradient-to-r from-purple-600 to-blue-500 py-3 rounded-md font-semibold text-lg text-white shadow-lg transition-all hover:scale-[1.02] hover:from-purple-700 hover:to-blue-600 active:scale-95"
+              disabled={loading}
               aria-label="Redefinir senha"
             >
               {loading ? (
@@ -150,23 +153,23 @@ const ResetPassword = ({ params }: { params: { token: string } }) => {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  "Redefinindo..."
+                  Redefinindo...
                 </div>
               ) : (
                 "Redefinir Senha"
               )}
-            </button>
+            </Button>
             <p className="text-center text-sm mt-4" aria-label="Voltar para o login">
               <Link href="/login" className="text-blue-500 font-bold hover:underline">Voltar para o Login</Link>
             </p>
           </form>
         </div>
 
-        {/* Direita - Ilustração */}
-          <div className="w-1/2 bg-blue-500 flex flex-col items-center justify-center p-6">
-            <h1 className="text-4xl text-white font-bold mb-6 text-center">Road To Dev</h1>
-            <Image src="../roadmap_img.svg" alt="Illustration" width={256} height={256} className="rounded-lg" />
-          </div>
+        {/* Direita - Ilustração (oculta em telas pequenas) */}
+        <div className="hidden md:flex w-1/2 bg-gradient-to-b from-purple-600 to-blue-500 flex-col items-center justify-center p-6">
+          <h1 className="text-4xl text-white font-bold mb-6 text-center">Road To Dev</h1>
+          <Image src="/roadmap_img.svg" alt="Illustration" width={256} height={256} className="rounded-lg" />
+        </div>
       </div>
     </div>
   );
