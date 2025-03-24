@@ -313,6 +313,19 @@ const UsersController = {
         }catch(error){
             res.status(500).json({message: "Problema ao deletar roadmap", erro: error.message })
         }
+    },
+
+    async listarRoadmaps(req, res) {
+        try {
+            const userId = req.params.id;
+            const usuario = await user.findById(userId).populate('roadmaps');
+            if (!usuario) {
+                return res.status(404).json({ message: "Usuário não encontrado" });
+            }
+            res.status(200).json({ roadmaps: usuario.roadmaps });
+        } catch (error) {
+            res.status(500).json({ message: "Erro ao buscar roadmaps", error: error.message });
+        }
     }
 
 };
