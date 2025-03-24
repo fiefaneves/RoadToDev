@@ -4,11 +4,16 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/Components/ui/button";
 import { useRouter } from "next/navigation";
+import { useRoadMap } from "../../app/RoadMapContext";
+import Image from "next/image";
+import Link from "next/link";
 import Sidebar from "@/Components/sidebar";
 import { FiChevronRight } from "react-icons/fi";
 
 const GenerateRoadMapPage = () => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
@@ -53,10 +58,11 @@ const GenerateRoadMapPage = () => {
   }
 
   const onSubmit = async (data: FormData) => {
-    const queryDescription = `${data.name} quer aprender ${data.technology} na área de ${data.interest} com experiência ${data.experience}, quero que você gere um texto com 8 tópicos (detalhando-os)  e separe-os com um 'enter'`;
+    const queryDescription = `${data.name} quer aprender ${data.technology} na área de ${data.interest} com experiência ${data.experience}, quero que você gere um texto com 8 tópicos (detalhando-os) e separe-os com um 'enter'`;
     
     console.log("Query description:", queryDescription);
     setLoading(true);
+    setError(null);
   
     try {
       const userId = localStorage.getItem("userId");
@@ -71,7 +77,7 @@ const GenerateRoadMapPage = () => {
       console.log("Status da resposta:", response.status);
       console.log(userId);
       if (!response.ok) {
-        throw new Error("Failed to generate roadmap");
+        throw new Error("Falha ao gerar o roadmap!");
       }
   
       const result = await response.json();
@@ -85,13 +91,14 @@ const GenerateRoadMapPage = () => {
       }
     } catch (error) {
       console.error("Erro:", error);
-      alert("Ocorreu um erro ao gerar o roadmap");
+      setError("Ocorreu um erro ao gerar o roadmap. Tente novamente.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
+
     <div className="min-h-screen flex relative overflow-x-hidden">
       {userId && (
         <Sidebar
