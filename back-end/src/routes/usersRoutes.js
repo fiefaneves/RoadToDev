@@ -19,6 +19,7 @@ const routes = (app) => {
     app.get("/user/roadmap/:id/progresso", authMiddleware, UsersController.encontraProgressoRoadmap);
     app.get("/user/:id/roadmap", authMiddleware, UsersController.encontraRoadmap);
     app.get("/user/:id", authMiddleware, UsersController.encontraUsuario);
+    app.get("/user/:id/roadmaps", authMiddleware, UsersController.listarRoadmaps);
     app.get("/users", authMiddleware, UsersController.listarUsuarios);
     
     app.put("/user/roadmap/:roadMapId/atualizar-progresso", authMiddleware, UsersController.atualizarProgresso);

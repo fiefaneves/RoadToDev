@@ -1,13 +1,13 @@
 'use client';
 
-import { useRoadMap } from "../RoadMapContext";
+import { useRoadMap } from "../../RoadMapContext";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { Checkbox } from "@/Components/ui/checkbox";
 import { Card } from "@/Components/ui/card";
-// import Sidebar from "@/Components/sidebar"; // Comentado: Importação da sidebar
 import { Progress } from "@/Components/ui/progress";
-import { ChevronRight } from "lucide-react";
+import Sidebar from "@/Components/sidebar";
+import { FiChevronRight } from "react-icons/fi";
 
 const RoadMapPage = () => {
   const { setRoadmap } = useRoadMap();
@@ -16,10 +16,11 @@ const RoadMapPage = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [roadmapData, setRoadmapData] = useState({ 
     topics: [], 
-    progress: 0 ,
-    links: [] // Adicione um estado para armazenar os links e descrições
+    progress: 0,
+    links: [] 
   });
-  const router = useRouter();
+  const { roadMapId } = useParams();
+  const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
 
   useEffect(() => {
     const checkMobile = () => {
@@ -36,12 +37,11 @@ const RoadMapPage = () => {
   useEffect(() => {
     const fetchRoadmap = async () => {
         try {
-          const roadmapId = localStorage.getItem("roadMapId"); 
-          if (!roadmapId) {
+          if (!roadMapId) {
             throw new Error("Roadmap ID não encontrado");
           }
     
-          const response = await fetch(`http://localhost:3005/user/${roadmapId}/roadmap`, {
+          const response = await fetch(`http://localhost:3005/user/${roadMapId}/roadmap`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json", 
@@ -63,58 +63,78 @@ const RoadMapPage = () => {
         } catch (error) {
           console.error("Erro ao carregar roadmap:", error);
           alert(error.message);
-          //router.push("/login"); 
         }
       };
     
       fetchRoadmap();
-  }, [router, setRoadmap]);
+  }, [roadMapId, setRoadmap]);
 
-  const handleCheckboxChange = (index: number) => {
-    setRoadmapData(prev => {
-      const updatedTopics = [...prev.topics]; // Cria uma cópia dos tópicos
-      updatedTopics[index].completed = !updatedTopics[index].completed; // Alterna o estado "completed"
+  const handleCheckboxChange = async (index: number) => {
+    const updatedTopics = roadmapData.topics.map((topic, i) => 
+      i === index ? { ...topic, completed: !topic.completed } : topic
+    );
 
-      // Calcula o novo progresso
-      const completedCount = updatedTopics.filter(topic => topic.completed).length;
-      const newProgress = Math.round((completedCount / updatedTopics.length) * 100);
+    const completedCount = updatedTopics.filter(topic => topic.completed).length;
+    const newProgress = (completedCount / updatedTopics.length) * 100;
 
-      return {
-        ...prev, // Mantém as outras propriedades do estado
-        topics: updatedTopics, // Atualiza os tópicos
-        progress: newProgress // Atualiza o progresso
-      };
-    });
+    setRoadmapData(prev => ({
+      ...prev,
+      topics: updatedTopics,
+      progress: newProgress
+    }));
+
+    try {
+      const response = await fetch(`http://localhost:3005/user/roadmap/${roadMapId}/atualizar-progresso`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({ topics: updatedTopics }) 
+      });
+
+      if (!response.ok) throw new Error("Erro ao atualizar progresso");
+
+      const sidebarProgressEvent = new CustomEvent('updateSidebarProgress', {
+        detail: { roadMapId, newProgress }
+      });
+      window.dispatchEvent(sidebarProgressEvent);
+      
+    } catch (error) {
+      console.error("Erro ao atualizar progresso:", error);
+      setRoadmapData(prev => ({
+        ...prev,
+        topics: prev.topics.map((topic, i) => 
+          i === index ? { ...topic, completed: !topic.completed } : topic
+        ),
+        progress: prev.progress
+      }));
+    }
+  };
+
+  const formatProgress = (progress) => {
+    return progress % 1 === 0 ? progress.toFixed(0) : progress.toFixed(1);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex relative overflow-x-hidden">
-      {/* Comentado: Overlay da sidebar em dispositivos móveis */}
-      {/* {isMobile && isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-40"
-          onClick={() => setIsSidebarOpen(false)}
+      {userId && (
+        <Sidebar
+          isMobile={isMobile}
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+          userId={userId}
         />
-      )} */}
-
-      {/* Comentado: Renderização da sidebar */}
-      {/* <Sidebar
-        isMobile={isMobile}
-        isSidebarOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
-        progress={roadmapData.progress} // Passa o progresso para o Sidebar
-      /> */}
-
-      <div className="flex-1 p-4 md:p-8">
-        {/* Comentado: Botão para abrir a sidebar em dispositivos móveis */}
-        {/* {isMobile && !isSidebarOpen && (
+      )}
+      <div className={`flex-1 p-4 md:p-8 relative ${isMobile ? 'w-full' : ''}`}>
+        {isMobile && !isSidebarOpen && (
           <button
             onClick={() => setIsSidebarOpen(true)}
-            className="mb-4 p-2 bg-white rounded-lg shadow-md hover:bg-gray-50 transition-colors"
+            className="fixed left-4 top-20 z-30 p-2 bg-white rounded-lg shadow-md"
           >
-            <ChevronRight className="w-5 h-5 text-gray-600" />
+            <FiChevronRight className="w-5 h-5 text-gray-600" />
           </button>
-        )} */}
+        )}
 
         <Card className="mx-auto max-w-3xl p-6 space-y-6">
           <header className="border-b pb-4 space-y-2">
@@ -128,7 +148,7 @@ const RoadMapPage = () => {
                 style={{ backgroundColor: '#f0f0f0', transition: 'all 0.3s' }}
               />
               <span className="text-gray-600 font-medium min-w-[100px]">
-                Progresso: {roadmapData.progress}%
+                Progresso: {formatProgress(roadmapData.progress)}%
               </span>
             </div>
           </header>
@@ -153,9 +173,7 @@ const RoadMapPage = () => {
                     onCheckedChange={() => handleCheckboxChange(index)}
                     className="mt-1.5"
                   />
-                  <div className={`flex-1 text-gray-700 text-lg ${
-                    topic.completed ? 'line-through opacity-50' : ''
-                  }`}>
+                  <div className={`flex-1 text-gray-700 text-lg ${topic.completed ? 'line-through opacity-50' : ''}`}>
                     {topic.topic.split('. ').map((subTopic, subIndex) => (
                       <p key={subIndex}>{subTopic}</p>
                     ))}
@@ -163,7 +181,6 @@ const RoadMapPage = () => {
                 </div>
               ))}
 
-              {/* Seção para renderizar os links e descrições */}
               <div className="mt-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Links e Descrições</h2>
                 {roadmapData.links.map((linkItem, index) => (

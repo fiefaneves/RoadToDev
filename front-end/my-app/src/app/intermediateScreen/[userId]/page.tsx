@@ -9,7 +9,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import Sidebar from "@/Components/sidebar";
 import { FiChevronRight } from "react-icons/fi";
 import useFetchUserData from '@/hooks/useFetchUserData';
-import Link from 'next/link'
+import useFetchRoadmaps from '@/hooks/useFetchRoadmaps';
+import Link from 'next/link';
 
 export default function ProfileScreen() {
   const { userId } = useParams();
@@ -17,6 +18,7 @@ export default function ProfileScreen() {
   const [isMobile, setIsMobile] = useState(false);
 
   const { userData, loading, error } = useFetchUserData(userId as string);
+  const { roadmaps, loading: roadmapsLoading, error: roadmapsError } = useFetchRoadmaps(userId as string);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -30,8 +32,12 @@ export default function ProfileScreen() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading || roadmapsLoading) return <div>Loading...</div>;
+  if (error || roadmapsError) return <div>Error: {error || roadmapsError}</div>;
+
+  const overallProgress = roadmaps.length > 0
+    ? (roadmaps.reduce((acc, roadmap) => acc + roadmap.progress, 0) / roadmaps.length).toFixed(2)
+    : 0;
 
   return (
     <div className="min-h-screen bg-gray-50 flex relative overflow-x-hidden">
@@ -39,7 +45,7 @@ export default function ProfileScreen() {
         isMobile={isMobile}
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
-        roadmaps={userData?.roadmaps || []}
+        userId={userId as string}
       />
 
       <div className={`flex-1 p-4 md:p-8 relative ${isMobile ? 'w-full' : ''}`}>
@@ -67,10 +73,10 @@ export default function ProfileScreen() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm font-medium">
                   <span className="text-gray-600">Overall Progress</span>
-                  <span className="text-gray-600">{userData?.progress || 0}%</span>
+                  <span className="text-gray-600">{overallProgress}%</span>
                 </div>
                 <Progress 
-                  value={userData?.progress || 0} 
+                  value={parseFloat(overallProgress)} 
                   className="h-3 bg-gray-200"
                 />
               </div>
@@ -90,9 +96,12 @@ export default function ProfileScreen() {
           </section>
 
           <div className="border-t pt-6">
-            <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-500 py-6 text-lg font-semibold text-white shadow-lg transition-all hover:scale-[1.02] hover:from-blue-700 hover:to-blue-600 active:scale-95">
-              <Link href="/forms">Generate Roadmap →</Link>
-            </Button>
+            <Link href="/forms">            
+              <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-500 py-6 text-lg font-semibold text-white shadow-lg transition-all hover:scale-[1.02] hover:from-blue-700 hover:to-blue-600 active:scale-95">
+                Generate Roadmap → 
+              </Button>
+            </Link>
+
           </div>
         </Card>
       </div>
