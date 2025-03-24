@@ -87,7 +87,7 @@ const SignUpPage = () => {
         <div className="w-full md:w-1/2 p-8 flex flex-col justify-center items-center bg-white shadow-md rounded-r-lg">
           {/* Cabeçalho */}
           <div className="text-center mb-6">
-            <h2 className="text-3xl md:text-4xl font-bold text-blue-800 mb-2">
+            <h2 className="text-3xl md:text-3xl font-bold text-blue-800 mb-2">
               Gerar Roadmap
             </h2>
             <p className="text-gray-600 text-sm md:text-lg">
