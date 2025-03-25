@@ -79,7 +79,7 @@ export default function Sidebar({
 
           <div className="space-y-6 flex-1 overflow-y-auto">
             <h2 className="font-semibold text-sm whitespace-nowrap text-gray-700">
-              Roadmap Progress
+              Meus Roadmaps
             </h2>
             
             {roadmaps.slice().reverse().map((roadmap, index) => (
