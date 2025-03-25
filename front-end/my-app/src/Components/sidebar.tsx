@@ -35,6 +35,7 @@ export default function Sidebar({
       }
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         setShowModal(false);
+        setSelectedRoadmap(null);
       }
     };
 
@@ -89,6 +90,7 @@ export default function Sidebar({
       console.error('Erro na deleção:', error);
       alert(error instanceof Error ? error.message : 'Erro desconhecido');
       setShowModal(false);
+      setSelectedRoadmap(null);
     }
   };
 
@@ -174,11 +176,14 @@ export default function Sidebar({
                     className="h-2 bg-gray-200"
                   />
                 </button>
-                {selectedRoadmap === roadmap._id && (
+                {selectedRoadmap === roadmap._id && !showModal && (
                   <div ref={menuRef} className="absolute top-8 right-0 bg-white border rounded shadow-lg z-10">
                     <button 
                       className="block px-4 py-2 text-sm text-red-600 hover:bg-red-100"
-                      onClick={() => setShowModal(true)}
+                      onClick={() => {
+                        setShowModal(true)
+                        
+                      }}
                     >
                       Deletar
                     </button>
@@ -201,6 +206,7 @@ export default function Sidebar({
                 onClick={() => {
                   setShowModal(false);
                   setDeletingRoadmapId(null);
+                  setSelectedRoadmap(null);
                 }}
               >
                 Cancelar
