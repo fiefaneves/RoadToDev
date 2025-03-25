@@ -28,6 +28,7 @@ export default function Sidebar({
 
   const menuRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -38,16 +39,29 @@ export default function Sidebar({
         setShowModal(false);
         setSelectedRoadmap(null);
       }
+      if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+        if (editingRoadmapId) {
+          handleEditRoadmapName(editingRoadmapId, newRoadmapName);
+        }
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [editingRoadmapId, newRoadmapName]);
+
+  useEffect(() => {
+    if (editingRoadmapId && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [editingRoadmapId]);
 
   const handleRoadmapClick = (roadmapId: string) => {
-    router.push(`/roadMap/${roadmapId}`);
+    if (!editingRoadmapId) {
+      router.push(`/roadMap/${roadmapId}`);
+    }
   };
 
   const handleDeleteRoadmap = async (roadmapId: string) => {
@@ -139,6 +153,12 @@ export default function Sidebar({
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && editingRoadmapId) {
+      handleEditRoadmapName(editingRoadmapId, newRoadmapName);
+    }
+  };
+
   useEffect(() => {
     const handleUpdateSidebarProgress = (event: CustomEvent) => {
       const { roadMapId, newProgress } = event.detail;
@@ -205,17 +225,21 @@ export default function Sidebar({
                   onClick={() => handleRoadmapClick(roadmap._id)}
                 >
                   <div className="flex justify-between items-center text-sm whitespace-nowrap">
-                    {editingRoadmapId === roadmap._id ? (
-                      <input
-                        type="text"
-                        value={newRoadmapName}
-                        onChange={(e) => setNewRoadmapName(e.target.value)}
-                        onBlur={() => handleEditRoadmapName(roadmap._id, newRoadmapName)}
-                        className="truncate text-gray-600"
-                      />
-                    ) : (
-                      <span className="truncate text-gray-600">{roadmap.name}</span>
-                    )}
+                    <div className="flex-1">
+                      {editingRoadmapId === roadmap._id ? (
+                        <input
+                          ref={inputRef}
+                          type="text"
+                          value={newRoadmapName}
+                          onChange={(e) => setNewRoadmapName(e.target.value)}
+                          onKeyDown={handleKeyDown}
+                          onClick={(e) => e.stopPropagation()}
+                          className="truncate text-gray-600 bg-transparent border-none outline-none w-full"
+                        />
+                      ) : (
+                        <span className="truncate text-gray-600">{roadmap.name}</span>
+                      )}
+                    </div>
                     <button 
                       className="ml-2 p-2 opacity-0 group-hover:opacity-100 transition-opacity"
                       onClick={(e) => {
@@ -256,6 +280,7 @@ export default function Sidebar({
               )}
             </div>
           ))}
+
           </div>
         </div>
       </div>
