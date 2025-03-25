@@ -62,7 +62,7 @@ const GenerateRoadMapPage = () => {
 
     Cada tópico deve seguir este formato:
     
-    [Nome do Tópico]
+    1. [Nome do Tópico]
     Conceitos principais
     
     Os tópicos devem estar separados por uma linha em branco (duplo ENTER) para garantir a correta divisão do texto.
@@ -154,9 +154,10 @@ const GenerateRoadMapPage = () => {
                 <option value="backend">Backend</option>
                 <option value="fullstack">Fullstack</option>
                 <option value="ux/ui design">UX/UI Design</option>
-                <option value="data analyst">Data analyst</option>
-                <option value="cyber security">Cyber security</option>
-                <option value="project manager">Project manager</option>
+                <option value="analista de dados">Analista de dados</option>
+                <option value="cybersegurança">Cybersegurança</option>
+                <option value="gestão de projeto">Gestão de projeto</option>
+                <option value="engenharia de prompt">Engenharia de Prompt</option>
               </select>
               {errors.interest && (
                 <p className="text-sm text-red-500 mt-1">{errors.interest.message}</p>
@@ -173,9 +174,9 @@ const GenerateRoadMapPage = () => {
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 transition-colors"
               >
                 <option value="">Selecione</option>
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
+                <option value="beginner">Iniciante</option>
+                <option value="intermediate">Intermediário</option>
+                <option value="advanced">Avançado</option>
               </select>
               {errors.experience && (
                 <p className="text-sm text-red-500 mt-1">{errors.experience.message}</p>
@@ -192,13 +193,32 @@ const GenerateRoadMapPage = () => {
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 transition-colors"
               >
                 <option value="">Selecione</option>
+                <option value="python">Python</option>
+                <option value="javascript">JavaScript</option>
                 <option value="react">React</option>
+                <option value="angular">Angular</option>
                 <option value="node">Node.js</option>
+                <option value="express">Express</option>
+                <option value="django">Django</option>
+                <option value="flask">Flask</option>
                 <option value="typescript">TypeScript</option>
+                <option value="java">Java</option>
+                <option value="csharp">C#</option>
+                <option value="go">Go</option>
+                <option value="rust">Rust</option>
+                <option value="html">HTML</option>
                 <option value="css">CSS</option>
+                <option value="tailwind">Tailwind CSS</option>
+                <option value="bootstrap">Bootstrap</option>
                 <option value="sql">SQL</option>
-                <option value="engenharia de prompt">Engenharia de Prompt</option>
-                <option value="git e github ">Git e github</option>
+                <option value="mongodb">MongoDB</option>
+                <option value="postgresql">PostgreSQL</option>
+                <option value="mysql">MySQL</option>
+                <option value="docker">Docker</option>
+                <option value="kubernetes">Kubernetes</option>
+                <option value="aws">AWS</option>
+                <option value="azure">Azure</option>
+                <option value="git e github">Git e GitHub</option>
               </select>
               {errors.technology && (
                 <p className="text-sm text-red-500 mt-1">{errors.technology.message}</p>
