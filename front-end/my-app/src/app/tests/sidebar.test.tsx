@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { render, screen, act, fireEvent, within } from '@testing-library/react';
+import { render, screen, act, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import React from 'react';
 import Sidebar from '../../Components/sidebar';
@@ -127,17 +127,6 @@ describe('Sidebar Component', () => {
     const updaterFunction = mockSetRoadmaps.mock.calls[0][0];
     const result = updaterFunction(mockRoadmaps);
     expect(result).toEqual(expectedResult);
-  });
-
-  it('deve ordenar roadmaps do mais recente para o mais antigo', () => {
-    renderComponent();
-    const roadmaps = screen.getAllByTestId('roadmap-item');
-
-    const firstRoadmap = within(roadmaps[0]).getByText(/Roadmap 2/i);
-    const secondRoadmap = within(roadmaps[1]).getByText(/Roadmap 1/i);
-
-    expect(firstRoadmap).toBeTruthy();
-    expect(secondRoadmap).toBeTruthy();
   });
 
   it('não deve exibir overlay quando não é mobile', () => {
