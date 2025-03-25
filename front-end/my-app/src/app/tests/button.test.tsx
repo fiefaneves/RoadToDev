@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import React from 'react';
-import { render, screen} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Button } from '../../Components/ui/button';
 import { describe, it, expect } from 'vitest';
 
@@ -12,5 +12,4 @@ describe('Button', () => {
     const button = screen.getByText(/Clique aqui/i);
     expect(button).not.toBeNull();
   });
-
 });

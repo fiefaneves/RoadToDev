@@ -1,9 +1,10 @@
 'use client';
 
+import React from 'react';
 import { Progress } from "./ui/progress";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import useFetchRoadmaps from '@/hooks/useFetchRoadmaps';
+import useFetchRoadmaps from '../hooks/useFetchRoadmaps';
 import { useEffect } from 'react';
 
 interface SidebarProps {
@@ -50,6 +51,7 @@ export default function Sidebar({
     <>
       {isMobile && isSidebarOpen && (
         <div 
+          data-testid="sidebar-overlay"
           className="fixed inset-0 bg-black/50 z-40"
           onClick={() => setIsSidebarOpen(false)}
         />
@@ -66,6 +68,7 @@ export default function Sidebar({
         <div className="flex flex-col h-full p-4">
           {isMobile && (
             <button 
+              data-testid="toggle-sidebar"
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               className="mb-6 p-2 hover:bg-gray-100 rounded-lg self-end transition-colors duration-200"
             >
@@ -84,6 +87,7 @@ export default function Sidebar({
             
             {roadmaps.slice().reverse().map((roadmap, index) => (
               <button 
+                data-testid="roadmap-item"
                 key={roadmap._id}
                 className="space-y-2 min-w-fit w-full text-left"
                 onClick={() => handleRoadmapClick(roadmap._id)}
