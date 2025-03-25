@@ -9,11 +9,17 @@ interface FormData {
   number: string;
 }
 
+interface ApiResponse {
+  success: boolean;
+  error?: string;
+  message?: string;
+}
+
 const useCreateAccount = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const createAccount = async (formData: FormData) => {
+  const createAccount = async (formData: FormData): Promise<ApiResponse> => {
     setLoading(true);
 
     try {
@@ -25,18 +31,24 @@ const useCreateAccount = () => {
       });
 
       console.log("Resposta do servidor:", response);
-
+      
+      const data = await response.json();
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Erro na resposta do servidor:", errorText);
-        throw new Error("Erro ao criar conta");
+        return { success: false, error: data.message || "Erro ao criar conta" };
       }
+      //   const errorText = await response.text();
+      //   console.error("Erro na resposta do servidor:", errorText);
+      //   throw new Error("Erro ao criar conta");
+      // }
 
-      alert("Conta criada com sucesso!");
-      router.push("/");
+      // alert("Conta criada com sucesso!");
+      // router.push("/");
+
+      return { success: true, message: "Conta criada com sucesso!" };
     } catch (error) {
       console.error("Erro ao criar conta:", error);
-      alert("Falha ao criar conta. Tente novamente.");
+      return { success: false, error: "Erro ao criar conta. Tente novamente." };
+      // alert("Falha ao criar conta. Tente novamente.");
     } finally {
       setLoading(false);
     }
