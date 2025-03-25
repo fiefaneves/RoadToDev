@@ -28,36 +28,50 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <RoadMapProvider>
           <div className="min-h-screen flex flex-col bg-gray-100">
-            <header className="bg-blue-500 shadow-md w-[100%]">	
+            <header className="bg-gradient-to-r from-purple-600 to-blue-500 shadow-lg w-full">
               <div className="w-full px-4 py-4 flex justify-between items-center">
-                <div>
+                <div className="flex items-center space-x-3">
                   <Image
                     width={30}
                     height={30}
                     src="/RoadToDev_icon.svg"
                     alt="RoadToDev Icon"
                   />
+                  <h1 className="text-white text-xl font-semibold drop-shadow-md">Road To Dev</h1>
                 </div>
-                <nav className="flex space-x-4 ml-auto">
-                  <Link href="/" className="text-white">Login</Link>
-                  <Link href="/create_account" className="text-white">Create account</Link>
+                <nav className="flex space-x-6">
+                  <Link href="/" className="text-white font-medium hover:text-purple-300 transition-colors duration-200 hover:underline"
+                  >
+                  Login
+                  </Link>
+                  <Link href="/create_account" className="text-white font-medium hover:text-purple-300 transition-colors duration-200 hover:underline"
+                  >
+                  Criar conta
+                  </Link>
                   {userId && (
-                    <Link href={`/intermediateScreen/${userId}`}>
+                    <Link href={`/intermediateScreen/${userId}`}
+                    className="hover:opacity-80 transition-opacity"
+                    >
                       <Image
-                        width={20}
-                        height={20}
+                        width={24}
+                        height={24}
                         src="/userIcon.svg"
                         alt="User Icon"
+                        className="drop-shadow-md"
                       />
                     </Link>
                   )}
                 </nav>
               </div>
             </header>
-            <main className="flex-grow">{children}</main>
-            <div className="bg-neutral-500 h-[1px]"></div>
-            <footer className="text-neutral-700 text-center py-2 mt-auto">
-              <p>All rights reserved by...</p>
+            <main className="flex-grow pb-8">{children}</main>
+            <div className="h-px bg-gradient-to-r from-transparent via-purple-300 to-transparent"></div>
+            <footer className="bg-gradient-to-r from-purple-50 to-blue-50 py-4 mt-auto">
+              <div className="max-w-7xl mx-auto px-6">
+                <p className="text-gray-600 text-sm text-center">
+                  © {new Date().getFullYear()} Road To Dev. Todos os direitos reservados.
+                </p>
+              </div>
             </footer>
           </div>
         </RoadMapProvider>
