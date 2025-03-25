@@ -17,7 +17,11 @@ const UsersController = {
         
         try {
             const roadQuery = await generate(queryDescription); //Generate the roadmap
-            const topics = roadQuery.split("\n\n"); //Turn the answer in an array of topics
+            let topics = roadQuery.split("\n\n"); //Turn the answer in an array of topics
+            while (topics.length < 8) {
+                await generate(queryDescription);
+                topics = roadQuery.split("\n\n");
+            }
             const arrayTopics = [];
             for(let i = 0; i < topics.length; i++){ //Fill the array that goes into the DB
                 arrayTopics.push({ topic: topics[i], completed: false })
@@ -176,13 +180,11 @@ const UsersController = {
             const usuario = await user.findOne({ email });
             if (!usuario) return res.status(400).json({ message: "Email não encontrado!" });
         
-            // Gera um token temporário para resetar a senha
             const resetToken = crypto.randomBytes(20).toString("hex");
             usuario.resetPasswordToken = resetToken;
-            usuario.resetPasswordExpires = Date.now() + 3600000; // 1 hora de validade
+            usuario.resetPasswordExpires = Date.now() + 3600000;
             await usuario.save();
 
-            // Configurações para envio de email
             const transporter = nodemailer.createTransport({
                 service: "gmail",
                 auth: {
@@ -191,7 +193,6 @@ const UsersController = {
                 },
             });
 
-            // Enviar email
             const mailOptions = {
                 to: usuario.email,
                 from: process.env.EMAIL_USER,
