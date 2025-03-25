@@ -23,10 +23,11 @@ export default function Sidebar({
   const { roadmaps, loading, error, setRoadmaps } = useFetchRoadmaps(userId);
   const [selectedRoadmap, setSelectedRoadmap] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [editingRoadmapId, setEditingRoadmapId] = useState<string | null>(null);
+  const [newRoadmapName, setNewRoadmapName] = useState<string>('');
 
   const menuRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-  const [deletingRoadmapId, setDeletingRoadmapId] = useState<string | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -50,7 +51,6 @@ export default function Sidebar({
   };
 
   const handleDeleteRoadmap = async (roadmapId: string) => {
-    setDeletingRoadmapId(null);
     console.log('Iniciando deleção do roadmap:', roadmapId);
     try {
       const token = localStorage.getItem('token');
@@ -91,6 +91,51 @@ export default function Sidebar({
       alert(error instanceof Error ? error.message : 'Erro desconhecido');
       setShowModal(false);
       setSelectedRoadmap(null);
+    }
+  };
+
+  const handleEditRoadmapName = async (roadmapId: string, newName: string) => {
+    console.log('Iniciando edição do nome do roadmap:', roadmapId);
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token de autenticação não encontrado');
+      }
+
+      console.log('Enviando requisição para:', `http://localhost:3005/user/roadmap/editar-nome`);
+      
+      const response = await fetch(`http://localhost:3005/user/roadmap/editar-nome`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ roadMapId: roadmapId, newName })
+      });
+
+      console.log('Resposta recebida:', response);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Erro ${response.status}: ${errorText}`);
+      }
+
+      console.log('Edição bem sucedida, atualizando estado...');
+      
+      setRoadmaps(prev => {
+        const newRoadmaps = prev.map(roadmap => 
+          roadmap._id === roadmapId ? { ...roadmap, name: newName } : roadmap
+        );
+        console.log('Novos roadmaps:', newRoadmaps);
+        return newRoadmaps;
+      });
+
+      setEditingRoadmapId(null);
+      
+    } catch (error) {
+      console.error('Erro na edição:', error);
+      alert(error instanceof Error ? error.message : 'Erro desconhecido');
+      setEditingRoadmapId(null);
     }
   };
 
@@ -151,7 +196,7 @@ export default function Sidebar({
               Meus Roadmaps
             </h2>
             
-            {roadmaps.slice().reverse().map((roadmap, index) => (
+            {roadmaps.slice().reverse().map((roadmap) => (
               <div key={roadmap._id} className="relative group hover:bg-gray-100 p-2 rounded-lg transition-colors duration-200">
                 <div
                   role="button"
@@ -160,7 +205,17 @@ export default function Sidebar({
                   onClick={() => handleRoadmapClick(roadmap._id)}
                 >
                   <div className="flex justify-between items-center text-sm whitespace-nowrap">
-                    <span className="truncate text-gray-600">Roadmap {roadmaps.length - index}</span>
+                    {editingRoadmapId === roadmap._id ? (
+                      <input
+                        type="text"
+                        value={newRoadmapName}
+                        onChange={(e) => setNewRoadmapName(e.target.value)}
+                        onBlur={() => handleEditRoadmapName(roadmap._id, newRoadmapName)}
+                        className="truncate text-gray-600"
+                      />
+                    ) : (
+                      <span className="truncate text-gray-600">{roadmap.name}</span>
+                    )}
                     <button 
                       className="ml-2 p-2 opacity-0 group-hover:opacity-100 transition-opacity"
                       onClick={(e) => {
@@ -178,20 +233,29 @@ export default function Sidebar({
                   />
                 </div>
                 {selectedRoadmap === roadmap._id && !showModal && (
-                  <div ref={menuRef} className="absolute top-8 right-0 bg-white border rounded shadow-lg z-10">
+                <div ref={menuRef} className="absolute top-8 right-0 bg-white border rounded-md shadow-lg z-10 min-w-[85px]">
+                  <div className="space-y-1 p-1">
                     <button 
-                      className="block px-4 py-2 text-sm text-red-600 hover:bg-red-100"
+                      className="w-full px-2 py-1.5 text-sm text-gray-700 hover:bg-blue-50 rounded-sm transition-colors duration-200 text-center"
                       onClick={() => {
-                        setShowModal(true)
-                        
+                        setEditingRoadmapId(roadmap._id);
+                        setNewRoadmapName(roadmap.name);
+                        setSelectedRoadmap(null);
                       }}
+                    >
+                      Renomear
+                    </button>
+                    <button 
+                      className="w-full px-2 py-1.5 text-sm text-red-600 hover:bg-red-50 rounded-sm transition-colors duration-200 text-center"
+                      onClick={() => setShowModal(true)}
                     >
                       Deletar
                     </button>
                   </div>
-                )}
-              </div>
-            ))}
+                </div>
+              )}
+            </div>
+          ))}
           </div>
         </div>
       </div>
