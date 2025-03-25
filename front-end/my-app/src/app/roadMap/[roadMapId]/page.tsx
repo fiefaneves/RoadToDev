@@ -117,7 +117,7 @@ const RoadMapPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex relative overflow-x-hidden">
+    <div className="min-h-screen bg-gray-100 flex relative overflow-x-hidden">
       {userId && (
         <Sidebar
           isMobile={isMobile}
@@ -130,22 +130,21 @@ const RoadMapPage = () => {
         {isMobile && !isSidebarOpen && (
           <button
             onClick={() => setIsSidebarOpen(true)}
-            className="fixed left-4 top-20 z-30 p-2 bg-white rounded-lg shadow-md"
+            className="fixed left-4 top-20 z-30 p-2 bg-white rounded-lg shadow-md hover:bg-gray-50 transition-colors"
           >
-            <FiChevronRight className="w-5 h-5 text-gray-600" />
+            <FiChevronRight className="w-5 h-5 text-purple-600" />
           </button>
         )}
 
-        <Card className="mx-auto max-w-3xl p-6 space-y-6">
-          <header className="border-b pb-4 space-y-2">
-            <h1 className="text-3xl font-bold text-gray-900">
-              Roadmap
+        <Card className="mx-auto max-w-3xl p-6 space-y-6 shadow-xl rounded.xl bg-white">
+          <header className="border-b border-gray-200 pb-4 space-y-4">
+            <h1 className="text-3xl font-bold text-gray-700">
+              Meu Roadmap
             </h1>
             <div className="flex items-center gap-4">
               <Progress 
                 value={roadmapData.progress} 
-                className="h-3 bg-gray-200 flex-1"
-                style={{ backgroundColor: '#f0f0f0', transition: 'all 0.3s' }}
+                className="h-3 bg-gray-200 flex-1 [&>div]:bg-gradient-to-r [&>div]:from-purple-600 [&>div]:to-blue-500"
               />
               <span className="text-gray-600 font-medium min-w-[100px]">
                 Progresso: {formatProgress(roadmapData.progress)}%
@@ -154,50 +153,69 @@ const RoadMapPage = () => {
           </header>
 
           {isLoading ? (
-            <div className="text-center py-8 space-y-2">
-              <div className="animate-pulse space-y-4">
-                {[...Array(5)].map((_, i) => (
-                  <div key={i} className="h-4 bg-gray-200 rounded w-full" />
-                ))}
-              </div>
+            <div className="space-y-4 py-4">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="flex items-center gap-4 p-4">
+                  <div className="h-5 w-5 bg-gray-200 rounded animate-pulse"></div>
+                  <div className="h-4 bg-gray-200 rounded w-full animate-pulse"></div>
+                </div>
+              ))}
             </div>
           ) : (
             <>
+            <div className="space-y-3">
               {roadmapData.topics.map((topic, index) => (
                 <div 
                   key={index}
-                  className="flex items-start gap-4 p-4 rounded-lg border hover:border-gray-300 transition-all"
+                  className={`flex items-start gap-4 p-4 rounded-lg border border-gray-200 hover:border-purple-300 transition-all ${
+                    topic.completed ? 'bg-gray-50' : 'bg-white'
+                  }`}
                 >
                   <Checkbox
                     checked={topic.completed || false}
                     onCheckedChange={() => handleCheckboxChange(index)}
-                    className="mt-1.5"
+                    className="mt-0.5 h-5 w-5 border-gray-300 data-[state=checked]:bg-purple-600 data-[state=checked]:border-purple-600"
                   />
-                  <div className={`flex-1 text-gray-700 text-lg ${topic.completed ? 'line-through opacity-50' : ''}`}>
+                  <div className={`flex-1 text-gray-700 ${
+                    topic.completed ? 'line-through text-gray-400' : 'text-gray-700'
+                  }`}>
                     {topic.topic.split('. ').map((subTopic, subIndex) => (
-                      <p key={subIndex}>{subTopic}</p>
+                      <p key={subIndex} className="mb-1 last:mb-0">{subTopic}</p>
                     ))}
                   </div>
                 </div>
               ))}
+            </div>
 
+            {roadmapData.links.length > 0 && (
               <div className="mt-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Links e Descrições</h2>
-                {roadmapData.links.map((linkItem, index) => (
-                  <div key={index} className="mb-4">
-                    <p className="text-lg font-semibold text-gray-800">{linkItem.descricao}</p>
-                    <a href={linkItem.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                      {linkItem.link}
-                    </a>
-                  </div>
-                ))}
+                <h2 className="text-xl font-bold text-gray-700 mb-4">Recursos Úteis</h2>
+                <div className="space-y-3">
+                  {roadmapData.links.map((linkItem, index) => (
+                    <div 
+                      key={index} 
+                      className="p-4 rounded-lg border border-gray-200 bg-gray-50 hover:border-purple-300 transition-colors"
+                    >
+                      <p className="text-gray-700 mb-2">{linkItem.descricao}</p>
+                      <a 
+                        href={linkItem.link} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="text-purple-600 hover:text-purple-800 hover:underline transition-colors"
+                      >
+                        {linkItem.link}
+                      </a>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </>
-          )}
-        </Card>
-      </div>
+            )}
+          </>
+        )}
+      </Card>
     </div>
-  );
+  </div>
+);
 };
 
 export default RoadMapPage;

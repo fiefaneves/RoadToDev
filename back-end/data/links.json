@@ -26,7 +26,7 @@
         ]
     },
     {
-        "tema": "cyber security",
+        "tema": "cybersegurança",
         "recursos": [
             {
                 "link": "https://training.fortinet.com/",
@@ -39,7 +39,7 @@
         ]
     },
     {
-        "tema": "data analyst",
+        "tema": "analista de dados",
         "recursos": [
             {
                 "link": "https://www.coursera.org/professional-certificates/google-data-analytics",
@@ -61,7 +61,7 @@
         ]
     },
     {
-        "tema": "project manager",
+        "tema": "gestão de projetos",
         "recursos": [
             {
                 "link": "https://scrumguides.org/",
@@ -83,6 +83,19 @@
             {
                 "link": "https://www.theodinproject.com/",
                 "descricao": "Curso completo e gratuito de desenvolvimento fullstack com JavaScript, Node.js, Express, MongoDB e React."
+            }
+        ]
+    },
+    {
+        "tema": "engenharia de prompt",
+        "recursos": [
+            {
+                "link": "https://promptengineering.org/",
+                "descricao": "Artigos, pesquisas e guias sobre engenharia de prompt."
+            },
+            {
+                "link": "https://platform.openai.com/docs/guides/prompt-engineering",
+                "descricao": "Guia oficial da OpenAI com técnicas avançadas para escrever prompts eficientes."
             }
         ]
     }

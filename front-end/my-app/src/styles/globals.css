@@ -60,6 +60,9 @@ font-family: "Poppins", sans-serif;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+  .shadcn-progress-indicator {
+    background: linear-gradient(to right, #7c3aed, #3b82f6) !important;
+  }
 }
 
 @layer base {

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Button } from "../Components/ui/button";
 import useLogin from '@/hooks/useLogin';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 
@@ -12,6 +13,7 @@ const PageLogin = () => {
     password: ""
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { login, loading } = useLogin();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +23,14 @@ const PageLogin = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await login(loginFormData);
+    setIsSubmitting(true);
+    try {
+      await login(loginFormData);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const togglePasswordVisibility = () => {
@@ -29,65 +38,97 @@ const PageLogin = () => {
   };
 
   return (
-    <div className="flex h-screen w-auto bg-gray-100 items-center justify-center overflow-x-hidden">
-      <div className="flex max-w-[90%] w-full md:w-[900px] h-[500px] bg-white rounded-lg shadow-lg overflow-hidden mx-4">
+    <div className="flex h-screen w-auto bg-gray-100 items-center justify-center overflow-x-hidden p-4">
+      <div className="flex max-w-[90%] w-full md:w-[900px] h-[500px] bg-white rounded-xl shadow-xl overflow-hidden mx-4">
         {/* Esquerda - Ilustração */}
-        <div className="hidden md:flex md:w-1/2 bg-blue-500 flex-col items-center justify-center p-4">
-          <h1 className="text-3xl md:text-4xl text-white font-bold mb-4 text-center">Road To Dev</h1>
+        <div className="hidden md:flex md:w-1/2 bg-gradient-to-b from-purple-600 to-blue-500 flex-col items-center justify-center p-8">
+          <h1 className="text-3xl md:text-4xl text-white font-bold mb-6 text-center drop-shadow-md">Road To Dev</h1>
           <Image 
             src="/roadmap_img.svg" 
             alt="Illustration" 
             width={256} 
             height={256} 
-            className="rounded-lg max-w-full h-auto"
+            className="rounded-lg max-w-full h-aut drop-shadow-md"
           />
         </div>
 
         {/* Direita - Formulário */}
-        <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-center items-center bg-white">          <h2 className="text-2xl font-semibold text-blue-600 text-center mb-6">Faça seu login!</h2>
+        <div className="w-full md:w-1/2 p-8 flex flex-col justify-center items-center bg-white shadow-md rounded-r-xl">  
+        <div className="mb-6 text-center">
+          <h2 className="text-2xl font-semibold text-blue-700">Faça seu login!</h2>
+          <p className="text-gray-600 mt-1">Acesse sua conta para continuar</p>
+        </div>
           <form onSubmit={handleSubmit} className="w-full">
             <div className="mb-4">
               <input
                 name="email"
                 type="email"
                 placeholder="E-mail"
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-700"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 transition-colors"
                 onChange={handleChange}
                 required
-              />
+                disabled={isSubmitting}
+                />
             </div>
             <div className="mb-4 relative">
               <input
                 name="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Senha"
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-700"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 transition-colors"
                 onChange={handleChange}
                 required
-              />
+                disabled={isSubmitting}
+                />
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-600"
-              >
-                {showPassword ? <FiEyeOff /> : <FiEye />}
+                className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-purple-600 transition-colors"
+                disabled={isSubmitting}
+                >
+                {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
               </button>
             </div>
-            <div className="flex justify-between items-center text-sm mb-4">
-              <div>
-                <input type="checkbox" id="remember" className="mr-2" />
-                <label htmlFor="remember">Lembre de mim</label>
+            <div className="flex justify-between items-center text-sm mb-6">
+              <div className="flex items-center">
+                <input 
+                  type="checkbox" 
+                  id="remember" 
+                  className="mr-2 h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+                  disabled={isSubmitting}
+                  />
+                <label htmlFor="remember" className="text-gray-600">Lembre de mim</label>
               </div>
-              <a href="/esqueci-senha" className="text-blue-500 hover:underline">Esqueceu a Senha?</a>
+              <Link 
+                href="/esqueci-senha" 
+                className="text-purple-600 hover:text-purple-800 hover:underline transition-colors"
+                >
+                  Esqueceu a Senha?
+              </Link>
             </div>
-            <button
+            <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-blue-600 to-blue-500 py-3 rounded-md font-semibold text-lg text-white shadow-lg transition-all hover:scale-[1.02] hover:from-blue-700 hover:to-blue-600 active:scale-95"
+              disabled={isSubmitting || loading}
+              className="w-full bg-gradient-to-r from-purple-600 to-blue-500 py-3 rounded-lg font-semibold text-lg text-white shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] hover:from-purple-700 hover:to-blue-600 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              {loading ? "Entrando..." : "Entrar"}
-            </button>
-            <p className="text-center text-sm mt-4">
-              Não tem uma conta? <Link href="/create_account" className="text-blue-500 font-bold hover:underline">Cadastre-se</Link>
+              {loading || isSubmitting ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Entrando...
+                </span>
+              ) : "Entrar"}
+            </Button>
+            <p className="text-center text-sm mt-6 text-gray-600">
+              Não tem uma conta? {" "}
+              <Link 
+                href="/create_account" 
+                className="text-purple-600 font-semibold hover:text-purple-800 hover:underline transition-colors"
+                >
+                  Cadastre-se
+              </Link>
             </p>
           </form>
         </div>
