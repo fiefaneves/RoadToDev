@@ -58,7 +58,16 @@ const GenerateRoadMapPage = () => {
   }
 
   const onSubmit = async (data: FormData) => {
-    const queryDescription = `Quero aprender ${data.technology} na área de ${data.interest} com experiência ${data.experience}, quero que você gere um texto com 8 tópicos (detalhando-os) e separe-os com um 'enter'`;
+    const queryDescription = `Quero aprender ${data.technology} na área de ${data.interest} com experiência ${data.experience}. Gere um plano de estudos com exatamente 8 tópicos que devo estudar.
+
+    Cada tópico deve seguir este formato:
+    
+    [Nome do Tópico]
+    Conceitos principais
+    
+    Os tópicos devem estar separados por uma linha em branco (duplo ENTER) para garantir a correta divisão do texto.
+    Não explique os conceitos, apenas liste os conteúdos que devo estudar em cada tópico.
+    `;
     
     console.log("Query description:", queryDescription);
     setLoading(true);
