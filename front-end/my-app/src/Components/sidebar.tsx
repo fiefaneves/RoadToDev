@@ -153,7 +153,8 @@ export default function Sidebar({
             
             {roadmaps.slice().reverse().map((roadmap, index) => (
               <div key={roadmap._id} className="relative group hover:bg-gray-100 p-2 rounded-lg transition-colors duration-200">
-                <button 
+                <div
+                  role="button"
                   data-testid="roadmap-item"
                   className="space-y-2 min-w-fit w-full text-left"
                   onClick={() => handleRoadmapClick(roadmap._id)}
@@ -175,7 +176,7 @@ export default function Sidebar({
                     value={roadmap.progress} 
                     className="h-2 bg-gray-200"
                   />
-                </button>
+                </div>
                 {selectedRoadmap === roadmap._id && !showModal && (
                   <div ref={menuRef} className="absolute top-8 right-0 bg-white border rounded shadow-lg z-10">
                     <button 
