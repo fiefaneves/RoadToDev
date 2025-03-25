@@ -189,7 +189,7 @@ const RoadMapPage = () => {
 
             {roadmapData.links.length > 0 && (
               <div className="mt-8">
-                <h2 className="text-xl font-bold text-gray-800 mb-4">Recursos Úteis</h2>
+                <h2 className="text-xl font-bold text-gray-700 mb-4">Recursos Úteis</h2>
                 <div className="space-y-3">
                   {roadmapData.links.map((linkItem, index) => (
                     <div 
