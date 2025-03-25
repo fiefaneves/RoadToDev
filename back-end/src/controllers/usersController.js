@@ -326,8 +326,27 @@ const UsersController = {
         } catch (error) {
             res.status(500).json({ message: "Erro ao buscar roadmaps", error: error.message });
         }
-    }
+    },
 
+    async editarNomeRoadmap(req, res) {
+        const { roadMapId, newName } = req.body;
+
+        try {
+            const updatedRoadmap = await roadMap.findByIdAndUpdate(
+                roadMapId,
+                { name: newName },
+                { new: true }
+            );
+
+            if (!updatedRoadmap) {
+                return res.status(404).json({ message: "Roadmap não encontrado" });
+            }
+
+            res.status(200).json({ message: "Nome do roadmap atualizado com sucesso", roadmap: updatedRoadmap });
+        } catch (error) {
+            res.status(500).json({ message: "Erro ao atualizar nome do roadmap", error: error.message });
+        }
+    }
 };
 
 export default UsersController;
