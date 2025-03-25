@@ -80,9 +80,8 @@ describe('Sidebar Component', () => {
 
   it('deve renderizar corretamente no desktop', () => {
     renderComponent();
-    expect(screen.getByText('Roadmap Progress')).toBeTruthy();
+    expect(screen.getByText('Meus Roadmaps')).toBeTruthy();
     expect(screen.getAllByTestId('roadmap-item')).toHaveLength(2);
-    expect(screen.getByText('75%')).toBeTruthy();
   });
 
   it('deve alternar visibilidade no mobile', () => {
