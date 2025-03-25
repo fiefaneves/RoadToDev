@@ -32,7 +32,6 @@ describe('Sidebar Component', () => {
   const mockSetIsSidebarOpen = vi.fn();
   const mockRouterPush = vi.fn();
   const useFetchRoadmapsMock = vi.mocked(useFetchRoadmaps);
-  const mockUseFetchRoadmaps = useFetchRoadmapsMock.default;
   
   beforeEach(() => {
     (useRouter as Mock).mockReturnValue({ push: mockRouterPush });
