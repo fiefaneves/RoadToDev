@@ -72,6 +72,11 @@ export default function Sidebar({
         return newRoadmaps;
       });
 
+      const nameUpdateEvent = new CustomEvent('updateRoadmapName', {
+        detail: { roadMapId: roadmapId, newName }
+      });
+      window.dispatchEvent(nameUpdateEvent);
+
       setEditingRoadmapId(null);
       
     } catch (error) {
