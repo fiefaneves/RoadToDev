@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Progress } from "./ui/progress";
 import { ChevronLeft, ChevronRight, MoreVertical } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -23,12 +23,63 @@ export default function Sidebar({
   const { roadmaps, loading, error, setRoadmaps } = useFetchRoadmaps(userId);
   const [selectedRoadmap, setSelectedRoadmap] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [deletingRoadmapId, setDeletingRoadmapId] = useState<string | null>(null);
   const [editingRoadmapId, setEditingRoadmapId] = useState<string | null>(null);
   const [newRoadmapName, setNewRoadmapName] = useState<string>('');
 
   const menuRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleEditRoadmapName = useCallback(async (roadmapId: string, newName: string) => {
+    if (newName.length > 40) {
+      alert('O nome do roadmap não pode exceder 40 caracteres.');
+      return;
+    }
+
+    console.log('Iniciando edição do nome do roadmap:', roadmapId);
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token de autenticação não encontrado');
+      }
+
+      console.log('Enviando requisição para:', `http://localhost:3005/user/roadmap/editar-nome`);
+      
+      const response = await fetch(`http://localhost:3005/user/roadmap/editar-nome`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ roadMapId: roadmapId, newName })
+      });
+
+      console.log('Resposta recebida:', response);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Erro ${response.status}: ${errorText}`);
+      }
+
+      console.log('Edição bem sucedida, atualizando estado...');
+      
+      setRoadmaps(prev => {
+        const newRoadmaps = prev.map(roadmap => 
+          roadmap._id === roadmapId ? { ...roadmap, name: newName } : roadmap
+        );
+        console.log('Novos roadmaps:', newRoadmaps);
+        return newRoadmaps;
+      });
+
+      setEditingRoadmapId(null);
+      
+    } catch (error) {
+      console.error('Erro na edição:', error);
+      alert(error instanceof Error ? error.message : 'Erro desconhecido');
+      setEditingRoadmapId(null);
+    }
+  }, [setRoadmaps]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -50,7 +101,7 @@ export default function Sidebar({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [editingRoadmapId, newRoadmapName]);
+  }, [editingRoadmapId, newRoadmapName, handleEditRoadmapName]);
 
   useEffect(() => {
     if (editingRoadmapId && inputRef.current) {
@@ -108,54 +159,15 @@ export default function Sidebar({
     }
   };
 
-  const handleEditRoadmapName = async (roadmapId: string, newName: string) => {
-    console.log('Iniciando edição do nome do roadmap:', roadmapId);
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('Token de autenticação não encontrado');
-      }
-
-      console.log('Enviando requisição para:', `http://localhost:3005/user/roadmap/editar-nome`);
-      
-      const response = await fetch(`http://localhost:3005/user/roadmap/editar-nome`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ roadMapId: roadmapId, newName })
-      });
-
-      console.log('Resposta recebida:', response);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Erro ${response.status}: ${errorText}`);
-      }
-
-      console.log('Edição bem sucedida, atualizando estado...');
-      
-      setRoadmaps(prev => {
-        const newRoadmaps = prev.map(roadmap => 
-          roadmap._id === roadmapId ? { ...roadmap, name: newName } : roadmap
-        );
-        console.log('Novos roadmaps:', newRoadmaps);
-        return newRoadmaps;
-      });
-
-      setEditingRoadmapId(null);
-      
-    } catch (error) {
-      console.error('Erro na edição:', error);
-      alert(error instanceof Error ? error.message : 'Erro desconhecido');
-      setEditingRoadmapId(null);
-    }
-  };
-
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && editingRoadmapId) {
       handleEditRoadmapName(editingRoadmapId, newRoadmapName);
+    }
+  };
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value.length <= 40) {
+      setNewRoadmapName(event.target.value);
     }
   };
 
@@ -191,8 +203,8 @@ export default function Sidebar({
       <div className={`
         bg-white border-r transition-transform duration-300 ease-in-out
         ${isMobile ? 
-          `fixed left-0 top-0 z-50 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} w-64`
-          : `static w-64 translate-x-0`
+          `fixed left-0 top-0 z-50 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} w-64 h-full`
+          : `static w-64 min-h-screen`
         }
         shadow-lg
       `}>
@@ -227,15 +239,18 @@ export default function Sidebar({
                   <div className="flex justify-between items-center text-sm whitespace-nowrap">
                     <div className="flex-1">
                       {editingRoadmapId === roadmap._id ? (
-                        <input
-                          ref={inputRef}
-                          type="text"
-                          value={newRoadmapName}
-                          onChange={(e) => setNewRoadmapName(e.target.value)}
-                          onKeyDown={handleKeyDown}
-                          onClick={(e) => e.stopPropagation()}
-                          className="truncate text-gray-600 bg-transparent border-none outline-none w-full"
-                        />
+                        <div className="relative">
+                          <input
+                            ref={inputRef}
+                            type="text"
+                            value={newRoadmapName}
+                            onChange={handleNameChange}
+                            onKeyDown={handleKeyDown}
+                            onClick={(e) => e.stopPropagation()}
+                            className="truncate text-gray-600 bg-transparent border-b-2 border-gray-300 outline-none w-full pr-12"
+                            maxLength={20}
+                          />
+                        </div>
                       ) : (
                         <span className="truncate text-gray-600">{roadmap.name}</span>
                       )}
