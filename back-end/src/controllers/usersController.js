@@ -31,7 +31,9 @@ const UsersController = {
             const links = await exibirLinksPorTema(tema); // Chame a função para obter os links
             console.log("Links gerados:", links); // Adicione este log para verificar os links
 
-            const newRoadMap = await roadMap.create({ user: userId, topics: arrayTopics, links })//Create the roadmap
+            const roadmapName = `${tema}`;
+
+            const newRoadMap = await roadMap.create({ user: userId, topics: arrayTopics, links, name: `${tema}` })//Create the roadmap
             userRoadmap.roadmaps.push(newRoadMap._id);//Add the roadmap to the user in DB
             await userRoadmap.save();//Save the changes 
             res.status(201).json({ response: roadQuery, topics: arrayTopics, roadMapId: newRoadMap._id }); // Send the response
