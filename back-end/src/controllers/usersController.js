@@ -35,7 +35,9 @@ const UsersController = {
             const links = await exibirLinksPorTema(tema); // Chame a função para obter os links
             console.log("Links gerados:", links); // Adicione este log para verificar os links
 
-            const newRoadMap = await roadMap.create({ user: userId, topics: arrayTopics, links })//Create the roadmap
+            const roadmapName = `${tema}`;
+
+            const newRoadMap = await roadMap.create({ user: userId, topics: arrayTopics, links, name: `${tema}` })//Create the roadmap
             userRoadmap.roadmaps.push(newRoadMap._id);//Add the roadmap to the user in DB
             await userRoadmap.save();//Save the changes 
             res.status(201).json({ response: roadQuery, topics: arrayTopics, roadMapId: newRoadMap._id }); // Send the response
@@ -327,8 +329,27 @@ const UsersController = {
         } catch (error) {
             res.status(500).json({ message: "Erro ao buscar roadmaps", error: error.message });
         }
-    }
+    },
 
+    async editarNomeRoadmap(req, res) {
+        const { roadMapId, newName } = req.body;
+
+        try {
+            const updatedRoadmap = await roadMap.findByIdAndUpdate(
+                roadMapId,
+                { name: newName },
+                { new: true }
+            );
+
+            if (!updatedRoadmap) {
+                return res.status(404).json({ message: "Roadmap não encontrado" });
+            }
+
+            res.status(200).json({ message: "Nome do roadmap atualizado com sucesso", roadmap: updatedRoadmap });
+        } catch (error) {
+            res.status(500).json({ message: "Erro ao atualizar nome do roadmap", error: error.message });
+        }
+    }
 };
 
 export default UsersController;
