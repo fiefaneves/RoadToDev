@@ -8,9 +8,11 @@ const routes = (app) => {
 
     app.use(cors({
       origin: [
-        "https://road-to-dev.vercel.app/",
+        "https://road-to-dev.vercel.app",
         "http://localhost:3000/"
-      ]
+      ],
+      methods: ["GET", "POST", "PUT", "DELETE"],
+      credentials: true
     }));
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
