@@ -64,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </nav>
               </div>
             </header>
-            <main className="flex-grow pb-8">{children}</main>
+            <main className="flex-grow ">{children}</main>
             <div className="h-px bg-gradient-to-r from-transparent via-purple-300 to-transparent"></div>
             <footer className="bg-gradient-to-r from-purple-50 to-blue-50 py-4 mt-auto">
               <div className="max-w-7xl mx-auto px-6">

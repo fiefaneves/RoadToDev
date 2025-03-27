@@ -17,10 +17,17 @@ const RoadMapPage = () => {
   const [roadmapData, setRoadmapData] = useState({ 
     topics: [], 
     progress: 0,
-    links: [] 
+    links: [],
+    name: ""
   });
   const { roadMapId } = useParams();
-  const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
+  const [userId, setUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setUserId(localStorage.getItem('userId'));
+    }
+  }, []);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -33,6 +40,20 @@ const RoadMapPage = () => {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  useEffect(() => {
+    const handleNameUpdate = (event: CustomEvent) => {
+      if (event.detail.roadMapId === roadMapId) {
+        setRoadmapData(prev => ({
+          ...prev,
+          name: event.detail.newName
+        }));
+      }
+    };
+
+    window.addEventListener('updateRoadmapName', handleNameUpdate);
+    return () => window.removeEventListener('updateRoadmapName', handleNameUpdate);
+  }, [roadMapId]);
 
   useEffect(() => {
     const fetchRoadmap = async () => {
@@ -139,7 +160,7 @@ const RoadMapPage = () => {
         <Card className="mx-auto max-w-3xl p-6 space-y-6 shadow-xl rounded.xl bg-white">
           <header className="border-b border-gray-200 pb-4 space-y-4">
             <h1 className="text-3xl font-bold text-gray-700">
-              Meu Roadmap
+              {roadmapData.name || "Meu roadmap"}
             </h1>
             <div className="flex items-center gap-4">
               <Progress 

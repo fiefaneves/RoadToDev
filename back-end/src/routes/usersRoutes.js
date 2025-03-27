@@ -23,6 +23,7 @@ const routes = (app) => {
     app.get("/users", authMiddleware, UsersController.listarUsuarios);
     
     app.put("/user/roadmap/:roadMapId/atualizar-progresso", authMiddleware, UsersController.atualizarProgresso);
+    app.put("/user/roadmap/editar-nome", UsersController.editarNomeRoadmap)
   
     app.delete("/user/roadmap/:id", authMiddleware, UsersController.deleteRoadMap);
   }
