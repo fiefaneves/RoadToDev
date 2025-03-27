@@ -25,8 +25,15 @@ const SignUpPage = () => {
     },
   });
 
-  const onSubmit = async (data: any) => {
-    const queryDescription = `${data.name} quer aprender ${data.technology} na área de ${data.interest} com experiência ${data.experience}, quero que você gere um texto com 8 tópicos (detalhando-os)   e separe-os com um 'enter'`;
+  interface FormData {
+    name: string;
+    interest: string;
+    experience: string;
+    technology: string;
+  }
+
+  const onSubmit = async (data: FormData) => {
+    const queryDescription = `${data.name} quer aprender ${data.technology} na área de ${data.interest} com experiência ${data.experience}, quero que você gere um texto com 8 tópicos (detalhando-os)  e separe-os com um 'enter'`;
     
     console.log("Query description:", queryDescription);
     setLoading(true);
@@ -74,6 +81,17 @@ const SignUpPage = () => {
       setLoading(false);
     }
   };
+  const handleFetchLinks = async (interest: string) => {
+    try {
+      const response = await fetch(`/links/${interest}`, {
+        method: 'GET',
+      });
+      const result = await response.text();
+      console.log(result);
+    } catch (error) {
+      console.error('Erro ao buscar links:', error);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -108,12 +126,18 @@ const SignUpPage = () => {
               id="interest"
               {...register("interest", { required: "Please select an area of interest" })}
               className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              onChange={(e) => handleFetchLinks(e.target.value)}
             >
               <option value="">Select</option>
               <option value="frontend">Frontend</option>
               <option value="backend">Backend</option>
               <option value="fullstack">Fullstack</option>
-              <option value="design">Design</option>
+              <option value="ux/ui design">UX/UI Design</option>
+              <option value="data analyst">Data analyst</option>
+              <option value="cyber security">Cyber security</option>
+              <option value="project manager">Project manager</option>
+
+
             </select>
             {errors.interest && (
               <p className="text-sm text-red-500 mt-1">{errors.interest.message}</p>

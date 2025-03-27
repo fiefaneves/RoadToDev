@@ -59,6 +59,11 @@ This project is a byproduct of our course through "Desenvolvimento de Software",
 - GPT-3.5-turbo
 - dotenv
 - cors
+- mongoDB
+- mongoose
+- bcrypt
+- jsonwebtoken
+- nodemailer
 
 ### **AI/External APIs**
 - OpenAI API - chatgpt-3.5-turbo (for recommendations and roadmap generation)
@@ -88,7 +93,7 @@ Ensure you have the following installed:
 3. Install dependencies for the back-end:
     ```bash
    cd ../../back-end
-   npm install cors openai dotenv express
+   npm install cors openai dotenv express mongodb mongoose bcrypt jsonwebtoken
 
 4. Set up environment variables:
     - Create .env file in the back-end directory.
@@ -97,6 +102,9 @@ Ensure you have the following installed:
     
     ```bash
     OPENAI_API_KEY=your_openai_api_key
+    MONGO_DB_KEY=your_mongo_db_key
+    JWT_SECRET=meu_segredo_super_secreto
+    EMAIL_USER='EMAIL_DA_APLICAÇÃO'
 
 ### **Usage**
 
@@ -116,36 +124,65 @@ Ensure you have the following installed:
 ### **Front-End**
 
     frontend/
-    │── .next/                  #next modules
-    │── node_modules/           #nodejs modules
+    │── .next/                              #next modules
+    │── node_modules/                       #nodejs modules
     │── public/                 
     └── src/                    
-        │──app/
+        │── app/
+        │  │── api/
+        │  │  └── generate/
+        │  │── create_account/
+        │  │   └── page/                    #create account screen
+        │  │── intermediateScreen/
+        │  │    └── page/
+        │  │── login/
+        │  │   └──page/
+        │  │── roadMap/
+        │  │   └──page/
         │  │── signUP/
-        │  │   └──page/        #forms
-        │  │── page/           #home page info
-        │  └── layout/         #layout configuration
+        │  │   └──page/                     #forms
+        │  │── test/
+        │  │   └── button.test/
+        │  │   └── fetchRoadmap.test/
+        │  │   └── formatDate.test/
+        │  │── layout/
+        │  │── page/                        #home page info
+        │  │── RoadMapContext/ 
+        │  └── layout/                      #layout configuration
         │── Components/
-        │   └── button/        #sign up button layout
+        │   │── ui/                         #components from shadcn ui
+        │   └── sidebar/
         │── lib/
         │   └── utils/
-        └── styles/
-            └─ globals/        #global css for application styling
+        │── service/
+        │   └── userService/  
+        │── styles/
+        │    └─ globals/                     #global css for application styling
+        └── utils/
+        
                    
 ### **Back-End**
    
     backend/
-    │── node_modules/               #nodejs modules
+    │──data/                                #json with themes, and resources
+    │── node_modules/                       #nodejs modules
     │── src/                    
     │     │── config/
-    │     │   └──open-ai/           #open ai configuration 
+    │     │   │── dbConnection/             #Mongodb configuration
+    │     │   └── open-ai/                  #open ai configuration 
     │     │── controllers/
-    │     │   └── generative/       #description of generate function, wich takes the user input and outputs the roadmap in the texform
+    │     │   │── generative/               #description of generate function, wich takes the user input and outputs the roadmap in the textform
+    │     │   │── linksController/          #describes functions needed to read and filter the user's interests and links 
+    │     │   └── usersController/          #describes functions needed to create and deal with the users login, passwords and roadmaps
+    │     │
+    │     │── models/
+    │     │   │── roadMapModel/             #RoadMap schema
+    │     │   └── usersModel/               #Users schema
     │     └── routes/
-    │         └──usersRoutes/       #call to generate function and creates a route between the form inputs and the AI  
+    │         └── usersRoutes/               #call to generate function and creates a route between the form inputs and the AI  
     │── package-lock                
     │── package                     
-    └── server                      #creates a server and defines the port it is running
+    └── server                              #creates a server and defines the port it is running
 
 ## **Contributing**
 Contributions are welcome!

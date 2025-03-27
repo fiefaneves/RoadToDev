@@ -1,0 +1,102 @@
+[
+    {
+        "tema": "frontend",
+        "recursos": [
+            {
+                "link": "https://www.freecodecamp.org/",
+                "descricao": "Curso gratuito e interativo de desenvolvimento web"
+            },
+            {
+                "link": "https://developer.mozilla.org/en-US/",
+                "descricao": "Documentação oficial de HTML, CSS e JavaScript"
+            }
+        ]
+    },
+    {
+        "tema": "ux/ui design",
+        "recursos": [
+            {
+                "link": "https://www.frontendmentor.io/",
+                "descricao": "Desafios práticos para treinar design e código"
+            },
+            {
+                "link": "https://css-tricks.com/",
+                "descricao": "Dicas e truques para melhorar suas habilidades com CSS"
+            }
+        ]
+    },
+    {
+        "tema": "cybersegurança",
+        "recursos": [
+            {
+                "link": "https://training.fortinet.com/",
+                "descricao": "Plataforma de treinamento da Fortinet, empresa de segurança cibernética"
+            },
+            {
+                "link": "https://tryhackme.com/",
+                "descricao": "Plataforma prática para aprender hacking ético"
+            }
+        ]
+    },
+    {
+        "tema": "analista de dados",
+        "recursos": [
+            {
+                "link": "https://www.coursera.org/professional-certificates/google-data-analytics",
+                "descricao": "Curso oficial do Google sobre análise de dados"
+            },
+            {
+                "link": "https://towardsdatascience.com/",
+                "descricao": "Blog com artigos sobre ciência de dados"
+            }
+        ]
+    },
+    {
+        "tema": "backend",
+        "recursos": [
+            {
+                "link": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side",
+                "descricao": "Introdução ao desenvolvimento backend com explicações sobre servidores, bancos de dados e APIs"
+            }
+        ]
+    },
+    {
+        "tema": "gestão de projetos",
+        "recursos": [
+            {
+                "link": "https://scrumguides.org/",
+                "descricao": "Guia oficial do Scrum, essencial para metodologias ágeis"
+            },
+            {
+                "link": "https://www.coursera.org/professional-certificates/google-project-management",
+                "descricao": "Curso do Google sobre gerenciamento de projetos"
+            }
+        ]
+    },
+    {
+        "tema": "fullstack",
+        "recursos": [
+            {
+                "link": "https://www.freecodecamp.org/",
+                "descricao": "Curso gratuito e interativo de desenvolvimento web"
+            },
+            {
+                "link": "https://www.theodinproject.com/",
+                "descricao": "Curso completo e gratuito de desenvolvimento fullstack com JavaScript, Node.js, Express, MongoDB e React."
+            }
+        ]
+    },
+    {
+        "tema": "engenharia de prompt",
+        "recursos": [
+            {
+                "link": "https://promptengineering.org/",
+                "descricao": "Artigos, pesquisas e guias sobre engenharia de prompt."
+            },
+            {
+                "link": "https://platform.openai.com/docs/guides/prompt-engineering",
+                "descricao": "Guia oficial da OpenAI com técnicas avançadas para escrever prompts eficientes."
+            }
+        ]
+    }
+]
