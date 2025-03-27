@@ -352,4 +352,5 @@ const UsersController = {
     }
 }
 
-ChatBot(); // Executa a função principal
+
+export default UsersController;
