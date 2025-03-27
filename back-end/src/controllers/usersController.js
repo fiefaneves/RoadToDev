@@ -350,6 +350,6 @@ const UsersController = {
             res.status(500).json({ message: "Erro ao atualizar nome do roadmap", error: error.message });
         }
     }
-};
+}
 
-export default UsersController;
+ChatBot(); // Executa a função principal

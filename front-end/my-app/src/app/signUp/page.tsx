@@ -2,9 +2,9 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "../../Components/ui/button";
+import { Button } from "@/Components/ui/button";
 import { useRouter } from "next/navigation";
-import { useRoadMap } from "../../app/RoadMapContext";
+import { useRoadMap } from "../RoadMapContext";
 
 const SignUpPage = () => {
   const [loading, setLoading] = React.useState(false);
@@ -62,6 +62,10 @@ const SignUpPage = () => {
   
       if (result && result.hasOwnProperty("response")) {
         const roadmapDescription = result.response;
+        const formattedRoadmap = roadmapDescription
+          .split("\n")
+          .map((paragraph : string, index : number) => <p key={index} className="mb-4">{paragraph}</p>)
+
         setRoadmap(roadmapDescription);
         console.log("Roadmap atualizado:", roadmapDescription);
         reset();
@@ -173,11 +177,6 @@ const SignUpPage = () => {
               <option value="node">Node.js</option>
               <option value="typescript">TypeScript</option>
               <option value="css">CSS</option>
-              <option value="sql">SQL</option>
-              <option value="engenharia de prompt">Prompt engineering</option>
-              <option value="git e github ">Git e github</option>
-
-
             </select>
             {errors.technology && (
               <p className="text-sm text-red-500 mt-1">{errors.technology.message}</p>
@@ -186,7 +185,7 @@ const SignUpPage = () => {
 
           <div>
             <Button type="submit" className="w-full bg-black text-white">
-              {loading ? "Loading..." : "Sign up"}
+              Sign up
             </Button>
           </div>
         </form>
