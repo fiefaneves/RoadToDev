@@ -48,7 +48,7 @@ const RoadMapPage = () => {
           throw new Error("Roadmap ID não encontrado");
         }
 
-        const response = await fetch(`http://localhost:3005/user/${roadMapId}/roadmap`, {
+        const response = await fetch(`https://roadtodev-production.up.railway.app/user/${roadMapId}/roadmap`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -95,7 +95,7 @@ const RoadMapPage = () => {
     }));
 
     try {
-      const response = await fetch(`http://localhost:3005/user/roadmap/${roadMapId}/atualizar-progresso`, {
+      const response = await fetch(`https://roadtodev-production.up.railway.app/user/roadmap/${roadMapId}/atualizar-progresso`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

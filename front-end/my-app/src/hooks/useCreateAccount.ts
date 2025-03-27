@@ -22,7 +22,7 @@ const useCreateAccount = () => {
 
     try {
       console.log("Enviando dados para o servidor:");
-      const response = await fetch("http://localhost:3005/user", {
+      const response = await fetch("https://roadtodev-production.up.railway.app/user", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

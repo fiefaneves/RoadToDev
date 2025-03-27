@@ -30,7 +30,7 @@ const useFetchUserData = (userId: string) => {
           setLoading(false);
           return;
         }
-        const response = await fetch(`http://localhost:3005/user/${userId}`, {
+        const response = await fetch(`https://roadtodev-production.up.railway.app/user/${userId}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

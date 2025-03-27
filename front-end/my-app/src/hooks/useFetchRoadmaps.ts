@@ -16,7 +16,7 @@ const useFetchRoadmaps = (userId: string) => {
     const fetchRoadmaps = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:3005/user/${userId}/roadmaps`, {
+        const response = await fetch(`https://roadtodev-production.up.railway.app/user/${userId}/roadmaps`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
