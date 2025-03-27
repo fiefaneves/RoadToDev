@@ -37,7 +37,6 @@ const ForgotPassword = () => {
   return (
     <div className="flex h-screen w-auto bg-gray-100 items-center justify-center overflow-x-hidden p-4">
       <div className="flex max-w-[90%] w-full md:w-[900px] h-[500px] bg-white rounded-xl shadow-xl overflow-hidden mx-4">
-        {/* Esquerda - Formulário */}
         <div className="w-full md:w-1/2 p-8 flex flex-col justify-center items-center bg-white shadow-md rounded-l-xl">
           <div className="mb-6 text-center">
             <h2 className="text-2xl font-semibold text-blue-700">Esqueceu sua senha?</h2>
@@ -109,7 +108,6 @@ const ForgotPassword = () => {
           </form>
         </div>
 
-        {/* Direita - Ilustração (oculta em telas pequenas) */}
         <div className="hidden md:flex md:w-1/2 bg-gradient-to-b from-purple-600 to-blue-500 flex-col items-center justify-center p-8">
           <h1 className="text-3xl md:text-4xl text-white font-bold mb-6 text-center drop-shadow-md">Road To Dev</h1>
           <Image 

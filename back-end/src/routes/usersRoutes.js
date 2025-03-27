@@ -1,12 +1,12 @@
-import cors from 'cors'; // Import cors
-import  generate  from '../controllers/generative.js'; // Import controller functions
+import cors from 'cors';
+import  generate  from '../controllers/generative.js';
 import express from 'express'
 import UsersController from '../controllers/usersController.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 
 const routes = (app) => {
 
-    app.use(cors()); // Enable cors 
+    app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
 

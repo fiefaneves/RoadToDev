@@ -9,16 +9,28 @@ import { Progress } from "@/Components/ui/progress";
 import Sidebar from "@/Components/sidebar";
 import { FiChevronRight } from "react-icons/fi";
 
+interface Topic {
+  topic: string;
+  completed: boolean;
+}
+
+interface RoadmapData {
+  topics: Topic[];
+  progress: number;
+  links: { descricao: string; link: string }[];
+  name: string;
+}
+
 const RoadMapPage = () => {
   const { setRoadmap } = useRoadMap();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
-  const [roadmapData, setRoadmapData] = useState({ 
-    topics: [], 
+  const [isMobile] = useState(false);
+  const [roadmapData, setRoadmapData] = useState<RoadmapData>({
+    topics: [],
     progress: 0,
     links: [],
-    name: ""
+    name: "",
   });
   const { roadMapId } = useParams();
   const [userId, setUserId] = useState<string | null>(null);
@@ -30,78 +42,56 @@ const RoadMapPage = () => {
   }, []);
 
   useEffect(() => {
-    const checkMobile = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      if (mobile) setIsSidebarOpen(false);
-    };
+    const fetchRoadmap = async () => {
+      try {
+        if (!roadMapId) {
+          throw new Error("Roadmap ID não encontrado");
+        }
 
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+        const response = await fetch(`http://localhost:3005/user/${roadMapId}/roadmap`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
-  useEffect(() => {
-    const handleNameUpdate = (event: CustomEvent) => {
-      if (event.detail.roadMapId === roadMapId) {
-        setRoadmapData(prev => ({
-          ...prev,
-          name: event.detail.newName
-        }));
+        if (!response.ok) {
+          throw new Error("Erro ao buscar roadmap");
+        }
+
+        const data = await response.json();
+        setRoadmapData(data.roadmap);
+
+        const stepsString = data.roadmap.topics.map((topic: Topic) => topic.topic).join("\n");
+        setRoadmap(stepsString);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Erro ao carregar roadmap:", error);
+
+        if (error instanceof Error) {
+          alert(error.message);
+        } else {
+          alert("Ocorreu um erro desconhecido.");
+        }
       }
     };
 
-    window.addEventListener('updateRoadmapName', handleNameUpdate);
-    return () => window.removeEventListener('updateRoadmapName', handleNameUpdate);
-  }, [roadMapId]);
-
-  useEffect(() => {
-    const fetchRoadmap = async () => {
-        try {
-          if (!roadMapId) {
-            throw new Error("Roadmap ID não encontrado");
-          }
-    
-          const response = await fetch(`http://localhost:3005/user/${roadMapId}/roadmap`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json", 
-              "Authorization": `Bearer ${localStorage.getItem("token")}` 
-            }
-          });
-    
-          if (!response.ok) {
-            throw new Error("Erro ao buscar roadmap");
-          }
-    
-          const data = await response.json(); 
-          setRoadmapData(data.roadmap); 
-    
-          const stepsString = data.roadmap.topics.map(topic => topic.topic).join("\n"); 
-          setRoadmap(stepsString); 
-          setIsLoading(false); 
-    
-        } catch (error) {
-          console.error("Erro ao carregar roadmap:", error);
-          alert(error.message);
-        }
-      };
-    
-      fetchRoadmap();
+    fetchRoadmap();
   }, [roadMapId, setRoadmap]);
 
   const handleCheckboxChange = async (index: number) => {
-    const updatedTopics = roadmapData.topics.map((topic, i) => 
+    const updatedTopics = roadmapData.topics.map((topic, i) =>
       i === index ? { ...topic, completed: !topic.completed } : topic
     );
 
-    const completedCount = updatedTopics.filter(topic => topic.completed).length;
+    const completedCount = updatedTopics.filter((topic) => topic.completed).length;
     const newProgress = (completedCount / updatedTopics.length) * 100;
 
-    setRoadmapData(prev => ({
+    setRoadmapData((prev) => ({
       ...prev,
       topics: updatedTopics,
-      progress: newProgress
+      progress: newProgress,
     }));
 
     try {
@@ -109,31 +99,30 @@ const RoadMapPage = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ topics: updatedTopics }) 
+        body: JSON.stringify({ topics: updatedTopics }),
       });
 
       if (!response.ok) throw new Error("Erro ao atualizar progresso");
 
-      const sidebarProgressEvent = new CustomEvent('updateSidebarProgress', {
-        detail: { roadMapId, newProgress }
+      const sidebarProgressEvent = new CustomEvent("updateSidebarProgress", {
+        detail: { roadMapId, newProgress },
       });
       window.dispatchEvent(sidebarProgressEvent);
-      
     } catch (error) {
       console.error("Erro ao atualizar progresso:", error);
-      setRoadmapData(prev => ({
+      setRoadmapData((prev) => ({
         ...prev,
-        topics: prev.topics.map((topic, i) => 
+        topics: prev.topics.map((topic, i) =>
           i === index ? { ...topic, completed: !topic.completed } : topic
         ),
-        progress: prev.progress
+        progress: prev.progress,
       }));
     }
   };
 
-  const formatProgress = (progress) => {
+  const formatProgress = (progress: number) => {
     return progress % 1 === 0 ? progress.toFixed(0) : progress.toFixed(1);
   };
 

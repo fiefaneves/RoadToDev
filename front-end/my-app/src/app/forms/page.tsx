@@ -4,9 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/Components/ui/button";
 import { useRouter } from "next/navigation";
-import { useRoadMap } from "../../app/RoadMapContext";
-import Image from "next/image";
-import Link from "next/link";
 import Sidebar from "@/Components/sidebar";
 import { FiChevronRight } from "react-icons/fi";
 
@@ -43,7 +40,6 @@ const GenerateRoadMapPage = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      // name: "",
       interest: "",
       experience: "",
       technology: "",
@@ -51,7 +47,6 @@ const GenerateRoadMapPage = () => {
   });
 
   interface FormData {
-    // name: string;
     interest: string;
     experience: string;
     technology: string;
@@ -147,7 +142,7 @@ const GenerateRoadMapPage = () => {
               <select
                 id="interest"
                 {...register("interest", { required: "Selecione uma área de interesse" })}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 transition-colors"
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 transition-colors"
               >
                 <option value="">Selecione</option>
                 <option value="frontend">Frontend</option>
@@ -171,7 +166,7 @@ const GenerateRoadMapPage = () => {
               <select
                 id="experience"
                 {...register("experience", { required: "Selecione seu nível de experiência" })}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 transition-colors"
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 transition-colors"
               >
                 <option value="">Selecione</option>
                 <option value="beginner">Iniciante</option>
@@ -190,7 +185,7 @@ const GenerateRoadMapPage = () => {
               <select
                 id="technology"
                 {...register("technology", { required: "Selecione uma tecnologia" })}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 transition-colors"
+                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-700 transition-colors"
               >
                 <option value="">Selecione</option>
                 <option value="python">Python</option>

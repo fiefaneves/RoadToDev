@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 interface Roadmap {
+  name: string;
   _id: string;
   title: string;
   progress: number;
@@ -26,7 +27,11 @@ const useFetchRoadmaps = (userId: string) => {
         const data = await response.json();
         setRoadmaps(data.roadmaps);
       } catch (error) {
-        setError(error.message);
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Ocorreu um erro desconhecido.");
+        }
       } finally {
         setLoading(false);
       }

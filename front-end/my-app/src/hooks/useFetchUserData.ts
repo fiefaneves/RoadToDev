@@ -41,7 +41,11 @@ const useFetchUserData = (userId: string) => {
         const data: UserData = await response.json();
         setUserData(data);
       } catch (error) {
-        setError(error.message);
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Ocorreu um erro desconhecido.");
+        }
       } finally {
         setLoading(false);
       }

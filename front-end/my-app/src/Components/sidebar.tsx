@@ -177,18 +177,20 @@ export default function Sidebar({
   };
 
   useEffect(() => {
-    const handleUpdateSidebarProgress = (event: CustomEvent) => {
-      const { roadMapId, newProgress } = event.detail;
-      setRoadmaps(prev => 
-        prev.map(roadmap => 
+    const handleUpdateSidebarProgress = (event: Event) => {
+      const customEvent = event as CustomEvent<{ roadMapId: string; newProgress: number }>;
+      const { roadMapId, newProgress } = customEvent.detail;
+  
+      setRoadmaps((prev) =>
+        prev.map((roadmap) =>
           roadmap._id === roadMapId ? { ...roadmap, progress: newProgress } : roadmap
         )
       );
     };
-
-    window.addEventListener('updateSidebarProgress', handleUpdateSidebarProgress);
+  
+    window.addEventListener('updateSidebarProgress', handleUpdateSidebarProgress as EventListener);
     return () => {
-      window.removeEventListener('updateSidebarProgress', handleUpdateSidebarProgress);
+      window.removeEventListener('updateSidebarProgress', handleUpdateSidebarProgress as EventListener);
     };
   }, [setRoadmaps]);
 

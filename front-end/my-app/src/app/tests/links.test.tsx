@@ -2,11 +2,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import axios from 'axios';
 import fs from 'fs/promises';
 
-// Mock modules
 vi.mock('axios');
 vi.mock('fs/promises');
 
-// Type definitions for better type safety
 interface Recurso {
   link: string;
   descricao: string;
@@ -17,7 +15,6 @@ interface LinkCategory {
   recursos: Recurso[];
 }
 
-// Functions to test
 async function carregarLinks(): Promise<LinkCategory[]> {
   try {
       const data = await fs.readFile('./data/links.json', 'utf-8');
@@ -72,7 +69,6 @@ describe('Sistema de Gerenciamento de Links', () => {
     vi.mocked(fs.readFile).mockReset();
     vi.mocked(axios.head).mockReset();
     
-    // Mock console
     vi.spyOn(console, 'log').mockImplementation(() => {});
     vi.spyOn(console, 'error').mockImplementation(() => {});
   });
@@ -181,7 +177,7 @@ describe('Sistema de Gerenciamento de Links', () => {
         categoria.recursos.forEach(recurso => {
           expect(recurso).toHaveProperty('link');
           expect(recurso).toHaveProperty('descricao');
-          expect(recurso.link).toMatch(/^https?:\/\//);  // Fixed regex
+          expect(recurso.link).toMatch(/^https?:\/\//);
           expect(typeof recurso.descricao).toBe('string');
         });
       });
@@ -189,7 +185,3 @@ describe('Sistema de Gerenciamento de Links', () => {
   });
 
 });
-
-//vitest
-//axios
-//jsdom

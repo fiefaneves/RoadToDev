@@ -1,23 +1,22 @@
-import openai from "../config/open-ai.js"; // Importa o cliente da API OpenAI
+import openai from "../config/open-ai.js";
 
 async function generate(queryDescription) {
-    // Verificação para garantir que queryDescription não seja vazio ou nulo
     if (!queryDescription || queryDescription.trim() === "") {
         throw new Error("Descrição da consulta não pode ser vazia.");
     }
 
-    const messages = []; // Cria um array de mensagens
-    messages.push({ role: 'user', content: queryDescription }); // Adiciona a mensagem do usuário ao array
+    const messages = [];
+    messages.push({ role: 'user', content: queryDescription });
 
     try {
         const response = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
             messages: messages,
-        }); // Cria uma conversa
+        });
 
-        const completionText = response.choices[0].message.content; // Obtém o texto gerado
-        messages.push({ role: 'assistant', content: completionText }); // Adiciona a mensagem do assistente ao array
-        return completionText; // Retorna o texto gerado
+        const completionText = response.choices[0].message.content;
+        messages.push({ role: 'assistant', content: completionText });
+        return completionText;
 
     } catch (error) {
         console.error('Erro na API OpenAI:', error.response?.data || error.message);
@@ -25,4 +24,4 @@ async function generate(queryDescription) {
     }
 }
 
-export default generate; // Exporta a função de geração de texto
+export default generate;

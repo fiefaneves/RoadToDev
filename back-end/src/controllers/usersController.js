@@ -1,4 +1,3 @@
-// import openai from '../config/open-ai.js'; // Importa o pacote openai
 import generate from './generative.js';
 import user from "../models/usersModel.js";
 import roadMap from '../models/roadMapModel.js';
@@ -6,46 +5,44 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
-import { exibirLinksPorTema } from './linksController.js'; // Importe a função exibirLinksPorTema
+import { exibirLinksPorTema } from './linksController.js';
 
 
 
 const UsersController = {
     async criarRoadMap(req, res){
-        // Get the answer from the form and send it to the OpenAI API
         const { queryDescription, userId, tema } = req.body;
         
         try {
-            const roadQuery = await generate(queryDescription); //Generate the roadmap
-            let topics = roadQuery.split("\n\n"); //Turn the answer in an array of topics
+            const roadQuery = await generate(queryDescription);
+            let topics = roadQuery.split("\n\n");
             while (topics.length < 8) {
                 await generate(queryDescription);
                 topics = roadQuery.split("\n\n");
             }
             const arrayTopics = [];
-            for(let i = 0; i < topics.length; i++){ //Fill the array that goes into the DB
+            for(let i = 0; i < topics.length; i++){
                 arrayTopics.push({ topic: topics[i], completed: false })
             }
-            const userRoadmap = await user.findById(userId);//Find the user of the roadmap
+            const userRoadmap = await user.findById(userId);
             if(!userRoadmap){
                 throw new Error("Usuario não existe");
             }
 
-            //gere os links com base no tema
-            const links = await exibirLinksPorTema(tema); // Chame a função para obter os links
-            console.log("Links gerados:", links); // Adicione este log para verificar os links
+            const links = await exibirLinksPorTema(tema);
+            console.log("Links gerados:", links);
 
             const roadmapName = `${tema}`;
 
-            const newRoadMap = await roadMap.create({ user: userId, topics: arrayTopics, links, name: `${tema}` })//Create the roadmap
-            userRoadmap.roadmaps.push(newRoadMap._id);//Add the roadmap to the user in DB
-            await userRoadmap.save();//Save the changes 
-            res.status(201).json({ response: roadQuery, topics: arrayTopics, roadMapId: newRoadMap._id }); // Send the response
-            console.log('Roadmap generated successfully'); // Log the generated roadmap
+            const newRoadMap = await roadMap.create({ user: userId, topics: arrayTopics, links, name: `${tema}` })
+            userRoadmap.roadmaps.push(newRoadMap._id);
+            await userRoadmap.save();
+            res.status(201).json({ response: roadQuery, topics: arrayTopics, roadMapId: newRoadMap._id });
+            console.log('Roadmap generated successfully');
             
         } catch (error) {
-            console.error(error); // Log an error
-            res.status(500).json({ message: "An error ocurred", error: error.message }); // Send an error response
+            console.error(error);
+            res.status(500).json({ message: "An error ocurred", error: error.message });
         }
     },
 
@@ -76,23 +73,18 @@ const UsersController = {
             const passwordError = validatePassword(password);
             if (passwordError !== true) return res.status(400).json({ error: passwordError });
             
-            // Check if the email already exists
             const existingEmail = await user.findOne({ email });
             if (existingEmail) return res.status(400).json({ error: "E-mail já cadastrado!" });
         
-            // Check if the user already exists
             const existingUser = await user.findOne({username});
             if(existingUser) return res.status(400).json({message: "Usuário já existe!"});
         
-            // Check if the number already exists
             const existingNumber = await user.findOne({ number });
             if (existingNumber) return res.status(400).json({ error: "Número já cadastrado!" });
             
-            // Hash the password
-            const saltRounds = 10; // Hash security 
+            const saltRounds = 10;
             const hashedPassword = await bcrypt.hash(password, saltRounds);
         
-            // Create a new user
             const newUser = new user({
               name,
               username,
@@ -101,10 +93,8 @@ const UsersController = {
               password: hashedPassword,
             });
         
-            // Save the user to the database
             await newUser.save();
         
-            // Return a success message
             res.status(201).json({ message: "Usuário criado com sucesso!" });
         } catch (error) {
             res.status(500).json({ message: "Erro ao registrar usuário!", error: error.message });
@@ -156,10 +146,7 @@ const UsersController = {
 
         const {email, password} = req.body;
         try{
-
-            //if (!email || !senha) return res.status(400).json({ message: "Preencha todos os campos!" });
-            //const usuario = await user.findOne({ email });
-            
+         
             const usuario = await user.findOne({ email }).select('+password');
             if (!usuario) return res.status(401).json({ message: "Email não encontrado. Faça seu cadastro!" });
             
@@ -188,8 +175,8 @@ const UsersController = {
             const transporter = nodemailer.createTransport({
                 service: "gmail",
                 auth: {
-                    user: process.env.EMAIL_USER, // email de envio
-                    pass: process.env.EMAIL_PASS, // senha do email de envio
+                    user: process.env.EMAIL_USER,
+                    pass: process.env.EMAIL_PASS,
                 },
             });
 

@@ -19,14 +19,8 @@ const useForgotPassword = () => {
         throw new Error(data.message || "Erro ao enviar e-mail de redefinição");
       }
       
-      // alert("E-mail de redefinição enviado com sucesso!");
     } catch (error) {
       throw error;
-      // if (error instanceof Error) {
-      //   alert(error.message);
-      // } else {
-      //   alert("Um erro desconhecido ocorreu. Tente novamente.");
-      // }
     } finally {
       setLoading(false);
     }

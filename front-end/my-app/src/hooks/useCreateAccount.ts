@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 interface FormData {
   name: string;
@@ -17,7 +16,6 @@ interface ApiResponse {
 
 const useCreateAccount = () => {
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const createAccount = async (formData: FormData): Promise<ApiResponse> => {
     setLoading(true);
@@ -36,19 +34,10 @@ const useCreateAccount = () => {
       if (!response.ok) {
         return { success: false, error: data.message || "Erro ao criar conta" };
       }
-      //   const errorText = await response.text();
-      //   console.error("Erro na resposta do servidor:", errorText);
-      //   throw new Error("Erro ao criar conta");
-      // }
-
-      // alert("Conta criada com sucesso!");
-      // router.push("/");
-
       return { success: true, message: "Conta criada com sucesso!" };
     } catch (error) {
       console.error("Erro ao criar conta:", error);
       return { success: false, error: "Erro ao criar conta. Tente novamente." };
-      // alert("Falha ao criar conta. Tente novamente.");
     } finally {
       setLoading(false);
     }
