@@ -190,7 +190,7 @@ const UsersController = {
                     <p>Recebemos uma solicitação para redefinir a senha da sua conta no <strong>Road To Dev</strong>.</p>
                     <p>Para criar uma nova senha, clique no link abaixo:</p>
                     <p>
-                        <a href="http://localhost:3000/mudar-senha/${resetToken}" 
+                        <a href="https://road-to-dev.vercel.app/mudar-senha/${resetToken}" 
                         style="display: inline-block; padding: 10px 20px; background-color: #2563eb; color: #fff; text-decoration: none; border-radius: 5px;">
                         Redefinir Senha
                         </a>
