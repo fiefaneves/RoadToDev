@@ -25,7 +25,7 @@ const RoadMapPage = () => {
   const { setRoadmap } = useRoadMap();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [roadmapData, setRoadmapData] = useState<RoadmapData>({
     topics: [],
     progress: 0,
@@ -39,6 +39,18 @@ const RoadMapPage = () => {
     if (typeof window !== 'undefined') {
       setUserId(localStorage.getItem('userId'));
     }
+  }, []);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (mobile) setIsSidebarOpen(false);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   useEffect(() => {

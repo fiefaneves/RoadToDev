@@ -26,7 +26,7 @@ export default function ProfileScreen() {
     const checkMobile = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
-      if (!mobile) setIsSidebarOpen(true);
+      if (mobile) setIsSidebarOpen(false);
     };
 
     checkMobile();
