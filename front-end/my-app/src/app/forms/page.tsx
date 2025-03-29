@@ -241,7 +241,7 @@ const GenerateRoadMapPage = () => {
                   </svg>
                   Gerando...
                 </span>
-              ) : "Gerar Roadmap"}
+              ) : "Gerar Roadmap →"}
             </Button>
             </div>
           </form>
