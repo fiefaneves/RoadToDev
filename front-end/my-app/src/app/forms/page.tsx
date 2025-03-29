@@ -151,7 +151,7 @@ const GenerateRoadMapPage = () => {
                 <option value="ux/ui design">UX/UI Design</option>
                 <option value="analista de dados">Analista de dados</option>
                 <option value="cybersegurança">Cybersegurança</option>
-                <option value="gestão de projeto">Gestão de projeto</option>
+                <option value="gestão de projetos">Gestão de projeto</option>
                 <option value="engenharia de prompt">Engenharia de Prompt</option>
               </select>
               {errors.interest && (
