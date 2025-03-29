@@ -20,6 +20,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="/RoadToDev_icon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/RoadToDev_icon.svg" type="image/svg+xml" />
       </head>
       <body>
         <RoadMapProvider>
