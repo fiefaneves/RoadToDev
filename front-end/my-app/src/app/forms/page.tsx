@@ -60,9 +60,8 @@ const GenerateRoadMapPage = () => {
     1. [Nome do Tópico]
     Conceitos principais
     
-    Os tópicos DEVEM estar separados APENAS por duas barras "//" para garantir a correta divisão do texto.
-    Não explique os conceitos, apenas liste os conteúdos que devo estudar em cada tópico.
-    `;
+    Os tópicos DEVEM estar separados por uma linha em branco (duplo ENTER) para garantir a correta divisão do texto.
+    Não explique os conceitos, apenas liste os conteúdos que devo estudar em cada tópico.`;
     
     console.log("Query description:", queryDescription);
     setLoading(true);
