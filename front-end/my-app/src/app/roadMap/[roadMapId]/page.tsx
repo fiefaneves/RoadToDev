@@ -223,7 +223,7 @@ const RoadMapPage = () => {
                         href={linkItem.link} 
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className="text-purple-600 hover:text-purple-800 hover:underline transition-colors"
+                        className="text-purple-600 hover:text-purple-800 hover:underline transition-colors break-all"
                       >
                         {linkItem.link}
                       </a>
