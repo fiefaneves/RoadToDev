@@ -69,7 +69,7 @@ const GenerateRoadMapPage = () => {
   
     try {
       const userId = localStorage.getItem("userId");
-      const response = await fetch("https://roadtodev-production.up.railway.app/generate", {
+      const response = await fetch("http://localhost:3005/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

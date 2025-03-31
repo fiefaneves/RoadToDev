@@ -44,9 +44,9 @@ export default function Sidebar({
         throw new Error('Token de autenticação não encontrado');
       }
 
-      console.log('Enviando requisição para:', `https://roadtodev-production.up.railway.app/user/roadmap/editar-nome`);
+      console.log('Enviando requisição para:', `http://localhost:3005/user/roadmap/editar-nome`);
       
-      const response = await fetch(`https://roadtodev-production.up.railway.app/user/roadmap/editar-nome`, {
+      const response = await fetch(`http://localhost:3005/user/roadmap/editar-nome`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -128,9 +128,9 @@ export default function Sidebar({
         throw new Error('Token de autenticação não encontrado');
       }
 
-      console.log('Enviando requisição para:', `https://roadtodev-production.up.railway.app/user/roadmap/${roadmapId}`);
+      console.log('Enviando requisição para:', `http://localhost:3005/user/roadmap/${roadmapId}`);
       
-      const response = await fetch(`https://roadtodev-production.up.railway.app/user/roadmap/${roadmapId}`, {
+      const response = await fetch(`http://localhost:3005/user/roadmap/${roadmapId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -19,9 +19,9 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.15.0",
-    "mongoose": "^8.12.1",
+    "mongoose": "^8.13.1",
     "nodemailer": "^6.10.0",
-    "openai": "^4.89.0",
+    "openai": "^4.91.0",
     "readline-sync": "^1.4.10"
   }
 }

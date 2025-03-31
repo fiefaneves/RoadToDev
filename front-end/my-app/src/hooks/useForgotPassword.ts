@@ -6,7 +6,7 @@ const useForgotPassword = () => {
   const sendResetEmail = async (email: string) => {
     setLoading(true);
     try {
-      const response = await fetch("https://roadtodev-production.up.railway.app/esqueci-senha", {
+      const response = await fetch("http://localhost:3005/esqueci-senha", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
