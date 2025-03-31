@@ -230,7 +230,7 @@ export default function Sidebar({
           )}
 
           <div className="space-y-6 flex-1 overflow-y-auto">
-            <h2 className="font-semibold text-sm whitespace-nowrap text-gray-700">
+            <h2 data-testid="roadmaps-header" className="font-semibold text-sm whitespace-nowrap text-gray-700">
               Meus Roadmaps
             </h2>
             

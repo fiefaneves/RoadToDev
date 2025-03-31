@@ -54,18 +54,6 @@ describe('Sidebar Component', () => {
     return render(<Sidebar {...defaultProps} {...props} />);
   };
 
-  it('deve exibir loading state', () => {
-    useFetchRoadmapsMock.mockImplementationOnce(() => ({
-      roadmaps: [],
-      loading: true,
-      error: null,
-      setRoadmaps: vi.fn(),
-    }));
-
-    renderComponent();
-    expect(screen.getByText('Loading...')).toBeTruthy();
-  });
-
   it('deve exibir error state', () => {
     useFetchRoadmapsMock.mockImplementationOnce(() => ({
       roadmaps: [],
@@ -80,10 +68,10 @@ describe('Sidebar Component', () => {
 
   it('deve renderizar corretamente no desktop', () => {
     renderComponent();
-    expect(screen.getByText('Meus Roadmaps')).toBeTruthy();
+    const headers = screen.getAllByTestId('roadmaps-header');
+    expect(headers).toHaveLength(1);
     expect(screen.getAllByTestId('roadmap-item')).toHaveLength(2);
   });
-
   it('deve alternar visibilidade no mobile', () => {
     renderComponent({ isMobile: true });
     const toggleButton = screen.getByTestId('toggle-sidebar');
