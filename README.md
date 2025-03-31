@@ -118,8 +118,8 @@ Ensure you have the following installed:
     OPENAI_API_KEY=your_openai_api_key
     MONGO_DB_KEY=your_mongo_db_key
     JWT_SECRET=meu_segredo_super_secreto
-    EMAIL_USER='EMAIL_DA_APLICAÇÃO'
-    EMAIL_PASS='SENHA_DO_EMAIL'
+    EMAIL_USER='APPLICATION_EMAIL'
+    EMAIL_PASS='EMAIL_PASSWORD'
     ```
 
 ### **Test locally**
