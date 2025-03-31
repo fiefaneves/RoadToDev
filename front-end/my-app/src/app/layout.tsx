@@ -8,10 +8,13 @@ import React, { useEffect, useState } from 'react';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [userId, setUserId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setUserId(localStorage.getItem('userId'));
+      const storedUserId = localStorage.getItem('userId');
+      setUserId(storedUserId);
+      setLoading(false);
     }
   }, []);
 
@@ -46,9 +49,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   >
                   Criar conta
                   </Link>
-                  {userId && (
-                    <Link href={`/intermediateScreen/${userId}`}
-                    className="hover:opacity-80 transition-opacity"
+                  {!loading && userId ? (
+                    <Link
+                      href={`/intermediateScreen/${userId}`}
+                      className="hover:opacity-80 transition-opacity flex items-center flex-shrink-0"
                     >
                       <Image
                         width={24}
@@ -58,6 +62,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         className="drop-shadow-md"
                       />
                     </Link>
+                  ) : (
+                    (
+                      <div className="w-6 h-6 bg-gray-300 rounded-full animate-pulse"></div>
+                    )
                   )}
                 </nav>
               </div>

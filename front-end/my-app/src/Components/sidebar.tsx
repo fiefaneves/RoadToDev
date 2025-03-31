@@ -20,7 +20,7 @@ export default function Sidebar({
   userId 
 }: SidebarProps) {
   const router = useRouter();
-  const { roadmaps, loading, error, setRoadmaps } = useFetchRoadmaps(userId);
+  const { roadmaps, error, setRoadmaps } = useFetchRoadmaps(userId);
   const [selectedRoadmap, setSelectedRoadmap] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [deletingRoadmapId, setDeletingRoadmapId] = useState<string | null>(null);
@@ -194,7 +194,6 @@ export default function Sidebar({
     };
   }, [setRoadmaps]);
 
-  if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
