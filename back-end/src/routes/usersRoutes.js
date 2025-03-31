@@ -9,7 +9,7 @@ const routes = (app) => {
     app.use(cors({
       origin: [
         "https://road-to-dev.vercel.app",
-        "http://localhost:3000/",
+        "http://localhost:3000",
         "http://192.168.0.196:3000"
       ],
       methods: ["GET", "POST", "PUT", "DELETE"],
