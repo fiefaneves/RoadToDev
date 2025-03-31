@@ -15,7 +15,10 @@ const UsersController = {
         
         try {
             const roadQuery = await generate(queryDescription);
-            const topics = roadQuery.split("\n\n");
+            let topics = roadQuery.split("\n\n");
+            if(topics.length < 2){
+                topics = roadQuery.split("\n");
+            }
             const arrayTopics = [];
             for(let i = 0; i < topics.length; i++){
                 arrayTopics.push({ topic: topics[i], completed: false })
