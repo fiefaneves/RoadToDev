@@ -98,6 +98,8 @@ Ensure you have the following installed:
     ```bash
     git clone https://github.com/fiefaneves/RoadToDev.git
     cd RoadToDev
+    git checkout locally-test
+    
 2. Install dependencies for the front-end:
     ```bash
     cd front-end/my-app
