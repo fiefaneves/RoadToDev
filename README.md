@@ -12,7 +12,7 @@ RoadToDev is a web-based application developed as part of our "Software Developm
 | **Giovanna Mafra (gmm8)** | [GiovannaMafra](https://github.com/GiovannaMafra) | [LinkedIn](http://www.linkedin.com/in/giovanna-marques-mafra) | [gmm8@cin.ufpe.br](mailto:gio.marques.m@gmail.com) |
 | **Heitor Barros (hfmb)** | [H3ITHOR](https://github.com/H3ITHOR) | [LinkedIn](https://www.linkedin.com/in/heitor-barros-679845205/) | [eito@gmail.com](mailto:heitorfelipe37@gmail.com)|
 | **Josias Netto (jhcn)** | [JosiasNetto](https://github.com/JosiasNetto) | [LinkedIn](https://www.linkedin.com/in/josiasnetto/) | [jhcndev@gmail.com](mailto:jhcndev@gmail.com) |
-| **Julia Zovka (jzs)** | [julia-zovka](https://github.com/julia-zovka) | - | [jzs@cin.ufpe.br](mailto:zovkasj@gmail.com) |
+| **Julia Zovka (jzs)** | [julia-zovka](https://github.com/julia-zovka) | [LinkedIn]([https://www.linkedin.com/in/j%C3%BAlia-zovka-de-souza-a4731235a/)] | [jzs@cin.ufpe.br](mailto:zovkasj@gmail.com) |
 
 --- 
 
