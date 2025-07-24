@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import routes from './src/routes/usersRoutes.js';
 import bodyParser from 'body-parser';
 import conectar_db from './src/config/dbConnection.js';
+import cors from 'cors';
 
 
 dotenv.config(); 
@@ -20,8 +21,17 @@ conexao.once("open",()=> {
 
 const app = express();
 
+app.use(cors({
+      origin: [
+        "https://road-to-dev.vercel.app",
+        "http://localhost:3000",
+        "http://192.168.0.196:3000"
+      ],
+      methods: ["GET", "POST", "PUT", "DELETE"],
+      credentials: true
+    }));
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended : true }));
+app.use(express.urlencoded({ extended: true }));
 
 routes(app);
 
